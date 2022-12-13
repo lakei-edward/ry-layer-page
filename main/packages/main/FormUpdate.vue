@@ -8,13 +8,24 @@
       :on-success="uploadSuccess"
       :on-error="uploadError"
       :on-remove="handleRemoveFile"
+      :disabled="disabled"
       :limit="limit"
       :headers="upload.headers"
       :style="{ width: width ? width + 'px' : formWidth + 'px' }"
     >
-      <el-button size="small" type="primary">{{
-        upload.buttonLabel || "点击上传"
-      }}</el-button>
+      <el-button
+        :type="type"
+        :circle="circle"
+        :round="round"
+        :plain="plain"
+        :icon="icon"
+        :disabled="disabled"
+      >
+        <template v-if="_isCircle"></template>
+        <template v-else>
+          {{ upload.buttonLabel || "点击上传" }}
+        </template>
+      </el-button>
       <div slot="tip" class="el-upload__tip">
         {{ upload.textLabel || "只能上传jpg/png文件,且不超过10MB" }}
       </div>
@@ -22,11 +33,22 @@
   </div>
 </template>
 <script>
-import regExp from "./plugin/regExp";
+import regExp from "../plugin/regExp";
 export default {
   name: "FormUpdate",
   data() {
     return {};
+  },
+  computed: {
+    // 判断为真
+    _isCircle() {
+      return function () {
+        return (
+          typeof this.upload.buttonLabel === "string" &&
+          this.upload.buttonLabel.length === 0
+        );
+      };
+    },
   },
   props: {
     form: {
@@ -44,8 +66,21 @@ export default {
       required: true,
       default: () => {},
     },
+    size: {
+      type: String,
+      default: "small",
+    },
+    type: {
+      type: String,
+      default: "primary",
+    },
     width: Number,
     limit: Number,
+    disabled: Boolean,
+    circle: Boolean,
+    round: Boolean,
+    plain: Boolean,
+    icon: String,
   },
   mounted() {},
   methods: {
@@ -72,7 +107,7 @@ export default {
 
     // 上传成功
     uploadSuccess(file) {
-      this.fileIdList.push(file.data.fileId[0]);
+      this.fileIdList.push(file.data.fileId);
       this.form[this.model] = this.fileIdList.join(",");
     },
 
@@ -82,15 +117,15 @@ export default {
     },
 
     //  新增-移除文件
-    handleRemoveFile(file, fileList) {
-      this.fileIdList = [];
-      this.form[this.model] = undefined;
-      this.fileIdList = fileList.map((item) => item.fileId);
-      this.form[this.model] = this.fileIdList.join(",");
-      console.log(this.fileList);
+    handleRemoveFile(file) {
+      if (file) {
+        const id = file.response.data.fileId;
+        this.fileIdList.splice(this.fileIdList.indexOf(id), 1);
+        this.form[this.model] = this.fileIdList.join(",");
+      }
     },
 
-    //附件下载
+    // todo 地址有问题 附件下载
     downTemplate(item) {
       this.download("/minio/download/" + item.fileId, {}, item.name);
     },

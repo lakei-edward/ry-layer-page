@@ -1,14 +1,13 @@
 <template>
-  <FormMain
-    ref="FormMain"
-    :ry-search="rySearch"
-    :ry-operate="ryOperate"
-    :ry-table="ryTable"
-    :right-toolbar="true"
+  <ry-minify-page
+    ref="minifypage"
+    :ryquery="ryquery"
+    :ryoperate="ryoperate"
+    :rylist="rylist"
   />
 </template>
 <script>
-import CustomA from "./CustomA";
+import Custom from "./Custom";
 import Analyze from "./Analyze";
 import Dialog from "./Dialog";
 export default {
@@ -18,8 +17,8 @@ export default {
     const BASE_URL = "/his/office";
     const form = [
       {
-        name: "CustomA",
-        component: CustomA,
+        name: "Custom",
+        component: Custom,
       },
       {
         label: "科室名称",
@@ -38,6 +37,7 @@ export default {
         label: "科室负责人",
         model: "deptLeader",
         component: "FormInput",
+        width: 565,
         rules: [
           {
             required: true,
@@ -50,7 +50,6 @@ export default {
         label: "科室电话",
         model: "deptPhone",
         component: "FormInput",
-        width: 565,
         rules: [
           {
             pattern: /^[1]([3-9])[0-9]{9}$/,
@@ -65,22 +64,27 @@ export default {
         model: "fileId",
         component: "FormUpdate",
         width: 565,
+        icon: "el-icon-receiving",
+        circle: true,
         upload: {
-          action: `${process.env.VUE_APP_FILE_API}/minio/uploads`,
+          action: `${process.env.VUE_APP_FILE_API}/minio/upload`,
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImRkZTg2MjBiLWFiY2EtNGU2Ni05NDUyLTY4ZjNmYmMxY2MxMiJ9.8F5v9uJ-YBWLe6s90lxeoQtt5OiTzENZIraOAf3L8odvjNTKhoPXldZzSYjVkBhToITj4bg-7OcNqSjc8Q9g5A",
+              "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjMzNTA1MjlkLWU4ZDItNGQwMC04MzM5LTM1MzFmZWNhYjQyNSJ9.R_edXVmOm0HpoCLb86eFPYT7vzPxOrI5CSzUlyQip5TqPpKru3PlvOXUQjCIqK32OwvKbp6J0joKt5fWPhIEyA",
+            // Cookie:
+            //   "Admin-Token=eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjMzNTA1MjlkLWU4ZDItNGQwMC04MzM5LTM1MzFmZWNhYjQyNSJ9.R_edXVmOm0HpoCLb86eFPYT7vzPxOrI5CSzUlyQip5TqPpKru3PlvOXUQjCIqK32OwvKbp6J0joKt5fWPhIEyA",
           },
           multiple: true,
           // reg: /^.*\.(?:jpg|jpeg|png|doc|docx|pdf|xls|xlsx|ppt|pptx|txt|mp4|flv)$/i, //正则校验
           // size: 10, //限制10mb以内
           // textLabel: "支持word文件、excel文件等等，小于1M的文件",
           // sizeLabel: "",//限制大小描述
-          // buttonLabel: "上传",// 按钮描述
+          buttonLabel: "", // 按钮描述
         },
       },
     ];
-    const ryOperate = {
+
+    const ryoperate = {
       add: {
         size: "mini",
         type: "primary",
@@ -136,7 +140,8 @@ export default {
           detail: true, // 需要使用详情
           label: "deptId",
           rules: false, // 不需要校验
-          form,
+          readonly: true,
+          form: form,
           button: [
             // dialog支持自定义按钮 event的submit为提交， cancel为取消
             {
@@ -175,6 +180,7 @@ export default {
       warn: {
         size: "mini",
         type: "danger",
+        disabled: "single",
         label: "警告",
         plain: true,
         url: `${BASE_URL}`,
@@ -250,7 +256,7 @@ export default {
     };
     return {
       /* 顶部搜索条件 */
-      rySearch: {
+      ryquery: {
         labelAfter: ":",
         labelWidth: "100px",
         validateOnRuleChange: false,
@@ -258,8 +264,8 @@ export default {
         formWidth: 217,
         form: [
           {
-            name: "CustomA", // 渲染保证唯一
-            component: CustomA,
+            name: "Custom", // 渲染保证唯一
+            component: Custom,
           },
           {
             label: "科室名称",
@@ -267,15 +273,15 @@ export default {
             component: "FormInput",
             maxlength: "5",
             showWordLimit: true,
-            regExp: "chinese",
-            rules: [
-              { required: true, message: "请输入科室名称", trigger: "blur" },
-            ],
+            // regExp: "chinese",
+            // rules: [
+            //   { required: true, message: "请输入科室名称", trigger: "blur" },
+            // ],
           },
           {
             label: "科室负责人",
             model: "deptLeader",
-            readonly: true,
+            // readonly: true,
             component: "FormInput",
           },
           {
@@ -290,9 +296,9 @@ export default {
         ],
       },
       /* 按钮和提交数据 */
-      ryOperate,
+      ryoperate,
       /* 列表数据 */
-      ryTable: {
+      rylist: {
         url: `${BASE_URL}/list`,
         // dblclick: false, //双击可查看
         rowclick: false, // 点击行选择
@@ -325,7 +331,7 @@ export default {
           },
           {
             label: "操作",
-            operate: true, // 自动根据ryOperate中show字段进行截取
+            operate: true, // 自动根据ryoperate中show字段进行截取
             width: "500",
             // rop
             // label
@@ -341,16 +347,7 @@ export default {
       },
     };
   },
-  mounted() {
-    const a = {
-      name: () => {
-        return "lakei";
-      },
-    };
-    const b = JSON.parse(JSON.stringify(a));
-    console.log(a);
-    console.log(b);
-  },
+  mounted() {},
   methods: {
     cellStyle(row) {
       if (row.rowIndex === 1) {
@@ -358,14 +355,10 @@ export default {
       }
     },
 
-    catch() {
-      console.log(23);
-    },
-
     // 字典加载完成的回调
     onDictReady(dict) {
       // 初始化字典项
-      this.$refs.FormMain.initDicts(dict);
+      this.$refs.minifypage.initDicts(dict);
     },
   },
 };

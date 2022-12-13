@@ -37,7 +37,7 @@
           v-hasPermi="['system:dept:add']"
         >新增</el-button>
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+      <right-toolbar :showSearch.sync="showSearch" @querylist="getList"></right-toolbar>
     </el-row>
 
     <el-table

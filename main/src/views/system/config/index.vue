@@ -103,7 +103,7 @@
           v-hasPermi="['system:config:remove']"
         >清理缓存</el-button>
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+      <right-toolbar :showSearch.sync="showSearch" @querylist="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="configList" @selection-change="handleSelectionChange">

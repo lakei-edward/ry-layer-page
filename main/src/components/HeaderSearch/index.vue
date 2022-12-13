@@ -4,7 +4,7 @@
     <el-select
       ref="headerSearchSelect"
       v-model="search"
-      :remote-method="querySearch"
+      :remote-method="queryquery"
       filterable
       default-first-option
       remote
@@ -133,7 +133,7 @@ export default {
       }
       return res
     },
-    querySearch(query) {
+    queryquery(query) {
       if (query !== '') {
         this.options = this.fuse.search(query)
       } else {

@@ -15,64 +15,63 @@
     :prefix-icon="prefixIcon"
     :suffix-icon="suffixIcon"
     @input="regExp ? handleRegExp(form[model]) : ''"
-  >
-  </el-input>
+  />
 </template>
 <script>
-import REGEXP from "./plugin/regExp";
+import REGEXP from '../plugin/regExp';
 export default {
-  data() {
-    return {};
-  },
   props: {
     form: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     model: {
       type: String,
-      default: "",
+      default: ''
     },
     placeholder: {
       type: String,
-      default: "请输入",
+      default: '请输入'
     },
     size: {
-      type: String,
+      type: String
     },
     regExp: {
-      type: String,
+      type: String
     },
     prefixIcon: {
-      type: String,
+      type: String
     },
     suffixIcon: {
-      type: String,
+      type: String
     },
     maxlength: {
-      type: Number | String,
+      type: Number | String
     },
     minlength: {
-      type: Number | String,
+      type: Number | String
     },
     width: {
-      type: Number,
+      type: Number
     },
     formWidth: {
-      type: Number,
+      type: Number
     },
     showWordLimit: Boolean,
     clearable: Boolean,
     showPassword: Boolean,
     disabled: Boolean,
     readonly: Boolean,
-    autofocus: Boolean,
+    autofocus: Boolean
+  },
+  data() {
+    return {};
   },
   methods: {
     handleRegExp(value) {
-      value = value.replace(REGEXP[this.regExp], "");
+      value = value.replace(REGEXP[this.regExp], '');
       this.form[this.model] = value;
-    },
-  },
+    }
+  }
 };
 </script>

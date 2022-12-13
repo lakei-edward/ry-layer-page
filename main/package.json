@@ -14,24 +14,12 @@
     "serve": "vue-cli-service serve",
     "build:prod": "vue-cli-service build",
     "lib": "npm run clean && vue-cli-service build --target lib --dest lib --entry ./src/index.js",
-    "clean": "rimraf lib",
-    "build:stage": "vue-cli-service build --mode staging",
-    "preview": "node build/index.js --preview",
-    "lint": "eslint --ext .js,.vue src",
-    "lint:fix": "vue-cli-service lint --fix .vue packages",
-    "build": "rimraf dist && webpack",
-    "start": "webpack-dev-server webpack --open"
+    "clean": "rimraf lib"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  },
-  "lint-staged": {
-    "src/**/*.{js,vue}": [
-      "eslint --fix",
-      "git add"
-    ]
   },
   "keywords": [
     "vue",
@@ -73,14 +61,10 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.4.6",
-    "@vue/cli-plugin-eslint": "4.4.6",
     "@vue/cli-service": "4.4.6",
-    "babel-eslint": "10.1.0",
     "chalk": "4.1.0",
     "connect": "3.6.6",
     "css-loader": "^6.7.2",
-    "eslint": "7.15.0",
-    "eslint-plugin-vue": "7.2.0",
     "html-webpack-plugin": "4.5.0",
     "lint-staged": "10.5.3",
     "runjs": "4.4.2",

@@ -1,11 +1,20 @@
-import FormMain from "../packages/Form/FormMain.vue";
-import Dict from "../packages/Form/dict/index";
+import RyMinifyPage from "../packages/main/index.vue";
+import Dict from "../packages/dict/index";
 
 const install = function (Vue, opts = {}) {
-  FormMain.methods.request = opts.request;
-  Vue.component(FormMain.name, FormMain);
-  if (opts.dict) {
-    Vue.use(Dict, opts.dict);
+  if (opts) {
+    if (opts.request instanceof Function) {
+      RyMinifyPage.methods.request = opts.request;
+      Vue.component(RyMinifyPage.name, RyMinifyPage);
+    } else {
+      throw Error("request must be a function");
+    }
+
+    if (opts.dict instanceof Function) {
+      Vue.use(Dict, opts.dict);
+    } else {
+      throw Error("dict must be a function");
+    }
   }
 };
 

@@ -136,7 +136,7 @@
               v-hasPermi="['system:user:export']"
             >导出</el-button>
           </el-col>
-          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
+          <right-toolbar :showSearch.sync="showSearch" @querylist="getList" :columns="columns"></right-toolbar>
         </el-row>
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">

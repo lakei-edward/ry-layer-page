@@ -58,7 +58,7 @@ export default {
     },
     // 刷新
     refresh() {
-      this.$emit("queryTable");
+      this.$emit("querylist");
     },
     // 右侧列表元素变化
     dataChange(data) {
