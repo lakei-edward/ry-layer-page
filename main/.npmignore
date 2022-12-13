@@ -1,0 +1,21 @@
+# 忽略目录
+# src/
+# packages/
+public/
+build/
+src/
+bin/
+packages/
+
+
+# 忽略指定文件
+vue.config.js
+babel.config.js
+package-lock.json
+pnpm-lock.yaml
+lib/html
+*.map
+*.zip
+*.sh
+*.lock
+.env*
