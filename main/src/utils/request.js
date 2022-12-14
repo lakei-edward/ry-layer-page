@@ -99,5 +99,4 @@ service.interceptors.response.use(res => {
     return Promise.reject(error)
   }
 )
-
 export default service

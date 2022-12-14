@@ -251,11 +251,24 @@
                   :round="item.round"
                   :circle="item.circle"
                   :plain="item.plain"
+                  :fileListLabel="item.fileListLabel"
                   :show-word-limit="item.showWordLimit"
                 />
                 <div v-else :style="{ width: _setLongSpan(item) }">
-                  {{ ryoperate[ikey].params[item.model] }}
-                  <span v-if="fileInfo"></span>
+                  {{ item.fileListLabel }}
+                  <template>{{ ryoperate[ikey].params[item.model] }}</template>
+                  <template v-if="item.component === 'FormUpdate'">
+                    <div
+                      v-for="file in ryoperate[ikey].params[
+                        item.fileListLabel ? item.fileListLabel : 'fileList'
+                      ]"
+                      :key="file.fileId"
+                    >
+                      <el-link type="primary" @click="downFiles(file, item)">{{
+                        file.name
+                      }}</el-link>
+                    </div>
+                  </template>
                 </div>
               </el-form-item>
               <component
@@ -305,10 +318,10 @@
       <!-- 跳转到自定义Dialog -->
       <template v-else>
         <component
+          v-bind="$attrs"
           :is="ryoperate[ikey].mode.component"
           v-if="ryoperate[ikey] && dialogVisible"
           :ref="ryoperate[ikey].mode.name"
-          v-bind="$attrs"
           :dialog-visible.sync="dialogVisible"
           :query-list="queryList"
           :params="ryoperate[ikey].params"
@@ -318,9 +331,9 @@
     <!-- 跳转到自定义组件Page页 -->
     <template v-if="ryoperate[ikey] && pageVisible">
       <component
+        v-bind="$attrs"
         :is="ryoperate[ikey].mode.component"
         :ref="ryoperate[ikey].mode.name"
-        v-bind="$attrs"
         :page-visible.sync="pageVisible"
         :query-list="queryList"
         :params="ryoperate[ikey].params"
@@ -337,6 +350,7 @@ import FormDate from "./FormDate.vue";
 import FormTextarea from "./FormTextarea.vue";
 import FormUpdate from "./FormUpdate.vue";
 import { isUndef, isDef, isTypes, deepClone } from "../plugin/util.js";
+import { download } from "../plugin/download.js";
 import { ID, REMOVE, SEARCH } from "../plugin/default.js";
 export default {
   name: "ry-minify-page",
@@ -478,7 +492,7 @@ export default {
       return (
         this._isHaveObject(this.ryoperate) &&
         this.ryoperate[this.ikey] &&
-        this.ryoperate[this.ikey].mode.type !== "componentDialog"
+        this.ryoperate[this.ikey].mode.type !== "customDialog"
       );
     },
     // 默认弹框宽度
@@ -619,30 +633,37 @@ export default {
             ...value, // 自定义组件只传递详情信息，不传递自定义信息
           });
         }
-        const fileInfo = [
+        const fileList = [
           {
-            searchValue: null,
-            createBy: "10028",
-            createTime: "2022-11-23 16:43:22",
-            updateBy: null,
-            updateTime: null,
-            remark: null,
-            params: {},
-            id: 53,
-            name: "lakei.docx",
             bucketname: "fabledt",
-            format: "docx",
-            size: "1.45MB",
-            path: "/2022/11/23/5cfb4ded-fb29-4e58-a555-b683bed50c0a.docx",
+            createBy: "10152",
+            createTime: "2022-11-21 17:04:33",
             deptId: 11001,
-            remarks: "",
-            delFlag: "0",
-            relationId: "0e356b85-f80c-4056-879f-4034417b3d5c",
-            fileId: "5cfb4ded-fb29-4e58-a555-b683bed50c0a",
+            fileId: "9798c19e-7858-4662-8186-4e0168d09258",
+            format: "xlsx",
+            id: 10214,
+            moduleType: 2,
+            name: "被审核单位模板 (1).xlsx",
+            path: "/2022/11/21/9798c19e-7858-4662-8186-4e0168d09258.xlsx",
+            relationId: "138",
+            size: "14.3KB",
+          },
+          {
+            bucketname: "fabledt",
+            createBy: "10028",
+            createTime: "2022-11-21 16:26:57",
+            deptId: 11001,
+            fileId: "6ea1eaa7-4ae1-4c09-99c0-252d2c009731",
+            format: "docx",
+            id: 10212,
+            moduleType: 2,
+            name: "部署文档.docx",
+            path: "/2022/11/21/6ea1eaa7-4ae1-4c09-99c0-252d2c009731.docx",
+            relationId: "136",
+            size: "1.45MB",
           },
         ];
-        this.ryoperate[this.ikey].params.fileInfo = fileInfo;
-        console.log(this.ryoperate[this.ikey].params);
+        this.ryoperate[this.ikey].params.fileList = fileList;
       }
     },
 
@@ -668,11 +689,11 @@ export default {
           this.handleComfirm(item, row, key);
           break;
         // 《自定义弹框》
-        case "componentDialog":
+        case "customDialog":
           this.dialogVisible = true;
           break;
         // 《自定义页面》
-        case "componentPage":
+        case "customPage":
           this.pageVisible = true;
           break;
         // 《自定义路由页面》
@@ -693,13 +714,13 @@ export default {
       if (!item.mode.subscribe) {
         throw Error("subscribe is null");
       }
-      const label = item.mode.label || ID;
       let subscribe;
       if (item.mode.subscribe && item.mode.subscribe instanceof Function) {
         subscribe = item.mode.subscribe(row ? row : this.sections[0]);
       } else {
         subscribe = item.mode.subscribe;
       }
+      const label = item.mode.label || ID;
       const type = item.mode.type;
       const title = item.mode.title || "提示";
       const confirmButtonText = item.mode.confirmButtonText || "确定";
@@ -748,6 +769,20 @@ export default {
           this.handleRequest(this.ryoperate[this.ikey]);
         }
       });
+    },
+
+    //附件下载
+    downFiles(file, item) {
+      if (item.downloadWay === "Blob") {
+        download(
+          "/file/minio/download/" + file.fileId,
+          {},
+          file.name,
+          this.$options.methods.request
+        );
+      } else {
+        window.open("/dev-api/file/minio/download/" + file.fileId);
+      }
     },
 
     /* 单击事件，选中当前的行 */
@@ -843,7 +878,6 @@ export default {
           method: item.method,
           url: item.url,
           data: params ? {} : item.params,
-          params,
         });
         if (res.code === 200) {
           if (value && res.data) {

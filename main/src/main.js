@@ -28,12 +28,12 @@ import Pagination from "@/components/Pagination";
 import RightToolbar from "@/components/RightToolbar";
 
 // 若依精简页面生成器
+import ryMinifyPage from "./index";
 import { getDicts } from "@/api/system/dict/data";
 import request from "@/utils/request";
 // import ryMinifyPage from 'ry-minify-page'
-import ryMinifyPage from "./index";
 Vue.use(ryMinifyPage, {
-  request,
+  http: request,
   dict: getDicts,
 });
 

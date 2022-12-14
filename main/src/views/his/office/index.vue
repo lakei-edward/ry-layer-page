@@ -66,13 +66,14 @@ export default {
         width: 565,
         icon: "el-icon-receiving",
         circle: true,
+        fileListLabel: "fileList", //文件列表别名
+        // downloadWay: "new-window",
+        downloadWay: "Blob", //下载方式
         upload: {
           action: `${process.env.VUE_APP_FILE_API}/minio/upload`,
           headers: {
             Authorization:
-              "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjMzNTA1MjlkLWU4ZDItNGQwMC04MzM5LTM1MzFmZWNhYjQyNSJ9.R_edXVmOm0HpoCLb86eFPYT7vzPxOrI5CSzUlyQip5TqPpKru3PlvOXUQjCIqK32OwvKbp6J0joKt5fWPhIEyA",
-            // Cookie:
-            //   "Admin-Token=eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjMzNTA1MjlkLWU4ZDItNGQwMC04MzM5LTM1MzFmZWNhYjQyNSJ9.R_edXVmOm0HpoCLb86eFPYT7vzPxOrI5CSzUlyQip5TqPpKru3PlvOXUQjCIqK32OwvKbp6J0joKt5fWPhIEyA",
+              "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjI4YjIwMmM0LWQzZTktNGUwZi05YmRmLTNhOTUzYTFlNWJjYSJ9.YMRqEvDQM-DG_dv3IizC_x6Xj-oD8DGpIB-ncdiMPRvjVlmdmAu5mVgqljQzY3fSs5Q-7P8g6piGizFVBVMNzA",
           },
           multiple: true,
           // reg: /^.*\.(?:jpg|jpeg|png|doc|docx|pdf|xls|xlsx|ppt|pptx|txt|mp4|flv)$/i, //正则校验
@@ -91,8 +92,11 @@ export default {
         label: "新增",
         params: {},
         method: "post",
+        // plain: true,
+        // circle: true,
         url: `${BASE_URL}`,
         hasPermi: `${route}:add`,
+        // show: false,
         mode: {
           type: "dialog",
           // width: 1000,
@@ -115,7 +119,9 @@ export default {
         size: "mini",
         type: "primary",
         label: "修改",
-        params: {},
+        params: {
+          age: 18,
+        },
         disabled: "single",
         url: `${BASE_URL}`,
         method: "put",
@@ -168,6 +174,9 @@ export default {
         mode: {
           subscribe: "是否确认删除这些数据?",
           type: "warning",
+          title: "提示",
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
           label: "deptId",
           catch: () => {
             this.$message({
@@ -209,7 +218,7 @@ export default {
         params: { b: "resrse" },
         show: "table",
         mode: {
-          type: "componentDialog",
+          type: "customDialog",
           name: "Dialog", // 自定义组件都要有name作为该组件的ref值
           detail: true, // 需要使用详情
           component: Dialog, // 自定义组件
@@ -225,7 +234,7 @@ export default {
         icon: "el-icon-set-up",
         label: "自定义组件",
         mode: {
-          type: "componentPage",
+          type: "customPage",
           name: "Analyze", // 自定义组件都要有name作为该组件的ref值
           component: Analyze, // 自定义组件
           detail: true, // 需要使用详情

@@ -3,11 +3,11 @@ import Dict from "../packages/dict/index";
 
 const install = function (Vue, opts = {}) {
   if (opts) {
-    if (opts.request instanceof Function) {
-      RyMinifyPage.methods.request = opts.request;
+    if (opts.http instanceof Function) {
+      RyMinifyPage.methods.request = opts.http;
       Vue.component(RyMinifyPage.name, RyMinifyPage);
     } else {
-      throw Error("request must be a function");
+      throw Error("http must be a function");
     }
 
     if (opts.dict instanceof Function) {

@@ -10,6 +10,7 @@
       :on-remove="handleRemoveFile"
       :disabled="disabled"
       :limit="limit"
+      :file-list="form[fileListLabel]"
       :headers="upload.headers"
       :style="{ width: width ? width + 'px' : formWidth + 'px' }"
     >
@@ -70,6 +71,10 @@ export default {
       type: String,
       default: "small",
     },
+    fileListLabel: {
+      type: String,
+      default: "fileList",
+    },
     type: {
       type: String,
       default: "primary",
@@ -82,7 +87,16 @@ export default {
     plain: Boolean,
     icon: String,
   },
-  mounted() {},
+  watch: {
+    form(v) {
+      if (v[this.fileListLabel]) {
+        v[this.fileListLabel].forEach((item) => {
+          this.fileIdList.push(item.fileId);
+        });
+        this.form[this.model] = this.fileIdList.join(",");
+      }
+    },
+  },
   methods: {
     // 导入文件之前
     beforeFileUpload(file) {
@@ -116,18 +130,13 @@ export default {
       this.$message.error("上传失败");
     },
 
-    //  新增-移除文件
+    //  移除文件
     handleRemoveFile(file) {
       if (file) {
-        const id = file.response.data.fileId;
+        const id = file.response ? file.response.data.fileId : file.fileId;
         this.fileIdList.splice(this.fileIdList.indexOf(id), 1);
         this.form[this.model] = this.fileIdList.join(",");
       }
-    },
-
-    // todo 地址有问题 附件下载
-    downTemplate(item) {
-      this.download("/minio/download/" + item.fileId, {}, item.name);
     },
   },
 };
