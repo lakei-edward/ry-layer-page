@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1>分析页</h1>
+    <h1>自定义组件页面</h1>
     {{ params }}
-    <el-button @click="submit">分析一下</el-button>
+    <el-button @click="submit">提交</el-button>
   </div>
 </template>
 <script>

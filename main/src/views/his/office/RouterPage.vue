@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>详情页</h1>
+    <h1>路由自定义页面</h1>
     <el-button @click="submit">提交</el-button>
   </div>
 </template>
@@ -11,7 +11,7 @@ export default {
   },
   props: [],
   mounted() {
-    console.log(this.$route);
+    console.log(this.$route.query.params);
   },
   methods: {
     submit() {

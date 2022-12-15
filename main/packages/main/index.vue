@@ -3,28 +3,28 @@
     <template v-if="!pageVisible">
       <!-- 查询 -->
       <el-form
-        v-if="Object.keys(ryquery).length > 0"
+        v-if="Object.keys(searchLayer).length > 0"
         v-show="showSearch"
         ref="formList"
         :model="formList"
-        :inline="!_isUndef(ryquery.inline) ? ryquery.inline : true"
-        :label-position="ryquery.labelPosition"
-        :label-width="ryquery.labelWidth"
-        :show-message="ryquery.showMessage"
-        :inline-message="ryquery.inlineMessage"
-        :status-icon="ryquery.statusIcon"
-        :size="ryquery.size"
-        :disabled="ryquery.disabled"
-        :hide-required-asterisk="ryquery.hideRequiredAsterisk"
-        :validate-on-rule-change="ryquery.validateOnRuleChange"
+        :inline="!_isUndef(searchLayer.inline) ? searchLayer.inline : true"
+        :label-position="searchLayer.labelPosition"
+        :label-width="searchLayer.labelWidth"
+        :show-message="searchLayer.showMessage"
+        :inline-message="searchLayer.inlineMessage"
+        :status-icon="searchLayer.statusIcon"
+        :size="searchLayer.size"
+        :disabled="searchLayer.disabled"
+        :hide-required-asterisk="searchLayer.hideRequiredAsterisk"
+        :validate-on-rule-change="searchLayer.validateOnRuleChange"
       >
-        <template v-for="item in ryquery.form">
+        <template v-for="item in searchLayer.form">
           <el-form-item
             v-if="_judgeType(item.component)"
             :key="item.label"
             :label-width="item.labelWidth"
             :required="item.required"
-            :label="`${item.label}${ryquery.labelAfter}`"
+            :label="`${item.label}${searchLayer.labelAfter}`"
             :show-message="item.showMessage"
             :prop="item.model"
             :size="item.size"
@@ -42,7 +42,7 @@
               :maxlength="item.maxlength"
               :minlength="item.minlength"
               :width="item.width"
-              :form-width="ryquery.formWidth"
+              :form-width="searchLayer.formWidth"
               :show-password="item.showPassword"
               :disabled="item.disabled"
               :format="item.format"
@@ -70,17 +70,17 @@
         </template>
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
-            {{ ryquery.searchName ? ryquery.searchName : "搜索" }}
+            {{ searchLayer.searchName ? searchLayer.searchName : "搜索" }}
           </el-button>
           <el-button @click="resetForm">
-            {{ ryquery.resetName ? ryquery.resetName : "重置" }}
+            {{ searchLayer.resetName ? searchLayer.resetName : "重置" }}
           </el-button>
         </el-form-item>
       </el-form>
       <!-- 操作按钮 -->
       <el-row :gutter="10" class="mb8">
-        <el-col :span="1.5" v-if="_isHaveObject(ryoperate)">
-          <template v-for="(value, key) in ryoperate">
+        <el-col :span="1.5" v-if="_isHaveObject(operateLayer)">
+          <template v-for="(value, key) in operateLayer">
             <el-button
               v-if="_isUndef(value.show) && value.show !== 'table'"
               :key="key"
@@ -111,25 +111,28 @@
         <el-table
           ref="multipleTable"
           :data="tableData"
-          :tooltip-effect="rylist.tooltipEffect || 'dark'"
-          :stripe="rylist.stripe"
-          :border="rylist.border"
-          :size="rylist.size"
-          :show-header="rylist.showHeader"
-          :highlight-current-row="rylist.highlightCurrentRow"
-          :max-height="rylist.maxHeight"
-          :height="rylist.height"
-          :header-cell-style="rylist.headerCellStyle"
-          :cell-style="rylist.cellStyle"
-          :row-key="rylist.key"
-          :empty-text="rylist.emptyText"
+          :tooltip-effect="displayLayer.tooltipEffect || 'dark'"
+          :stripe="displayLayer.stripe"
+          :border="displayLayer.border"
+          :size="displayLayer.size"
+          :show-header="displayLayer.showHeader"
+          :highlight-current-row="displayLayer.highlightCurrentRow"
+          :max-height="displayLayer.maxHeight"
+          :height="displayLayer.height"
+          :header-cell-style="displayLayer.headerCellStyle"
+          :cell-style="displayLayer.cellStyle"
+          :row-key="displayLayer.key"
+          :empty-text="displayLayer.emptyText"
           @row-click="rowClcik"
           @row-dblclick="dblclick"
           @selection-change="handleSelectionChange"
         >
-          <el-table-column v-if="rylist.selection !== false" type="selection" />
           <el-table-column
-            v-for="item in rylist.data"
+            v-if="displayLayer.selection !== false"
+            type="selection"
+          />
+          <el-table-column
+            v-for="item in displayLayer.data"
             :key="item.prop"
             :prop="item.prop"
             :label="item.label"
@@ -143,8 +146,8 @@
             :show-overflow-tooltip="_isUndef(item.showOverflowTooltip)"
           >
             <template slot-scope="scope">
-              <template v-if="item.operate && _isHaveObject(ryoperate)">
-                <template v-for="(value, key) in ryoperate">
+              <template v-if="item.operate && _isHaveObject(operateLayer)">
+                <template v-for="(value, key) in operateLayer">
                   <el-button
                     v-if="value.show === 'table'"
                     :key="key"
@@ -163,7 +166,10 @@
                   </el-button>
                 </template>
               </template>
-              <span v-else>{{ scope.row[item.prop] }}</span>
+              <template v-else>
+                <span v-if="item.callback">{{ item.callback(scope.row) }}</span>
+                <span v-else>{{ scope.row[item.prop] }}</span>
+              </template>
             </template>
           </el-table-column>
         </el-table>
@@ -182,42 +188,44 @@
         <el-dialog
           :title="dialogTitle"
           :width="_defaultDialogWidth"
-          :fullscreen="ryoperate[ikey].mode.fullscreen"
-          :top="ryoperate[ikey].mode.top"
-          :modal="ryoperate[ikey].mode.modal"
-          :modal-append-to-body="ryoperate[ikey].mode.modalAppendToBody"
-          :append-to-body="ryoperate[ikey].mode.appendToBody"
-          :lock-scroll="ryoperate[ikey].mode.lockScroll"
-          :custom-class="ryoperate[ikey].mode.customClass"
-          :close-on-click-modal="ryoperate[ikey].mode.closeOnClickModal"
-          :close-on-press-escape="ryoperate[ikey].mode.closeOnPressEscape"
-          :show-close="ryoperate[ikey].mode.showClose"
-          :before-close="ryoperate[ikey].mode.beforeClose"
-          :center="ryoperate[ikey].mode.center"
-          :destroy-on-close="ryoperate[ikey].mode.destroyOnClose"
+          :fullscreen="operateLayer[ikey].mode.fullscreen"
+          :top="operateLayer[ikey].mode.top"
+          :modal="operateLayer[ikey].mode.modal"
+          :modal-append-to-body="operateLayer[ikey].mode.modalAppendToBody"
+          :append-to-body="operateLayer[ikey].mode.appendToBody"
+          :lock-scroll="operateLayer[ikey].mode.lockScroll"
+          :custom-class="operateLayer[ikey].mode.customClass"
+          :close-on-click-modal="operateLayer[ikey].mode.closeOnClickModal"
+          :close-on-press-escape="operateLayer[ikey].mode.closeOnPressEscape"
+          :show-close="operateLayer[ikey].mode.showClose"
+          :before-close="operateLayer[ikey].mode.beforeClose"
+          :center="operateLayer[ikey].mode.center"
+          :destroy-on-close="operateLayer[ikey].mode.destroyOnClose"
           :visible.sync="dialogAddVisible"
           @close="clearForm"
         >
           <el-form
             ref="forms"
             :inline="true"
-            :model="ryoperate[ikey].params"
+            :model="operateLayer[ikey].params"
             label-width="120px"
           >
-            <template v-for="item in ryoperate[ikey].mode.form">
+            <template v-for="item in operateLayer[ikey].mode.form">
               <el-form-item
                 v-if="_judgeType(item.component)"
                 :key="item.model"
                 :label="`${item.label}:`"
                 :prop="item.model"
-                :rules="_isUndef(ryoperate[ikey].mode.rules) ? item.rules : []"
+                :rules="
+                  _isUndef(operateLayer[ikey].mode.rules) ? item.rules : []
+                "
               >
                 <component
-                  v-if="!ryoperate[ikey].mode.readonly"
+                  v-if="!operateLayer[ikey].mode.readonly"
                   :is="item.component"
                   :ref="item.component"
                   v-bind="$attrs"
-                  :form="ryoperate[ikey].params"
+                  :form="operateLayer[ikey].params"
                   :ikey="ikey"
                   :dept-url="item.deptUrl"
                   :upload="item.upload"
@@ -234,7 +242,7 @@
                   :maxlength="item.maxlength"
                   :minlength="item.minlength"
                   :width="item.width"
-                  :form-width="ryquery.formWidth"
+                  :form-width="searchLayer.formWidth"
                   :show-password="item.showPassword"
                   :disabled="item.disabled"
                   :format="item.format"
@@ -255,11 +263,12 @@
                   :show-word-limit="item.showWordLimit"
                 />
                 <div v-else :style="{ width: _setLongSpan(item) }">
-                  {{ item.fileListLabel }}
-                  <template>{{ ryoperate[ikey].params[item.model] }}</template>
+                  <template>{{
+                    operateLayer[ikey].params[item.model]
+                  }}</template>
                   <template v-if="item.component === 'FormUpdate'">
                     <div
-                      v-for="file in ryoperate[ikey].params[
+                      v-for="file in operateLayer[ikey].params[
                         item.fileListLabel ? item.fileListLabel : 'fileList'
                       ]"
                       :key="file.fileId"
@@ -277,13 +286,13 @@
                 :is="item.component"
                 :key="item.name"
                 :ref="item.name"
-                :readonly="ryoperate[ikey].mode.readonly"
-                :params="ryoperate[ikey].params"
+                :readonly="operateLayer[ikey].mode.readonly"
+                :params="operateLayer[ikey].params"
               />
             </template>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <template v-if="!ryoperate[ikey].mode.button">
+            <template v-if="!operateLayer[ikey].mode.button">
               <el-button
                 type="primary"
                 :loading="submitLoad"
@@ -295,7 +304,7 @@
             </template>
             <template v-else>
               <el-button
-                v-for="item in ryoperate[ikey].mode.button"
+                v-for="item in operateLayer[ikey].mode.button"
                 :key="item.event"
                 v-hasPermi="[item.hasPermi]"
                 :size="item.size"
@@ -319,24 +328,24 @@
       <template v-else>
         <component
           v-bind="$attrs"
-          :is="ryoperate[ikey].mode.component"
-          v-if="ryoperate[ikey] && dialogVisible"
-          :ref="ryoperate[ikey].mode.name"
+          :is="operateLayer[ikey].mode.component"
+          v-if="operateLayer[ikey] && dialogVisible"
+          :ref="operateLayer[ikey].mode.name"
           :dialog-visible.sync="dialogVisible"
           :query-list="queryList"
-          :params="ryoperate[ikey].params"
+          :params="operateLayer[ikey].params"
         />
       </template>
     </template>
     <!-- 跳转到自定义组件Page页 -->
-    <template v-if="ryoperate[ikey] && pageVisible">
+    <template v-if="operateLayer[ikey] && pageVisible">
       <component
         v-bind="$attrs"
-        :is="ryoperate[ikey].mode.component"
-        :ref="ryoperate[ikey].mode.name"
+        :is="operateLayer[ikey].mode.component"
+        :ref="operateLayer[ikey].mode.name"
         :page-visible.sync="pageVisible"
         :query-list="queryList"
-        :params="ryoperate[ikey].params"
+        :params="operateLayer[ikey].params"
       />
     </template>
   </div>
@@ -375,21 +384,21 @@ export default {
       default: 1,
     },
     // 表格各字段
-    rylist: {
+    displayLayer: {
       type: Object,
       default() {
         return {};
       },
     },
     // 操作
-    ryoperate: {
+    operateLayer: {
       type: Object,
       default() {
         return {};
       },
     },
     // 搜索信息
-    ryquery: {
+    searchLayer: {
       type: Object,
       default() {
         return {};
@@ -490,15 +499,15 @@ export default {
     // 判断弹框方式
     _judgeDialog() {
       return (
-        this._isHaveObject(this.ryoperate) &&
-        this.ryoperate[this.ikey] &&
-        this.ryoperate[this.ikey].mode.type !== "customDialog"
+        this._isHaveObject(this.operateLayer) &&
+        this.operateLayer[this.ikey] &&
+        this.operateLayer[this.ikey].mode.type !== "CustomDialog"
       );
     },
     // 默认弹框宽度
     _defaultDialogWidth() {
-      return this.ryoperate[this.ikey].mode.width
-        ? `${this.ryoperate[this.ikey].mode.width}px`
+      return this.operateLayer[this.ikey].mode.width
+        ? `${this.operateLayer[this.ikey].mode.width}px`
         : "800px";
     },
     // 对象是否有值
@@ -517,8 +526,8 @@ export default {
   methods: {
     // 备份查看接口
     backupSearchUrl() {
-      if (isDef(this.ryoperate) && this._isHaveObject(this.ryoperate)) {
-        const serach_item = this.ryoperate[SEARCH];
+      if (isDef(this.operateLayer) && this._isHaveObject(this.operateLayer)) {
+        const serach_item = this.operateLayer[SEARCH];
         this.serach_url = JSON.parse(JSON.stringify(serach_item.url));
       }
     },
@@ -526,15 +535,15 @@ export default {
     // 初始化字典项
     initDicts(dict) {
       // 查询字典赋值
-      this.ryquery.form.map((item) => {
+      this.searchLayer.form.map((item) => {
         if (item.dict) {
           item.dict = item.dict && dict.type[item.dict];
         }
       });
       // 弹框中的字典赋值
-      this.handleDicts(this.ryoperate, dict);
+      this.handleDicts(this.operateLayer, dict);
       // 表格内的弹窗字典
-      this.rylist.data.forEach((item) => {
+      this.displayLayer.data.forEach((item) => {
         if (item.operate) {
           this.handleDicts(item.operate, dict);
         }
@@ -544,8 +553,8 @@ export default {
     // 处理多出字典
     handleDicts(object, dict) {
       for (const key in object) {
-        if (Array.isArray(this.ryoperate[key].mode.form)) {
-          this.ryoperate[key].mode.form.forEach((item) => {
+        if (Array.isArray(this.operateLayer[key].mode.form)) {
+          this.operateLayer[key].mode.form.forEach((item) => {
             if (typeof item.dict === "string") {
               item.dict = item.dict && dict.type[item.dict];
             }
@@ -564,7 +573,7 @@ export default {
       this.closeForm();
       if (this.isCatch) {
         this.isCatch = true;
-        const callback = this.ryoperate[this.ikey].mode.catch;
+        const callback = this.operateLayer[this.ikey].mode.catch;
         callback && callback();
       }
     },
@@ -578,16 +587,16 @@ export default {
     closeForm() {
       this.dialogAddVisible = false;
       // 关闭的时候清空fileId
-      if (this.ryoperate[this.ikey].params) {
-        this.ryoperate[this.ikey].params.fileId = "";
+      if (this.operateLayer[this.ikey].params) {
+        this.operateLayer[this.ikey].params.fileId = "";
       }
       // 附件清空
       this.fileIdList = [];
       this.$nextTick(() => {
         // 自己定义的字段保存起来 重复赋值
-        this.ryoperate[this.ikey].params = this.ryParamsClone;
+        this.operateLayer[this.ikey].params = this.ryParamsClone;
         // 查看弹框不清楚
-        if (!this.ryoperate[this.ikey].mode.readonly) {
+        if (!this.operateLayer[this.ikey].mode.readonly) {
           // 移除整个表单的校验结果
           this.$refs.forms.clearValidate();
           this.$refs.forms.resetFields();
@@ -624,12 +633,12 @@ export default {
           ? await this.handleInfo(row)
           : await this.handleInfo(this.sections[0]);
         if (item.mode.type === "dialog") {
-          this.$set(this.ryoperate[this.ikey], "params", {
+          this.$set(this.operateLayer[this.ikey], "params", {
             ...value,
             ...this.ryParamsClone, // 内置组件传递详情信息，也传递自定义信息
           });
         } else {
-          this.$set(this.ryoperate[this.ikey], "params", {
+          this.$set(this.operateLayer[this.ikey], "params", {
             ...value, // 自定义组件只传递详情信息，不传递自定义信息
           });
         }
@@ -663,19 +672,19 @@ export default {
             size: "1.45MB",
           },
         ];
-        this.ryoperate[this.ikey].params.fileList = fileList;
+        this.operateLayer[this.ikey].params.fileList = fileList;
       }
     },
 
     // 处理不同类型事件
-    handleModeType(item, row, key) {
+    async handleModeType(item, row, key) {
       switch (item.mode.type) {
         // 《内置弹框》
-        case "dialog":
+        case "Dialog":
           // 打开弹框
           this.dialogAddVisible = true;
           // 弹框标题
-          this.dialogTitle = item.label;
+          this.dialogTitle = item.mode.title ? item.mode.title : item.label;
           // 移除整个表单的校验结果
           this.$nextTick(() => {
             this.$refs.forms.clearValidate();
@@ -689,21 +698,27 @@ export default {
           this.handleComfirm(item, row, key);
           break;
         // 《自定义弹框》
-        case "customDialog":
+        case "CustomDialog":
           this.dialogVisible = true;
           break;
         // 《自定义页面》
-        case "customPage":
+        case "CustomPage":
           this.pageVisible = true;
           break;
         // 《自定义路由页面》
-        case "routerPage":
+        case "RouterPage":
           // 把详情信息通过路由传过去 支持name和path方式跳转
-          const _routerInfo = item.router;
-          _routerInfo.query = _routerInfo.query || {};
-          this.$set(_routerInfo.query, "params", {
-            ...(row ? row : this.sections[0]),
-          });
+          const _routerInfo = item.mode.router;
+          if (item.mode.detail) {
+            _routerInfo.query = _routerInfo.query || {};
+            let value = row
+              ? await this.handleInfo(row)
+              : await this.handleInfo(this.sections[0]);
+            this.$set(_routerInfo.query, "params", {
+              ...value,
+            });
+          }
+
           this.$router.push(_routerInfo);
           break;
       }
@@ -729,6 +744,10 @@ export default {
         confirmButtonText,
         cancelButtonText,
         type,
+        showCancelButton: item.mode.showCancelButton,
+        showConfirmButton: item.mode.showConfirmButton,
+        center: item.mode.center,
+        roundButton: item.mode.roundButton,
       })
         .then(() => {
           if (key === REMOVE) {
@@ -756,17 +775,17 @@ export default {
         if (valid) {
           this.submitLoad = true;
           /* 处理多选框 拼接成字符串 */
-          const _multiples = this.ryoperate[this.ikey].multiples;
+          const _multiples = this.operateLayer[this.ikey].multiples;
           if (_multiples && _multiples.length > 0) {
-            for (const i in this.ryoperate[this.ikey].params) {
+            for (const i in this.operateLayer[this.ikey].params) {
               if (_multiples.includes(i)) {
-                this.ryoperate[this.ikey].params[i] =
-                  this.ryoperate[this.ikey].params[i].join(",");
+                this.operateLayer[this.ikey].params[i] =
+                  this.operateLayer[this.ikey].params[i].join(",");
               }
             }
           }
           /* 调取数据 */
-          this.handleRequest(this.ryoperate[this.ikey]);
+          this.handleRequest(this.operateLayer[this.ikey]);
         }
       });
     },
@@ -811,10 +830,10 @@ export default {
         this.formList.startTime = "";
         this.formList.endTime = "";
       }
-      if (this.rylist.url) {
+      if (this.displayLayer.url) {
         if (this.request) {
           const res = await this.request({
-            url: this.rylist.url,
+            url: this.displayLayer.url,
             params: this.formList,
           });
           if (res.code === 200) {
@@ -855,7 +874,7 @@ export default {
 
     // 选中当前的行
     rowClcik(row) {
-      if (!this._isUndef(this.rylist.rowclick)) {
+      if (!this._isUndef(this.displayLayer.rowclick)) {
         return;
       }
       this.$refs.multipleTable.toggleRowSelection(row);
@@ -864,7 +883,7 @@ export default {
     // 获取详情信息
     handleInfo(item) {
       // 处理自定义id名
-      const serach_item = this.ryoperate[SEARCH];
+      const serach_item = this.operateLayer[SEARCH];
       const label = serach_item.mode.label || ID;
       // 尾部拼接id
       serach_item.url = `${this.serach_url}/${item[label]}`;
@@ -898,8 +917,8 @@ export default {
     async dblclick(row) {
       if (
         !(
-          this._isUndef(this.rylist.dblclick) &&
-          this._isHaveObject(this.ryoperate)
+          this._isUndef(this.displayLayer.dblclick) &&
+          this._isHaveObject(this.operateLayer)
         )
       ) {
         return;
@@ -908,11 +927,11 @@ export default {
       // 打开弹框
       this.dialogAddVisible = true;
       // 弹框标题
-      this.dialogTitle = this.ryoperate[this.ikey].label;
+      this.dialogTitle = this.operateLayer[this.ikey].label;
       // 给弹框表单赋值
       const value = await this.handleInfo(row);
-      this.ryoperate[this.ikey].params = {
-        ...this.ryoperate[this.ikey].params,
+      this.operateLayer[this.ikey].params = {
+        ...this.operateLayer[this.ikey].params,
         ...value,
       };
     },

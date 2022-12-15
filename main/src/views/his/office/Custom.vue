@@ -1,6 +1,6 @@
 <template>
   <span>
-    <el-form-item label="科室编码:">
+    <el-form-item label="科室类别:">
       <el-select
         v-if="!readonly"
         v-model="params['deptCode']"
@@ -8,7 +8,23 @@
         @change="handleChange"
       >
         <el-option
-          v-for="item in options"
+          v-for="item in officeClass"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
+      <div v-else style="width: 217px">{{ params["deptCode"] }}</div>
+    </el-form-item>
+    <el-form-item label="科室名称:">
+      <el-select
+        v-if="!readonly"
+        v-model="params['deptName']"
+        placeholder="请选择"
+      >
+        <el-option
+          v-for="item in officeName"
           :key="item.value"
           :label="item.label"
           :value="item.value"
@@ -21,45 +37,60 @@
 </template>
 <script>
 export default {
-  data() {
-    return {
-      options: [
-        {
-          value: "0",
-          label: "黄金糕",
-        },
-        {
-          value: "1",
-          label: "双皮奶",
-        },
-        {
-          value: "2",
-          label: "蚵仔煎",
-        },
-      ],
-      options2: [],
-    };
-  },
   props: {
     params: {
       type: Object,
-      default: () => {},
       requird: true,
+      default: () => {},
     },
     readonly: Boolean,
   },
+  data() {
+    return {
+      officeClass: [
+        {
+          value: "0",
+          label: "急诊",
+        },
+        {
+          value: "1",
+          label: "门诊",
+        },
+      ],
+      officeName: [],
+      office: [
+        {
+          pid: "0",
+          value: "0",
+          label: "急诊科",
+        },
+        {
+          pid: "1",
+          value: "1",
+          label: "内科",
+        },
+        {
+          pid: "1",
+          value: "2",
+          label: "外科",
+        },
+        {
+          pid: "1",
+          value: "3",
+          label: "眼科",
+        },
+        {
+          pid: "1",
+          value: "4",
+          label: "麻醉科",
+        },
+      ],
+    };
+  },
   methods: {
-    handleChange() {
-      this.options2 = [
-        {
-          value: "1305755",
-          label: "lakei",
-        },
-        {
-          value: "159519",
-          label: "edward",
-        },
-      ];
+    handleChange(val) {
+      this.officeName = this.office.filter((v) => v.pid === val);
+      console.log(this.options2);
     },
   },
 };

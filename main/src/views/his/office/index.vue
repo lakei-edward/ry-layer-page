@@ -1,15 +1,16 @@
 <template>
   <ry-minify-page
     ref="minifypage"
-    :ryquery="ryquery"
-    :ryoperate="ryoperate"
-    :rylist="rylist"
+    :search-layer="searchLayer"
+    :operate-layer="operateLayer"
+    :display-layer="displayLayer"
+    :loading="false"
   />
 </template>
 <script>
 import Custom from "./Custom";
-import Analyze from "./Analyze";
-import Dialog from "./Dialog";
+import CustomPage from "./CustomPage";
+import CustomDialog from "./CustomDialog";
 export default {
   dicts: ["sys_normal_disable", "sys_show_hide"],
   data() {
@@ -20,19 +21,19 @@ export default {
         name: "Custom",
         component: Custom,
       },
-      {
-        label: "科室名称",
-        model: "deptName",
-        component: "FormSelect",
-        dict: "sys_normal_disable",
-        rules: [
-          {
-            required: true,
-            message: "请输入科室名称",
-            trigger: "change",
-          },
-        ],
-      },
+      // {
+      //   label: "科室名称",
+      //   model: "deptName",
+      //   component: "FormSelect",
+      //   dict: "sys_normal_disable",
+      //   rules: [
+      //     {
+      //       required: true,
+      //       message: "请输入科室名称",
+      //       trigger: "change",
+      //     },
+      //   ],
+      // },
       {
         label: "科室负责人",
         model: "deptLeader",
@@ -84,8 +85,7 @@ export default {
         },
       },
     ];
-
-    const ryoperate = {
+    const operateLayer = {
       add: {
         size: "mini",
         type: "primary",
@@ -98,7 +98,8 @@ export default {
         hasPermi: `${route}:add`,
         // show: false,
         mode: {
-          type: "dialog",
+          type: "Dialog",
+          // title: "1",
           // width: 1000,
           // fullscreen: true,
           // modal: false,
@@ -106,6 +107,7 @@ export default {
           // appendToBody: false,
           // closeOnPressEscape: false,
           // showClose: false,
+          // lockScroll: false,
           // beforeClose: this.beforeClose,
           // center: true,//居中布局
           // closeOnClickModal: false,
@@ -127,7 +129,7 @@ export default {
         method: "put",
         hasPermi: `${route}:edit`,
         mode: {
-          type: "dialog",
+          type: "Dialog",
           detail: true, // 需要使用详情
           form,
         },
@@ -142,7 +144,7 @@ export default {
         method: "get",
         url: `${BASE_URL}`,
         mode: {
-          type: "dialog",
+          type: "Dialog",
           detail: true, // 需要使用详情
           label: "deptId",
           rules: false, // 不需要校验
@@ -177,6 +179,10 @@ export default {
           title: "提示",
           confirmButtonText: "确定",
           cancelButtonText: "取消",
+          showConfirmButton: true,
+          showCancelButton: true,
+          center: false,
+          roundButton: false,
           label: "deptId",
           catch: () => {
             this.$message({
@@ -192,13 +198,12 @@ export default {
         disabled: "single",
         label: "警告",
         plain: true,
-        url: `${BASE_URL}`,
-        method: "delete",
+        url: `${BASE_URL}/warn`,
+        method: "get",
         hasPermi: `${route}:warn`,
         mode: {
-          // subscribe: "是否警告填这个信息的人?",
           subscribe: (item) => {
-            return item.deptLeader;
+            return `${item.deptLeader}已被严重警告`;
           },
           title: "警告",
           type: "error",
@@ -206,26 +211,26 @@ export default {
           catch: () => {
             this.$message({
               type: "info",
-              message: "已取消警告",
+              message: "取消警告",
             });
           },
         },
       },
       // 自定义弹框
-      hello: {
+      customDialog: {
         size: "mini",
         label: "自定义弹框",
         params: { b: "resrse" },
         show: "table",
         mode: {
-          type: "customDialog",
-          name: "Dialog", // 自定义组件都要有name作为该组件的ref值
+          type: "CustomDialog",
+          name: "customDialog", // 自定义组件都要有name作为该组件的ref值
           detail: true, // 需要使用详情
-          component: Dialog, // 自定义组件
+          component: CustomDialog, // 自定义组件
         },
       },
-      // 自定义分析组件
-      analyze: {
+      // 自定义组件页面
+      customPage: {
         size: "mini",
         type: "success",
         disabled: "single",
@@ -234,38 +239,39 @@ export default {
         icon: "el-icon-set-up",
         label: "自定义组件",
         mode: {
-          type: "customPage",
-          name: "Analyze", // 自定义组件都要有name作为该组件的ref值
-          component: Analyze, // 自定义组件
+          type: "CustomPage",
+          name: "customPage", // 自定义组件都要有name作为该组件的ref值
+          component: CustomPage, // 自定义组件
           detail: true, // 需要使用详情
         },
       },
       // 自定义详情路由
-      router: {
+      routerPage: {
         size: "mini",
         type: "danger",
         disabled: "single",
         show: "table",
         label: "自定义路由",
         plain: true,
-        router: {
-          // path: "/his/detail",
-          name: "Detail",
-          params: {
-            sek: "lakei",
-          },
-          // query: {
-          //   name: "参数",
-          // },
-        },
         mode: {
-          type: "routerPage",
+          type: "RouterPage",
+          detail: true,
+          router: {
+            path: "/his/RouterPage",
+            query: {
+              name: "参数",
+            },
+            // name: "RouterPage",
+            // params: {
+            //   sek: "lakei",
+            // },
+          },
         },
       },
     };
     return {
-      /* 顶部搜索条件 */
-      ryquery: {
+      // 搜索层
+      searchLayer: {
         labelAfter: ":",
         labelWidth: "100px",
         validateOnRuleChange: false,
@@ -304,10 +310,10 @@ export default {
           },
         ],
       },
-      /* 按钮和提交数据 */
-      ryoperate,
-      /* 列表数据 */
-      rylist: {
+      // 操作层
+      operateLayer,
+      // 展示层
+      displayLayer: {
         url: `${BASE_URL}/list`,
         // dblclick: false, //双击可查看
         rowclick: false, // 点击行选择
@@ -325,6 +331,10 @@ export default {
           {
             prop: "deptName",
             label: "科室名称",
+            callback: (item) => {
+              const office = ["急诊科", "内科", "外科", "眼科", "麻醉科"];
+              return office[item.deptName];
+            },
           },
           {
             prop: "deptLeader",
@@ -336,7 +346,11 @@ export default {
           },
           {
             prop: "deptCode",
-            label: "科室编码",
+            label: "科室类别",
+            callback: (item) => {
+              const code = ["急诊", "门诊"];
+              return code[item.deptCode];
+            },
           },
           {
             label: "操作",
@@ -356,7 +370,6 @@ export default {
       },
     };
   },
-  mounted() {},
   methods: {
     cellStyle(row) {
       if (row.rowIndex === 1) {

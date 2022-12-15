@@ -33,7 +33,6 @@ module.exports = {
     open: true,
     proxy: {
       "/dev-api/file": {
-        //http://localhost/dev-api/file
         target: `http://192.168.20.194:8084`,
         changeOrigin: true,
         pathRewrite: {
@@ -41,8 +40,8 @@ module.exports = {
         },
       },
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://localhost:5050`,
-        // target: `http://43.142.176.173:5050`,
+        // target: `http://localhost:5050`,
+        target: `http://43.142.176.173:5050`,
         changeOrigin: true,
         pathRewrite: {
           ["^" + process.env.VUE_APP_BASE_API]: "",
