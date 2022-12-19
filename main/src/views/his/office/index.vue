@@ -8,6 +8,7 @@
   />
 </template>
 <script>
+import { listDept } from "@/api/system/dept";
 import Custom from "./Custom";
 import CustomPage from "./CustomPage";
 import CustomDialog from "./CustomDialog";
@@ -41,7 +42,7 @@ export default {
         width: 565,
         rules: [
           {
-            required: true,
+            // required: true,
             message: "请输入科室负责人",
             trigger: "blur",
           },
@@ -53,12 +54,53 @@ export default {
         component: "FormInput",
         rules: [
           {
-            pattern: /^[1]([3-9])[0-9]{9}$/,
-            required: true,
+            // pattern: /^[1]([3-9])[0-9]{9}$/,
+            // required: true,
             message: "请输入正确的科室电话",
             trigger: "blur",
           },
         ],
+      },
+      {
+        label: "部门",
+        model: "dept",
+        component: "FormTreeSelect",
+        treeUrl: "/system/dept/list",
+        // multiple: true,
+        // alwaysOpen: true,
+        showCount: true,
+        normalizer(node) {
+          return {
+            id: node.deptId,
+            label: node.deptName,
+            children: node.children,
+          };
+        },
+        // 如果的数据不是一个树，可以用callback处理数据
+        callback(data) {
+          return this.handleTree(data, "deptId");
+        },
+        clearable: true,
+      },
+      {
+        label: "时间",
+        model: "mzsj",
+        type: "datetime",
+        // type:"daterange",
+        component: "FormDate",
+      },
+      {
+        label: "预警时间",
+        type: "daterange",
+        component: "FormDateRange",
+      },
+      {
+        label: "门诊时间",
+        type: "monthrange",
+        valueFormat: "yyyy-MM",
+        startTimeLabel: "startTimeMZ",
+        endTimeLabel: "endTimeMZ",
+        component: "FormDateRange",
       },
       {
         label: "附件",
@@ -66,22 +108,21 @@ export default {
         component: "FormUpdate",
         width: 565,
         icon: "el-icon-receiving",
-        circle: true,
         fileListLabel: "fileList", //文件列表别名
-        // downloadWay: "new-window",
-        downloadWay: "Blob", //下载方式
+        multiple: false,
+        size: "mini",
+        buttonLabel: "上传图片", // 按钮描述
         upload: {
           action: `${process.env.VUE_APP_FILE_API}/minio/upload`,
           headers: {
             Authorization:
               "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjI4YjIwMmM0LWQzZTktNGUwZi05YmRmLTNhOTUzYTFlNWJjYSJ9.YMRqEvDQM-DG_dv3IizC_x6Xj-oD8DGpIB-ncdiMPRvjVlmdmAu5mVgqljQzY3fSs5Q-7P8g6piGizFVBVMNzA",
           },
-          multiple: true,
-          // reg: /^.*\.(?:jpg|jpeg|png|doc|docx|pdf|xls|xlsx|ppt|pptx|txt|mp4|flv)$/i, //正则校验
-          // size: 10, //限制10mb以内
-          // textLabel: "支持word文件、excel文件等等，小于1M的文件",
-          // sizeLabel: "",//限制大小描述
-          buttonLabel: "", // 按钮描述
+          reg: /^.*\.(?:jpg|jpeg|png)$/i,
+          size: 5,
+          textLabel:
+            "请上传 大小不超过 <span style='color:#ff0078'>5MB</span> 格式为 jpg/jpeg/png的图片",
+          sizeLabel: "上传文件大小不能超过5MB",
         },
       },
     ];
@@ -90,7 +131,9 @@ export default {
         size: "mini",
         type: "primary",
         label: "新增",
-        params: {},
+        params: {
+          mzsj: new Date(),
+        },
         method: "post",
         // plain: true,
         // circle: true,
@@ -299,14 +342,21 @@ export default {
             // readonly: true,
             component: "FormInput",
           },
+          // {
+          //   label: "科室间接人",
+          //   model: "deptLeaderP",
+          //   component: "FormSelect",
+          //   dict: "sys_normal_disable",
+          //   allowCreate: true,
+          //   filterable: true,
+          //   multiple: true,
+          // },
           {
-            label: "科室间接人",
-            model: "deptLeaderP",
-            component: "FormSelect",
-            dict: "sys_normal_disable",
-            allowCreate: true,
-            filterable: true,
-            multiple: true,
+            label: "预警时间",
+            type: "daterange",
+            startTimeLabel: "startTimeYJ",
+            endTimeLabel: "endTimeYJ",
+            component: "FormDateRange",
           },
         ],
       },

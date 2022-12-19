@@ -31,10 +31,34 @@
             :rules="item.rules ? item.rules : []"
           >
             <component
+              v-bind="$attrs"
               :is="item.component"
               :ref="item.component"
-              v-bind="$attrs"
               :form="formList"
+              :type="item.type"
+              :startTimeLabel="item.startTimeLabel"
+              :endTimeLabel="item.endTimeLabel"
+              :editable="item.editable"
+              :valueFormat="item.valueFormat"
+              :buttonLabel="item.buttonLabel"
+              :treeUrl="item.treeUrl"
+              :placeholder="item.placeholder"
+              :normalizer="item.normalizer"
+              :params="item.params"
+              :callback="item.callback"
+              :maxHeight="item.maxHeight"
+              :alwaysOpen="item.alwaysOpen"
+              :appendToBody="item.appendToBody"
+              :showCount="item.showCount"
+              :zIndex="item.zIndex"
+              :flat="item.flat"
+              :upload="item.upload"
+              :file-id-list="fileIdList"
+              :reg="item.reg"
+              :size="item.size"
+              :describe="item.describe"
+              :row="item.row"
+              :limit="item.limit"
               :dict="item.dict"
               :children="item.children"
               :model="item.model"
@@ -55,9 +79,12 @@
               :autofocus="item.autofocus"
               :prefix-icon="item.prefixIcon"
               :suffix-icon="item.suffixIcon"
-              :dept-url="item.deptUrl"
+              :icon="item.icon"
+              :round="item.round"
+              :circle="item.circle"
+              :plain="item.plain"
+              :fileListLabel="item.fileListLabel"
               :show-word-limit="item.showWordLimit"
-              @dateChange="dateChange"
             />
           </el-form-item>
           <component
@@ -220,48 +247,66 @@
                   _isUndef(operateLayer[ikey].mode.rules) ? item.rules : []
                 "
               >
-                <component
-                  v-if="!operateLayer[ikey].mode.readonly"
-                  :is="item.component"
-                  :ref="item.component"
-                  v-bind="$attrs"
-                  :form="operateLayer[ikey].params"
-                  :ikey="ikey"
-                  :dept-url="item.deptUrl"
-                  :upload="item.upload"
-                  :file-id-list="fileIdList"
-                  :reg="item.reg"
-                  :size="item.size"
-                  :describe="item.describe"
-                  :row="item.row"
-                  :limit="item.limit"
-                  :dict="item.dict"
-                  :children="item.children"
-                  :model="item.model"
-                  :clearable="item.clearable"
-                  :maxlength="item.maxlength"
-                  :minlength="item.minlength"
-                  :width="item.width"
-                  :form-width="searchLayer.formWidth"
-                  :show-password="item.showPassword"
-                  :disabled="item.disabled"
-                  :format="item.format"
-                  :readonly="item.readonly"
-                  :popper-class="item.popperClass"
-                  :filterable="item.filterable"
-                  :allow-create="item.allowCreate"
-                  :multiple="item.multiple"
-                  :reg-exp="item.regExp"
-                  :autofocus="item.autofocus"
-                  :prefix-icon="item.prefixIcon"
-                  :suffix-icon="item.suffixIcon"
-                  :icon="item.icon"
-                  :round="item.round"
-                  :circle="item.circle"
-                  :plain="item.plain"
-                  :fileListLabel="item.fileListLabel"
-                  :show-word-limit="item.showWordLimit"
-                />
+                <template v-if="!operateLayer[ikey].mode.readonly">
+                  <component
+                    v-bind="$attrs"
+                    :ikey="ikey"
+                    :is="item.component"
+                    :ref="item.component"
+                    :form="operateLayer[ikey].params"
+                    :type="item.type"
+                    :startTimeLabel="item.startTimeLabel"
+                    :endTimeLabel="item.endTimeLabel"
+                    :editable="item.editable"
+                    :valueFormat="item.valueFormat"
+                    :buttonLabel="item.buttonLabel"
+                    :treeUrl="item.treeUrl"
+                    :placeholder="item.placeholder"
+                    :normalizer="item.normalizer"
+                    :params="item.params"
+                    :callback="item.callback"
+                    :maxHeight="item.maxHeight"
+                    :alwaysOpen="item.alwaysOpen"
+                    :appendToBody="item.appendToBody"
+                    :showCount="item.showCount"
+                    :zIndex="item.zIndex"
+                    :flat="item.flat"
+                    :upload="item.upload"
+                    :file-id-list="fileIdList"
+                    :reg="item.reg"
+                    :size="item.size"
+                    :describe="item.describe"
+                    :row="item.row"
+                    :limit="item.limit"
+                    :dict="item.dict"
+                    :children="item.children"
+                    :model="item.model"
+                    :clearable="item.clearable"
+                    :maxlength="item.maxlength"
+                    :minlength="item.minlength"
+                    :width="item.width"
+                    :form-width="searchLayer.formWidth"
+                    :show-password="item.showPassword"
+                    :disabled="item.disabled"
+                    :format="item.format"
+                    :readonly="item.readonly"
+                    :popper-class="item.popperClass"
+                    :filterable="item.filterable"
+                    :allow-create="item.allowCreate"
+                    :multiple="item.multiple"
+                    :reg-exp="item.regExp"
+                    :autofocus="item.autofocus"
+                    :prefix-icon="item.prefixIcon"
+                    :suffix-icon="item.suffixIcon"
+                    :icon="item.icon"
+                    :round="item.round"
+                    :circle="item.circle"
+                    :plain="item.plain"
+                    :fileListLabel="item.fileListLabel"
+                    :show-word-limit="item.showWordLimit"
+                  />
+                </template>
+
                 <div v-else :style="{ width: _setLongSpan(item) }">
                   <template>{{
                     operateLayer[ikey].params[item.model]
@@ -445,8 +490,6 @@ export default {
       showSearch: true,
       /* 新增对话框是否显示 */
       dialogAddVisible: false,
-      // 时间范围
-      dateTime: [],
       // 是否显示自定义组件
       pageVisible: false,
       // 自己定义的字段保存起来
@@ -465,7 +508,11 @@ export default {
       tableLoad: false,
     };
   },
-
+  provide() {
+    return {
+      request: this.$options.methods.request,
+    };
+  },
   computed: {
     // 动态设置禁用选项
     _setDisabled() {
@@ -563,11 +610,6 @@ export default {
       }
     },
 
-    // 时间范围选择事件
-    dateChange(val) {
-      this.dateTime = val;
-    },
-
     // 关闭dialog
     clearForm() {
       this.closeForm();
@@ -586,16 +628,24 @@ export default {
     // 清除弹框内容
     closeForm() {
       this.dialogAddVisible = false;
+      // 确认按钮节流
+      this.submitLoad = false;
       // 关闭的时候清空fileId
       if (this.operateLayer[this.ikey].params) {
         this.operateLayer[this.ikey].params.fileId = "";
       }
       // 附件清空
       this.fileIdList = [];
+      // 日期选择清空
+      if (this.$refs.FormDateRange) {
+        Array.from(this.$refs.FormDateRange, (e) => {
+          e.dateTime = [];
+        });
+      }
       this.$nextTick(() => {
         // 自己定义的字段保存起来 重复赋值
         this.operateLayer[this.ikey].params = this.ryParamsClone;
-        // 查看弹框不清楚
+        // 查看弹框不需要清除
         if (!this.operateLayer[this.ikey].mode.readonly) {
           // 移除整个表单的校验结果
           this.$refs.forms.clearValidate();
@@ -792,15 +842,15 @@ export default {
 
     //附件下载
     downFiles(file, item) {
-      if (item.downloadWay === "Blob") {
+      if (item.downloadWay === "new-window") {
+        window.open("/dev-api/file/minio/download/" + file.fileId);
+      } else {
         download(
           "/file/minio/download/" + file.fileId,
           {},
           file.name,
           this.$options.methods.request
         );
-      } else {
-        window.open("/dev-api/file/minio/download/" + file.fileId);
       }
     },
 
@@ -821,14 +871,6 @@ export default {
       if (currentPage) {
         this.formList.pageNum = currentPage.page;
         this.formList.pageSize = currentPage.limit;
-      }
-      /* 时间范围的赋值 */
-      if (this.dateTime && this.dateTime.length > 0) {
-        this.formList.startTime = this.dateTime[0];
-        this.formList.endTime = this.dateTime[1];
-      } else {
-        this.formList.startTime = "";
-        this.formList.endTime = "";
       }
       if (this.displayLayer.url) {
         if (this.request) {
@@ -864,10 +906,12 @@ export default {
       };
       // 清空子组件字段dateTime
       if (this.$refs.FormDateRange) {
-        this.dateTime = [];
-        Array.from(this.$refs.FormDateRange, (item) => {
-          item.dateTime = [];
-        });
+        // 日期选择清空
+        if (this.$refs.FormDateRange) {
+          Array.from(this.$refs.FormDateRange, (e) => {
+            e.dateTime = [];
+          });
+        }
       }
       this.queryList();
     },
@@ -897,6 +941,7 @@ export default {
           method: item.method,
           url: item.url,
           data: params ? {} : item.params,
+          params,
         });
         if (res.code === 200) {
           if (value && res.data) {

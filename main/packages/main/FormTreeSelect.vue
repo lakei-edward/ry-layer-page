@@ -1,14 +1,21 @@
 <template>
   <div>
     <Treeselectlist
-      placeholder="请选择"
+      :placeholder="placeholder"
       class="treeselect-main"
       v-model="form[model]"
-      :options="deptOptions"
-      :appendToBody="true"
-      :show-count="true"
-      noResultsText="没有找到该单位"
-      :z-index="9999"
+      :options="deptList"
+      :appendToBody="appendToBody"
+      :show-count="showCount"
+      :maxHeight="maxHeight"
+      :normalizer="normalizer"
+      :alwaysOpen="alwaysOpen"
+      :flat="flat"
+      :multiple="multiple"
+      :disabled="disabled"
+      :noResultsText="noResultsText"
+      :clearable="clearable"
+      :z-index="zIndex"
       :style="{ width: width + 'px' }"
     />
   </div>
@@ -20,41 +27,81 @@ export default {
   name: "FormTreeSelect",
   data() {
     return {
-      deptOptions: []
+      deptList: [],
     };
   },
   props: {
     form: {
-      type: Object
+      type: Object,
     },
     model: {
-      type: String
-    },
-    deptUrl: {
       type: String,
-      default: "/system/dept/treeselect"
+      required: true,
+    },
+    treeUrl: {
+      type: String,
+      required: true,
+    },
+    placeholder: {
+      type: String,
+      default: "请选择",
+    },
+    noResultsText: {
+      type: String,
+      default: "没有找到该单位",
+    },
+    normalizer: {
+      type: Function,
+    },
+    callback: {
+      type: Function,
+    },
+    params: {
+      type: Object,
     },
     width: {
       type: Number,
-      default: 217
-    }
+      default: 217,
+    },
+    zIndex: {
+      type: Number,
+      default: 999,
+    },
+    maxHeight: {
+      type: Number,
+    },
+    clearable: Boolean,
+    showCount: Boolean,
+    multiple: Boolean,
+    disabled: Boolean,
+    alwaysOpen: Boolean,
+    appendToBody: Boolean,
+    flat: Boolean, //是否启用平面模式。
   },
   components: { Treeselectlist },
-  created() {
+  inject: ["request"],
+  mounted() {
     /** 查询部门下拉树结构 */
     this.getTreeselect();
   },
   methods: {
     /** 查询部门下拉树结构 */
     async getTreeselect() {
-      if(request){
-
-        const res = await request({
-          url: this.deptUrl
-      });
-      this.deptOptions = res.data;
+      if (!this.treeUrl) {
+        return;
+      }
+      if (this.request) {
+        const res = await this.request({
+          url: this.treeUrl,
+          methods: "get",
+          params: this.params,
+        });
+        this.deptList = this.callback && this.callback(res.data);
+        if (!this.callback) {
+          this.deptList = this.handleTree(res.data, "deptId");
         }
-    }
-  }
+      }
+    },
+  },
 };
 </script>

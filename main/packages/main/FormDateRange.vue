@@ -1,48 +1,94 @@
 <template>
-  <div>
-    <el-date-picker
-      :clearable="clearable"
-      :value-format="format"
-      v-model="dateTime"
-      type="daterange"
-      range-separator="~"
-      start-placeholder="开始时间"
-      end-placeholder="结束时间"
-      size="mini"
-      @change="clearModel"
-    ></el-date-picker>
-  </div>
+  <el-date-picker
+    v-model="dateTime"
+    :type="type"
+    :format="format"
+    :disabled="disabled"
+    :editable="editable"
+    :clearable="clearable"
+    :placeholder="placeholder"
+    :size="size"
+    :value-format="valueFormat"
+    :popper-class="popperClass"
+    :prefix-icon="prefixIcon"
+    :append-to-body="appendToBody"
+    :start-placeholder="startPlaceholder"
+    :end-placeholder="endPlaceholder"
+    :style="{ width: width + 'px' }"
+    @change="changeDate"
+  >
+  </el-date-picker>
 </template>
 <script>
 export default {
   name: "FormDateRange",
   data() {
     return {
-      dateTime: []
+      dateTime: [],
     };
   },
   props: {
     form: {
       type: Object,
-      default: () => {}
     },
     model: {
       type: String,
-      default: ""
     },
-    clearable: {
-      type: Boolean,
-      default: true
+    type: {
+      type: String,
+    },
+    size: {
+      type: String,
+    },
+    popperClass: {
+      type: String,
+    },
+    valueFormat: {
+      type: String,
+    },
+    prefixIcon: {
+      type: String,
+    },
+    placeholder: {
+      type: String,
+      default: "请选择",
+    },
+    startTimeLabel: {
+      type: String,
+      default: "startTime",
+    },
+    endTimeLabel: {
+      type: String,
+      default: "endTime",
+    },
+    startPlaceholder: {
+      type: String,
+      default: "开始时间",
+    },
+    endPlaceholder: {
+      type: String,
+      default: "结束时间",
+    },
+    width: {
+      type: Number,
+      default: 217,
     },
     format: {
       type: String,
-      default: "yyyy-MM-dd"
-    }
+      default: "yyyy-MM-dd",
+    },
+    disabled: Boolean,
+    editable: Boolean,
+    clearable: Boolean,
+    appendToBody: Boolean,
   },
   methods: {
-    clearModel(val) {
-      this.$emit("dateChange", val);
-    }
-  }
+    changeDate(val) {
+      if (val && val.length > 0) {
+        this.form[this.startTimeLabel] = val[0];
+        this.form[this.endTimeLabel] = val[1];
+      }
+    },
+  },
 };
 </script>

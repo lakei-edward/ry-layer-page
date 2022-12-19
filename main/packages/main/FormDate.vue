@@ -1,43 +1,72 @@
 <template>
-  <div>
-    <el-date-picker
-      v-model="form[model]"
-      type="date"
-      :clearable="clearable"
-      :value-format="format"
-      placeholder="选择日期"
-      size="mini"
-      :style="{ width: width + 'px' }"
-    >
-    </el-date-picker>
-  </div>
+  <el-date-picker
+    v-model="form[model]"
+    :type="type"
+    :format="format"
+    :disabled="disabled"
+    :editable="editable"
+    :clearable="clearable"
+    :placeholder="placeholder"
+    :size="size"
+    :value-format="valueFormat"
+    :popper-class="popperClass"
+    :prefix-icon="prefixIcon"
+    :append-to-body="appendToBody"
+    :start-placeholder="startPlaceholder"
+    :end-placeholder="endPlaceholder"
+    :style="{ width: width + 'px' }"
+  >
+  </el-date-picker>
 </template>
 <script>
 export default {
   name: "FormDate",
-  data() {
-    return {};
-  },
   props: {
     form: {
-      type: Object
+      type: Object,
     },
     model: {
-      type: String
+      type: String,
     },
-    clearable: {
-      type: Boolean,
-      default: true
+    type: {
+      type: String,
+    },
+    size: {
+      type: String,
+    },
+    popperClass: {
+      type: String,
+    },
+    valueFormat: {
+      type: String,
+    },
+    prefixIcon: {
+      type: String,
+    },
+    placeholder: {
+      type: String,
+      default: "请选择",
+    },
+    startPlaceholder: {
+      type: String,
+      default: "开始时间",
+    },
+    endPlaceholder: {
+      type: String,
+      default: "结束时间",
     },
     width: {
       type: Number,
-      default: 217
+      default: 217,
     },
     format: {
       type: String,
-      default: "yyyy-MM-dd"
-    }
+      default: "yyyy-MM-dd",
+    },
+    disabled: Boolean,
+    editable: Boolean,
+    clearable: Boolean,
+    appendToBody: Boolean,
   },
-  mounted() {}
 };
 </script>

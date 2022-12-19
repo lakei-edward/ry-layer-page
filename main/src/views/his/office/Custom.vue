@@ -90,7 +90,6 @@ export default {
   methods: {
     handleChange(val) {
       this.officeName = this.office.filter((v) => v.pid === val);
-      console.log(this.options2);
     },
   },
 };

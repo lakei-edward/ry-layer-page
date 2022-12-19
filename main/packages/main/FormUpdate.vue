@@ -2,7 +2,7 @@
   <div id="FormUpdate">
     <el-upload
       ref="Upload"
-      :multiple="upload.multiple"
+      :multiple="multiple"
       :action="upload.action"
       :before-upload="beforeFileUpload"
       :on-success="uploadSuccess"
@@ -20,15 +20,21 @@
         :round="round"
         :plain="plain"
         :icon="icon"
+        :size="size"
         :disabled="disabled"
       >
-        <template v-if="_isCircle"></template>
-        <template v-else>
-          {{ upload.buttonLabel || "点击上传" }}
-        </template>
+        <template
+          v-if="buttonLabel === 'string' && buttonLabel.length === 0"
+        ></template>
+        <template v-else> {{ buttonLabel }} </template>
       </el-button>
       <div slot="tip" class="el-upload__tip">
-        {{ upload.textLabel || "只能上传jpg/png文件,且不超过10MB" }}
+        <span
+          v-html="
+            upload.textLabel ||
+            '请上传 大小不超过 10MB 格式为 doc/docx/xls/xlsx/txt/pdf/jpg/png 的文件'
+          "
+        ></span>
       </div>
     </el-upload>
   </div>
@@ -39,17 +45,6 @@ export default {
   name: "FormUpdate",
   data() {
     return {};
-  },
-  computed: {
-    // 判断为真
-    _isCircle() {
-      return function () {
-        return (
-          typeof this.upload.buttonLabel === "string" &&
-          this.upload.buttonLabel.length === 0
-        );
-      };
-    },
   },
   props: {
     form: {
@@ -67,10 +62,6 @@ export default {
       required: true,
       default: () => {},
     },
-    size: {
-      type: String,
-      default: "small",
-    },
     fileListLabel: {
       type: String,
       default: "fileList",
@@ -79,6 +70,14 @@ export default {
       type: String,
       default: "primary",
     },
+    size: {
+      type: String,
+      default: "small",
+    },
+    buttonLabel: {
+      type: String,
+      default: "点击上传",
+    },
     width: Number,
     limit: Number,
     disabled: Boolean,
@@ -86,6 +85,7 @@ export default {
     round: Boolean,
     plain: Boolean,
     icon: String,
+    multiple: Boolean,
   },
   watch: {
     form(v) {
