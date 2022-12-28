@@ -1,8 +1,8 @@
 <template>
   <el-dialog
     title="提示"
-    :visible.sync="dialogVisible"
     width="30%"
+    :visible.sync="dialogVisible"
     @close="() => $emit('update:dialogVisible', false)"
   >
     <h1>自定义弹框</h1>

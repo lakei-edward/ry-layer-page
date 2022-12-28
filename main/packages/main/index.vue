@@ -211,7 +211,7 @@
       />
 
       <!-- 增改查弹框以及其他弹框 -->
-      <template v-if="_judgeDialog">
+      <template v-if="_judgeDialog && dialogAddVisible">
         <el-dialog
           :title="dialogTitle"
           :width="_defaultDialogWidth"
@@ -369,7 +369,7 @@
           </div>
         </el-dialog>
       </template>
-      <!-- 跳转到自定义Dialog -->
+      <!-- CustomDialog -->
       <template v-else>
         <component
           v-bind="$attrs"
@@ -382,7 +382,7 @@
         />
       </template>
     </template>
-    <!-- 跳转到自定义组件Page页 -->
+    <!-- CustomPage -->
     <template v-if="operateLayer[ikey] && pageVisible">
       <component
         v-bind="$attrs"

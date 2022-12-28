@@ -8,7 +8,6 @@
   />
 </template>
 <script>
-import { listDept } from "@/api/system/dept";
 import Custom from "./Custom";
 import CustomPage from "./CustomPage";
 import CustomDialog from "./CustomDialog";
@@ -22,19 +21,19 @@ export default {
         name: "Custom",
         component: Custom,
       },
-      // {
-      //   label: "科室名称",
-      //   model: "deptName",
-      //   component: "FormSelect",
-      //   dict: "sys_normal_disable",
-      //   rules: [
-      //     {
-      //       required: true,
-      //       message: "请输入科室名称",
-      //       trigger: "change",
-      //     },
-      //   ],
-      // },
+      {
+        label: "科室名称",
+        model: "deptName",
+        component: "FormSelect",
+        dict: "sys_normal_disable",
+        rules: [
+          {
+            required: true,
+            message: "请输入科室名称",
+            trigger: "change",
+          },
+        ],
+      },
       {
         label: "科室负责人",
         model: "deptLeader",
@@ -326,31 +325,11 @@ export default {
             component: Custom,
           },
           {
-            label: "科室名称",
-            model: "deptName",
-            component: "FormInput",
-            maxlength: "5",
-            showWordLimit: true,
-            // regExp: "chinese",
-            // rules: [
-            //   { required: true, message: "请输入科室名称", trigger: "blur" },
-            // ],
-          },
-          {
             label: "科室负责人",
             model: "deptLeader",
-            // readonly: true,
+            regExp: "english",
             component: "FormInput",
           },
-          // {
-          //   label: "科室间接人",
-          //   model: "deptLeaderP",
-          //   component: "FormSelect",
-          //   dict: "sys_normal_disable",
-          //   allowCreate: true,
-          //   filterable: true,
-          //   multiple: true,
-          // },
           {
             label: "预警时间",
             type: "daterange",
