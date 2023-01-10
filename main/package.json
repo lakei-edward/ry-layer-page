@@ -1,8 +1,8 @@
 {
-  "name": "ry-minify-page",
-  "version": "1.0.8",
-  "description": "基于若以框架进行开发的一个精简页面开发，包含一般的功能增删改查",
-  "main": "lib/ry-minify-page.common.js",
+  "name": "ry-layer-page",
+  "version": "1.0.1",
+  "description": "以若依框架为基础，把页面分为搜索层、操作层、展示层，快速实现页面的各个功能",
+  "main": "lib/ry-layer-page.common.js",
   "private": false,
   "author": "lakeiedward",
   "license": "MIT",
@@ -13,8 +13,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build:prod": "vue-cli-service build",
-    "lib": "npm run clean && vue-cli-service build --target lib --dest lib --entry ./src/index.js",
-    "clean": "rimraf lib"
+    "lib": "npm run clean && vue-cli-service build --target lib --dest lib --entry ./src/index.js && npm run clean:file",
+    "clean": "rimraf lib",
+    "clean:file": "cd lib/ && rimraf *.html && rimraf *.css"
   },
   "husky": {
     "hooks": {

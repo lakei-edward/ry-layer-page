@@ -407,7 +407,7 @@ import { isUndef, isDef, isTypes, deepClone } from "../plugin/util.js";
 import { download } from "../plugin/download.js";
 import { ID, REMOVE, SEARCH } from "../plugin/default.js";
 export default {
-  name: "ry-minify-page",
+  name: "ry-layer-page",
   components: {
     FormSelect,
     FormDateRange,

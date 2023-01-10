@@ -1,49 +1,52 @@
-#### 📃 参考文档
-<a href="https://lakei-edward.github.io/luckyui.github.io/">vue-luckyui中文文档地址</a>
+# 安装
 
-#### 📦 Install
-推荐使用 npm 的方式安装，它能更好地和 webpack 打包工具配合使用。
+#### 📦 下载
 
 ```sh
-$ npm install vue-luckyui
+$ npm install ry-layer-page -S
+# 或者
+$ pnpm install ry-layer-page -S
 ```
-#### 🔨 Usage
-**完整引入**
-  
-在 main.js 中写入以下内容：
+
+#### 🔨 使用
+
+在 main.js 中写入以下内容
+
+参数http为若依框架中调取请求方法
 
 ```js
-import Vue from 'vue';
-import luckyui from 'vue-luckyui';
-import "vue-luckyui/lib/index.min.css"
-import App from './App.vue';
+import request from "@/utils/request";
+import ryLayerPage  from 'ry-layer-page';
 
-Vue.use(luckyui)
-
-new Vue({
-  el: '#app',
-  render: h => h(App)
+Vue.use(ryLayerPage, {
+  http: request,
 });
 ```
 
-#### 📁按需引入
+#### 🎨 选用dict字典
 
-如果你只希望引入部分组件，比如 Button 和 Contextmenu，那么需要在 main.js 中写入以下内容：
+在 main.js 中写入以下内容
+
+如果当前项目中没有配置$options.dicts方式引入字典，可进行选配安装dict，参数dict为若依框架中调取字典的接口
 
 ```js
-import Vue from 'vue';
-import { Button,Contextmenu } from '../lib/vue-luckyui.common';
+import { getDicts } from "@/api/system/dict/data";
+import request from "@/utils/request";
+import ryLayerPage from "ry-layer-page";
 
-Vue.component(Button.name, Button)
-Vue.component(Contextmenu.name, Contextmenu)
-
-/* 或写为
- * Vue.use(Button)
- * Vue.use(Contextmenu)
- */
-
-new Vue({
-  el: '#app',
-  render: h => h(App)
+Vue.use(ryLayerPage, {
+  http: request,
+  dict: getDicts,
 });
+```
+
+dict使用示例
+
+```js
+export default {
+  dicts: ["sys_normal_disable", "sys_show_hide"],
+  data() {
+    return {}
+  }
+}
 ```

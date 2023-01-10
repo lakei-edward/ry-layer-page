@@ -1,6 +1,6 @@
 <template>
-  <ry-minify-page
-    ref="minifypage"
+  <ry-layer-page
+    ref="layerpage"
     :search-layer="searchLayer"
     :operate-layer="operateLayer"
     :display-layer="displayLayer"
@@ -315,10 +315,9 @@ export default {
       // 搜索层
       searchLayer: {
         labelAfter: ":",
-        labelWidth: "100px",
-        validateOnRuleChange: false,
-        size: "mini",
-        formWidth: 217,
+        formWidth: 260,
+        searchName: "查询",
+        resetName: "重置",
         form: [
           {
             name: "Custom", // 渲染保证唯一
@@ -385,15 +384,6 @@ export default {
             label: "操作",
             operate: true, // 自动根据ryoperate中show字段进行截取
             width: "500",
-            // rop
-            // label
-            // minWidth
-            // fixed
-            // formatter
-            // align
-            // className
-            // labelClassName
-            // showOverflowTooltip
           },
         ],
       },
@@ -409,7 +399,7 @@ export default {
     // 字典加载完成的回调
     onDictReady(dict) {
       // 初始化字典项
-      this.$refs.minifypage.initDicts(dict);
+      this.$refs.layerpage.initDicts(dict);
     },
   },
 };

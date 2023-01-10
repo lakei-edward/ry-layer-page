@@ -1,32 +1,27 @@
 <template>
-  <div>
-    <el-select
-      v-model="form[model]"
-      :size="size"
-      :clearable="true"
-      :placeholder="placeholder"
-      :disabled="disabled"
-      :multiple="multiple"
-      :filterable="filterable"
-      :allow-create="allowCreate"
-      :popper-class="popperClass"
-      :style="{ width: width ? width + 'px' : formWidth + 'px' }"
-    >
-      <el-option
-        v-for="option in dict"
-        :key="option.value"
-        :label="option.label"
-        :value="option.value"
-      />
-    </el-select>
-  </div>
+  <el-select
+    v-model="form[model]"
+    :size="size"
+    :clearable="true"
+    :placeholder="placeholder"
+    :disabled="disabled"
+    :multiple="multiple"
+    :filterable="filterable"
+    :allow-create="allowCreate"
+    :popper-class="popperClass"
+    :style="{ width: width ? width + 'px' : formWidth + 'px' }"
+  >
+    <el-option
+      v-for="option in dict"
+      :key="option.value"
+      :label="option.label"
+      :value="option.value"
+    />
+  </el-select>
 </template>
 <script>
 export default {
   name: "FormSelect",
-  data() {
-    return {};
-  },
   props: {
     form: {
       type: Object,
@@ -61,6 +56,5 @@ export default {
     filterable: Boolean,
     allowCreate: Boolean,
   },
-  methods: {},
 };
 </script>

@@ -16,7 +16,7 @@
       :noResultsText="noResultsText"
       :clearable="clearable"
       :z-index="zIndex"
-      :style="{ width: width + 'px' }"
+      :style="{ width: width ? width + 'px' : formWidth + 'px' }"
     />
   </div>
 </template>
@@ -63,6 +63,9 @@ export default {
       type: Number,
       default: 217,
     },
+    formWidth: {
+      type: Number,
+    },
     zIndex: {
       type: Number,
       default: 999,
@@ -96,9 +99,10 @@ export default {
           methods: "get",
           params: this.params,
         });
-        this.deptList = this.callback && this.callback(res.data);
         if (!this.callback) {
-          this.deptList = this.handleTree(res.data, "deptId");
+          this.deptList = res.data;
+        } else {
+          this.deptList = this.callback(res.data);
         }
       }
     },

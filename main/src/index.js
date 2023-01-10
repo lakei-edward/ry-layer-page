@@ -1,11 +1,11 @@
-import RyMinifyPage from "../packages/main/index.vue";
+import ryLayerPage from "../packages/main/index.vue";
 import Dict from "../packages/dict/index";
 
 const install = function (Vue, opts = {}) {
   if (opts) {
     if (opts.http instanceof Function) {
-      RyMinifyPage.methods.request = opts.http;
-      Vue.component(RyMinifyPage.name, RyMinifyPage);
+      ryLayerPage.methods.request = opts.http;
+      Vue.component(ryLayerPage.name, ryLayerPage);
     } else {
       throw Error("http must be a function");
     }

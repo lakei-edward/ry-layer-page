@@ -64,9 +64,6 @@ export default {
     readonly: Boolean,
     autofocus: Boolean
   },
-  data() {
-    return {};
-  },
   methods: {
     handleRegExp(value) {
       value = value.replace(REGEXP[this.regExp], '');

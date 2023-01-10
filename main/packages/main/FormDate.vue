@@ -14,7 +14,7 @@
     :append-to-body="appendToBody"
     :start-placeholder="startPlaceholder"
     :end-placeholder="endPlaceholder"
-    :style="{ width: width + 'px' }"
+    :style="{ width: width ? width + 'px' : formWidth + 'px' }"
   >
   </el-date-picker>
 </template>
@@ -57,7 +57,9 @@ export default {
     },
     width: {
       type: Number,
-      default: 217,
+    },
+    formWidth: {
+      type: Number,
     },
     format: {
       type: String,

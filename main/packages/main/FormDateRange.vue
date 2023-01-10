@@ -14,7 +14,7 @@
     :append-to-body="appendToBody"
     :start-placeholder="startPlaceholder"
     :end-placeholder="endPlaceholder"
-    :style="{ width: width + 'px' }"
+    :style="{ width: width ? width + 'px' : formWidth + 'px' }"
     @change="changeDate"
   >
   </el-date-picker>
@@ -71,7 +71,9 @@ export default {
     },
     width: {
       type: Number,
-      default: 217,
+    },
+    formWidth: {
+      type: Number,
     },
     format: {
       type: String,

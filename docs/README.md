@@ -1,18 +1,18 @@
 ---
 home: true
-heroImage: /sql-translation.png
-heroText: 多功能SQL生成器
-tagline: 多功能SQL生成器，根据JSON支持生成create、insert、update语句
+heroImage: /ry-layer-page.png
+heroText: 若依页面分层工具
+tagline:  以若依框架为基础，把页面分为搜索层、操作层、展示层，快速实现页面的各个功能
 actionText: 开始阅读
 actionLink: /pages/
 features:
-- title: 效率至上
-  details: 将需要转译的JSON格式数据一次性生成所需功能的SQL语句
-- title: 功能丰富
-  details: 本工具不仅可以支持JSON转译生成增、改、建表的SQL，同时支持替换JSON中的字段
-- title: 注重业务
-  details: 项目设计好的接口所定义的Body中JSON数据，将其转译成所需SQL，无需再手动编写，更注重业务逻辑的编码实现
+- title: 降低代码量
+  details:  省去每个页面写html的代码，和大体一致的js逻辑，降低了代码量
+- title: 减少维护成本
+  details: 页面分层，分开控制，清晰明了；不需要再去写繁琐的html内容，直接通过配置来控制各层的内容和交互
+- title: 使用灵活
+  details: 通过对搜索层、操作层、展示层对象的配置，输出页面内容，利用js灵活的特性，在各层之间运用，做到一处声明多处使用
 ---
 ::: slot footer
-MIT Licensed | Copyright © 2022 [Sql-Translate](https://github.com/pdxjie/sql-translate)
+MIT Licensed | Copyright © 2022 [ry-layer-page](https://github.com/lakei-edward/ry-layer-page)
 :::
