@@ -1,9 +1,20 @@
 # SearchLayer
 
+::: tip 搜索层-searchLayer
+用于对表格数据进行查询等操作
+:::
+
 在搜索层中，主要使用内置的单表单组件，如遇到复杂的逻辑，可选用自定义的表单组件，如下面使用示例中的`Custom`，就是一个自定义组件，引入到当前组件中；自定义组件有什么规范？看完该章节后，可移步阅读**单表单组件**章节。
 
 ### 使用示例
-```vue
+```vue {3}
+<template>
+  <ry-layer-page
+    :search-layer="searchLayer"
+    :operate-layer="operateLayer"
+    :display-layer="displayLayer"
+  />
+</template>
 <script>
 import Custom from "./Custom";
 export default {

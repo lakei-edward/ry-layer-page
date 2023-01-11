@@ -1,11 +1,10 @@
 import init from "./init";
-function install(Vue, request) {
+function install(Vue, options) {
   Vue.use(init, {
     metas: {
       "*": {
-        labelField: "dictLabel",
-        valueField: "dictValue",
-        request,
+        request: options.dict,
+        field: options.dictField,
       },
     },
   });

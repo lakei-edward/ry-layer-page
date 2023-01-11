@@ -9,12 +9,14 @@ const install = function (Vue, opts = {}) {
     } else {
       throw Error("http must be a function");
     }
-
-    if (opts.dict instanceof Function) {
-      Vue.use(Dict, opts.dict);
-    } else {
-      throw Error("dict must be a function");
-    }
+    const filed = {
+      labelField: "dictLabel",
+      valueField: "dictValue",
+    };
+    Vue.use(Dict, {
+      dict: opts.dict,
+      dictField: opts.dictField ? opts.dictField : filed,
+    });
   }
 };
 

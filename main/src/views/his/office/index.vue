@@ -398,6 +398,7 @@ export default {
 
     // 字典加载完成的回调
     onDictReady(dict) {
+      console.log(this.dict);
       // 初始化字典项
       this.$refs.layerpage.initDicts(dict);
     },

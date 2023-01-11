@@ -1,5 +1,5 @@
 module.exports = {
-  base: "/ry-layer-page/",//部署之后访问得路径
+  base: "/ry-layer-page/", //部署之后访问得路径
   head: [
     [
       "link", // 设置 favicon.ico，注意图片放在 public 文件夹下
@@ -25,7 +25,7 @@ module.exports = {
         {
           title: "核心功能",
           collapsable: false,
-          children: ["searchLayer", "operateLayer", "displayLaye"],
+          children: ["searchLayer", "operateLayer", "displayLayer"],
         },
         {
           title: "单表单组件",
@@ -45,7 +45,7 @@ module.exports = {
         {
           title: "了解更多",
           collapsable: false,
-          children: ["detailShow",],
+          children: ["aboutDetail", "aboutDict"],
         },
       ],
     },

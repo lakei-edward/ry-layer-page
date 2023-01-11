@@ -1,5 +1,9 @@
 # OperateLayer
 
+::: tip 搜索层-operateLayer
+用于对表格数据进行增删改查（CRUD）等一系列操作
+:::
+
 ## 说明
 增、删、改、查中key是相对固定的，也就是说要保持一一对应，最好不要试图改变它们；其他的可以自定义key。
 - add-增
@@ -7,7 +11,14 @@
 - edit-改
 - search-查
 
-```vue
+```vue {4}
+<template>
+  <ry-layer-page
+    :search-layer="searchLayer"
+    :operate-layer="operateLayer"
+    :display-layer="displayLayer"
+  />
+</template>
 <script>
 export default {
   data() {
@@ -136,7 +147,7 @@ export default {
 
 #### 使用示例
 
-```vue
+```vue {43,59}
 <script>
 export default {
   data() {
@@ -235,11 +246,11 @@ export default {
 
 ### type为warning、info、success、error时
 
-确认弹框，用于项目中需要删除、警告的操作等等...
+确认弹框，用于项目中需要删除、警告等需要进行第二次确认的操作
 
 #### 使用示例
 
-```vue
+```vue {17,30}
 <script>
 export default {
   data() {
@@ -307,9 +318,12 @@ export default {
 
 ### type为CustomDialog时
 
+
 #### 使用示例
 
-```vue
+此时引入了一个外部自定义组件到当前组件。在外部自定义组件中，不受当前插件的限制，可以随意的写项目中比较复杂的弹框需求。
+
+```vue {12}
 <script>
 import CustomDialog from "./CustomDialog";
 export default {
@@ -343,7 +357,7 @@ export default {
 |detail|为true时，自定义组件的详情会传到该组件的props的params中|boolean|—|false|
 |component|自定义组件本身|object|—|—|
 
-#### 自定义弹框组件中的使用
+#### 自定义弹框组件的使用
 
 参数`dialogVisible`控制显隐必传；`queryList`点击确定后，执行该方法可以用于刷新展示层数据；`params`为选择当前行的信息，在当前组件中可以使用该行信息进行一系列操作。
 
@@ -388,7 +402,9 @@ export default {
 
 #### 使用示例
 
-```vue
+例如：新增功能比较复杂时，只依靠弹框是放不下的，新增的事项很庞大，这时就需要一个单独的页面去完成该操作，此时就可以使用自定义组件`CustomPage`来完成这件事，其他搜索层、操作层和展示层还是在当前组件，只是把比较复杂的新增功能给抽离出去单独完成。
+
+```vue {14}
 <script>
 import CustomPage from "./CustomPage";
 export default {
@@ -424,7 +440,9 @@ export default {
 |detail|为true时，自定义组件的详情会传到该组件的props的params中|boolean|—|false|
 |component|自定义组件本身|object|—|—|
 
-#### 自定义弹框组件中的使用
+#### 自定义弹框组件的使用
+
+当我们点击新增按钮后，进入到了这个自定义组件页面，完成了一系列功能后，需要再跳回到主页面，此时需用到`this.$emit("update:pageVisible", false)`,即关闭当前组件页面，回到主页面。
 
 参数`pageVisible`控制显隐必传；`queryList`点击确定后，执行该方法可以用于刷新展示层数据；`params`为选择当前行的信息，在当前组件中可以使用该行信息进行一系列操作。
 
@@ -474,11 +492,13 @@ export default {
 
 ### type为RouterPage时
 
+自定义路由页面和自定义组件页面很相似，只是跳转的方式不同，前者是通过组件控制，后者通过路由控制（改变了路由）；在各自的自定义组件中获取选择行的信息方式不同，前者是通过组件的传参获取，后者是通过`this.$route`路由信息获取。
+
 #### 使用示例
 
 如果`defatil`为`true`时，跳转过程中，会把选择行的详情带入到`this.$route.query.params`中；可选择`path`或`name`方式切换路由页；
 
-```vue
+```vue {11}
 <script>
 export default {
   data() {
@@ -518,7 +538,9 @@ export default {
 |name|自定义弹框时，name必传;自定义组件都要有name作为该组件的ref值|string|—|—|
 |router|路由跳转的一些配置|object|—|—|
 
-#### 自定义弹框组件中的使用
+#### 自定义路由页面的使用
+
+在自定义路由页面回到主页面的话，仅需要跳回到主页面路由即可。
 
 ```vue
 <template>
@@ -540,18 +562,3 @@ export default {
 };
 </script>
 ```
-
-<style>
-/* table th:nth-of-type(1) {
-    width: 10%;
-}
-table th:nth-of-type(2) {
-    width: 30%;
-}
-table th:nth-of-type(3) {
-    width: 10%;
-}
-table th:nth-of-type(4) {
-    width: 50%;
-} */
-</style>

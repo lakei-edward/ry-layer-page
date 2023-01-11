@@ -16,17 +16,16 @@ export default class Dict {
     return Promise.all(ps);
   }
 }
-
 function loadDict(that, meta) {
-  const { labelField, valueField, request } = that._dictMetas.metas["*"];
+  const { field, request } = that._dictMetas.metas["*"];
   return request(meta).then(({ data: dicts }) => {
     if (dicts && Array.isArray(dicts)) {
       const types = [];
       dicts.forEach((r) => {
         that.label[meta][r.dictValue] = r.dictLabel;
         types.push({
-          label: r[labelField],
-          value: r[valueField],
+          [field.labelField]: r[field.labelField],
+          [field.valueField]: r[field.valueField],
           raw: r,
         });
       });

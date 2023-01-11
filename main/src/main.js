@@ -35,6 +35,10 @@ import request from "@/utils/request";
 Vue.use(ryLayerPage, {
   http: request,
   dict: getDicts,
+  dictField: {
+    labelField: "label",
+    valueField: "value",
+  },
 });
 
 // 全局方法挂载

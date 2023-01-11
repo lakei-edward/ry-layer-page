@@ -1,7 +1,7 @@
-# DisplayLaye
-::: tip 展示层-displayLaye
-用于展示表格内容，
-首先要对表格`displayLayer`展示层进行配置
+# DisplayLayer
+
+::: tip 展示层-displayLayer
+用于对表格数据以什么样的形式进行展示
 :::
 
 ### 使用示例
@@ -9,10 +9,9 @@
 如果我们不想把操作按钮放在操作层，而是放在表格操作列中，可以设置`operateLayer`中的`show`为`table`；当我们使用`callback`的时候，可以根据返回的信息，自定义表格内显示的内容；
 使用类似于`cellStyle`回调函数属性时，可以在`methods`中写好方法，在展示层内调用。
 
-```vue
+```vue {5}
 <template>
   <ry-layer-page
-    ref="layerpage"
     :search-layer="searchLayer"
     :operate-layer="operateLayer"
     :display-layer="displayLayer"
