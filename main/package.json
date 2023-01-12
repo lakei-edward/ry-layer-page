@@ -1,6 +1,6 @@
 {
   "name": "ry-layer-page",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "以若依框架为基础，把页面分为搜索层、操作层、展示层，快速实现页面的各个功能",
   "main": "lib/ry-layer-page.common.js",
   "private": false,
