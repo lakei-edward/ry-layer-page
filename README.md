@@ -17,7 +17,7 @@ $ pnpm install ry-layer-page -S
 ```js
 import request from "@/utils/request";
 import ryLayerPage  from 'ry-layer-page';
-
+import "ry-layer-page/lib/ry-layer-page.css";
 Vue.use(ryLayerPage, {
   http: request,
 });
