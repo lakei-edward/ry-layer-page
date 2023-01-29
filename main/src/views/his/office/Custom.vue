@@ -1,6 +1,9 @@
 <template>
   <span>
-    <el-form-item label="科室类别:">
+    <el-form-item
+      label="科室类别:"
+      :rules="[{ required: true, message: '请输入科室类别', trigger: 'blur' }]"
+    >
       <el-select
         v-if="!readonly"
         v-model="params['deptCode']"
@@ -17,7 +20,10 @@
       </el-select>
       <div v-else style="width: 217px">{{ params["deptCode"] }}</div>
     </el-form-item>
-    <el-form-item label="科室名称:">
+    <el-form-item
+      label="科室名称:"
+      :rules="[{ required: true, message: '请输入科室名称', trigger: 'blur' }]"
+    >
       <el-select
         v-if="!readonly"
         v-model="params['deptName']"
@@ -41,56 +47,56 @@ export default {
     params: {
       type: Object,
       requird: true,
-      default: () => {},
+      default: () => {}
     },
-    readonly: Boolean,
+    readonly: Boolean
   },
   data() {
     return {
       officeClass: [
         {
           value: "0",
-          label: "急诊",
+          label: "急诊"
         },
         {
           value: "1",
-          label: "门诊",
-        },
+          label: "门诊"
+        }
       ],
       officeName: [],
       office: [
         {
           pid: "0",
           value: "0",
-          label: "急诊科",
+          label: "急诊科"
         },
         {
           pid: "1",
           value: "1",
-          label: "内科",
+          label: "内科"
         },
         {
           pid: "1",
           value: "2",
-          label: "外科",
+          label: "外科"
         },
         {
           pid: "1",
           value: "3",
-          label: "眼科",
+          label: "眼科"
         },
         {
           pid: "1",
           value: "4",
-          label: "麻醉科",
-        },
-      ],
+          label: "麻醉科"
+        }
+      ]
     };
   },
   methods: {
     handleChange(val) {
-      this.officeName = this.office.filter((v) => v.pid === val);
-    },
-  },
+      this.officeName = this.office.filter(v => v.pid === val);
+    }
+  }
 };
 </script>

@@ -5,7 +5,11 @@
     :visible.sync="dialogVisible"
     @close="() => $emit('update:dialogVisible', false)"
   >
-    <h1>自定义弹框</h1>
+    <div>
+      该科室处于<el-tag>{{ params.status ? "接诊中" : "停诊中" }}</el-tag>
+      状态~
+    </div>
+
     <span slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:dialogVisible', false)">取 消</el-button>
       <el-button type="primary" @click="$emit('update:dialogVisible', false)"
@@ -20,15 +24,15 @@ export default {
   props: {
     dialogVisible: {
       type: Boolean,
-      required: true,
+      required: true
     },
     queryList: {
-      type: Function,
+      type: Function
     },
     params: {
       type: Object,
-      default: () => {},
-    },
-  },
+      default: () => {}
+    }
+  }
 };
 </script>

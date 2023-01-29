@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: "Lakeiedward",
+      title: "若依分层页面",
       logo: logoImg
     }
   }

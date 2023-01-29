@@ -415,55 +415,55 @@ export default {
     FormTreeSelect,
     FormDate,
     FormTextarea,
-    FormUpdate,
+    FormUpdate
   },
   props: {
     // 页数
     pageSize: {
       type: Number,
-      default: 10,
+      default: 10
     },
     // 页码
     pageNum: {
       type: Number,
-      default: 1,
+      default: 1
     },
     // 表格各字段
     displayLayer: {
       type: Object,
       default() {
         return {};
-      },
+      }
     },
     // 操作
     operateLayer: {
       type: Object,
       default() {
         return {};
-      },
+      }
     },
     // 搜索信息
     searchLayer: {
       type: Object,
       default() {
         return {};
-      },
+      }
     },
     // 小功能栏
     rightToolbar: {
       type: Boolean,
-      default: true,
+      default: true
     },
     // 加载
     loading: {
       type: Boolean,
-      default: true,
+      default: true
     },
     // 加载
     clearSelection: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   data() {
     return {
@@ -480,7 +480,7 @@ export default {
       // 搜索列表
       formList: {
         pageNum: this.pageNum,
-        pageSize: this.pageSize,
+        pageSize: this.pageSize
       },
       // 弹框标题
       dialogTitle: "",
@@ -505,41 +505,49 @@ export default {
       // 确认节流
       submitLoad: false,
       // 表格加载
-      tableLoad: false,
+      tableLoad: false
     };
   },
   provide() {
     return {
-      request: this.$options.methods.request,
+      request: this.$options.methods.request
     };
   },
   computed: {
     // 动态设置禁用选项
     _setDisabled() {
-      return function (v) {
-        if (v.disabled && v.disabled === "single") {
-          return this.single;
-        } else if (v.disabled === "multipe") {
-          return this.multipe;
+      return function(v) {
+        if (v.disabled && v.disabled instanceof Function) {
+          if (!this.single) {
+            return v.disabled(this.sections);
+          } else {
+            return true;
+          }
+        } else {
+          if (v.disabled && v.disabled === "single") {
+            return this.single;
+          } else if (v.disabled === "multipe") {
+            return this.multipe;
+          }
+          return false;
         }
-        return false;
       };
     },
     // 动态设置form组件
     _setLongSpan() {
-      return function (v) {
+      return function(v) {
         return v.width ? v.width + "px" : "217px";
       };
     },
     // 判断传入的是否为字符串
     _judgeType() {
-      return function (v) {
+      return function(v) {
         return typeof v === "string";
       };
     },
     // 判断为真
     _isUndef() {
-      return function (v) {
+      return function(v) {
         return isUndef(v) ? true : !!v;
       };
     },
@@ -559,10 +567,10 @@ export default {
     },
     // 对象是否有值
     _isHaveObject() {
-      return function (v) {
+      return function(v) {
         return Object.keys(v).length > 0;
       };
-    },
+    }
   },
   mounted() {
     // 获取列表
@@ -582,7 +590,7 @@ export default {
     // 初始化字典项
     initDicts(dict) {
       // 查询字典赋值
-      this.searchLayer.form.map((item) => {
+      this.searchLayer.form.map(item => {
         if (item.dict) {
           item.dict = item.dict && dict.type[item.dict];
         }
@@ -590,7 +598,7 @@ export default {
       // 弹框中的字典赋值
       this.handleDicts(this.operateLayer, dict);
       // 表格内的弹窗字典
-      this.displayLayer.data.forEach((item) => {
+      this.displayLayer.data.forEach(item => {
         if (item.operate) {
           this.handleDicts(item.operate, dict);
         }
@@ -601,7 +609,7 @@ export default {
     handleDicts(object, dict) {
       for (const key in object) {
         if (Array.isArray(this.operateLayer[key].mode.form)) {
-          this.operateLayer[key].mode.form.forEach((item) => {
+          this.operateLayer[key].mode.form.forEach(item => {
             if (typeof item.dict === "string") {
               item.dict = item.dict && dict.type[item.dict];
             }
@@ -638,7 +646,7 @@ export default {
       this.fileIdList = [];
       // 日期选择清空
       if (this.$refs.FormDateRange) {
-        Array.from(this.$refs.FormDateRange, (e) => {
+        Array.from(this.$refs.FormDateRange, e => {
           e.dateTime = [];
         });
       }
@@ -685,11 +693,11 @@ export default {
         if (item.mode.type === "dialog") {
           this.$set(this.operateLayer[this.ikey], "params", {
             ...value,
-            ...this.ryParamsClone, // 内置组件传递详情信息，也传递自定义信息
+            ...this.ryParamsClone // 内置组件传递详情信息，也传递自定义信息
           });
         } else {
           this.$set(this.operateLayer[this.ikey], "params", {
-            ...value, // 自定义组件只传递详情信息，不传递自定义信息
+            ...value // 自定义组件只传递详情信息，不传递自定义信息
           });
         }
         const fileList = [
@@ -702,24 +710,10 @@ export default {
             format: "xlsx",
             id: 10214,
             moduleType: 2,
-            name: "被审核单位模板 (1).xlsx",
+            name: "附件模板.xlsx",
             path: "/2022/11/21/9798c19e-7858-4662-8186-4e0168d09258.xlsx",
             relationId: "138",
-            size: "14.3KB",
-          },
-          {
-            bucketname: "fabledt",
-            createBy: "10028",
-            createTime: "2022-11-21 16:26:57",
-            deptId: 11001,
-            fileId: "6ea1eaa7-4ae1-4c09-99c0-252d2c009731",
-            format: "docx",
-            id: 10212,
-            moduleType: 2,
-            name: "部署文档.docx",
-            path: "/2022/11/21/6ea1eaa7-4ae1-4c09-99c0-252d2c009731.docx",
-            relationId: "136",
-            size: "1.45MB",
+            size: "14.3KB"
           },
         ];
         this.operateLayer[this.ikey].params.fileList = fileList;
@@ -741,10 +735,9 @@ export default {
           });
           break;
         // 《确认框》
-        case isTypes.find((r) => r === item.mode.type):
+        case isTypes.find(r => r === item.mode.type):
           // 解决删除时不会清除拼接的id
           item = deepClone(item);
-          // 删除数据
           this.handleComfirm(item, row, key);
           break;
         // 《自定义弹框》
@@ -765,7 +758,7 @@ export default {
               ? await this.handleInfo(row)
               : await this.handleInfo(this.sections[0]);
             this.$set(_routerInfo.query, "params", {
-              ...value,
+              ...value
             });
           }
 
@@ -797,15 +790,15 @@ export default {
         showCancelButton: item.mode.showCancelButton,
         showConfirmButton: item.mode.showConfirmButton,
         center: item.mode.center,
-        roundButton: item.mode.roundButton,
+        roundButton: item.mode.roundButton
       })
         .then(() => {
-          if (key === REMOVE) {
+          if (key === REMOVE || isTypes.includes(type)) {
             if (row) {
               item.url = `${item.url}/${row[label]}`;
             } else {
               // 支持多选删除 两个以上进行拼接[,]
-              const ids = this.sections.map((r) => r[label]).join(",");
+              const ids = this.sections.map(r => r[label]).join(",");
               if (ids) {
                 item.url = `${item.url}/${ids}`;
               }
@@ -821,7 +814,7 @@ export default {
     /* 提交按钮 */
     submitForm() {
       this.isCatch = false;
-      this.$refs["forms"].validate((valid) => {
+      this.$refs["forms"].validate(valid => {
         if (valid) {
           this.submitLoad = true;
           /* 处理多选框 拼接成字符串 */
@@ -829,8 +822,9 @@ export default {
           if (_multiples && _multiples.length > 0) {
             for (const i in this.operateLayer[this.ikey].params) {
               if (_multiples.includes(i)) {
-                this.operateLayer[this.ikey].params[i] =
-                  this.operateLayer[this.ikey].params[i].join(",");
+                this.operateLayer[this.ikey].params[i] = this.operateLayer[
+                  this.ikey
+                ].params[i].join(",");
               }
             }
           }
@@ -876,7 +870,7 @@ export default {
         if (this.request) {
           const res = await this.request({
             url: this.displayLayer.url,
-            params: this.formList,
+            params: this.formList
           });
           if (res.code === 200) {
             this.tableLoad = false;
@@ -890,7 +884,7 @@ export default {
     /* 查询 */
     handleQuery() {
       this.$nextTick(() => {
-        this.$refs.formList.validate((valid) => {
+        this.$refs.formList.validate(valid => {
           if (valid) {
             this.queryList();
           }
@@ -902,13 +896,13 @@ export default {
     resetForm() {
       this.formList = {
         pageNum: this.pageNum,
-        pageSize: this.pageSize,
+        pageSize: this.pageSize
       };
       // 清空子组件字段dateTime
       if (this.$refs.FormDateRange) {
         // 日期选择清空
         if (this.$refs.FormDateRange) {
-          Array.from(this.$refs.FormDateRange, (e) => {
+          Array.from(this.$refs.FormDateRange, e => {
             e.dateTime = [];
           });
         }
@@ -941,7 +935,7 @@ export default {
           method: item.method,
           url: item.url,
           data: params ? {} : item.params,
-          params,
+          params
         });
         if (res.code === 200) {
           if (value && res.data) {
@@ -977,9 +971,9 @@ export default {
       const value = await this.handleInfo(row);
       this.operateLayer[this.ikey].params = {
         ...this.operateLayer[this.ikey].params,
-        ...value,
+        ...value
       };
-    },
-  },
+    }
+  }
 };
 </script>
