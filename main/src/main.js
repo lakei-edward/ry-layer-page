@@ -28,18 +28,18 @@ import Pagination from "@/components/Pagination";
 import RightToolbar from "@/components/RightToolbar";
 
 // 若依精简页面生成器
-// import ryLayerPage from "./index";
+import ryLayerPage from "./index";
 import { getDicts } from "@/api/system/dict/data";
 import request from "@/utils/request";
-import ryLayerPage from "ry-layer-page";
+// import ryLayerPage from "ry-layer-page";
 import "ry-layer-page/lib/ry-layer-page.css";
 Vue.use(ryLayerPage, {
   http: request,
   dict: getDicts,
-  dictField: {
-    labelField: "label",
-    valueField: "value",
-  },
+  // dictField: {
+  //   labelField: "label",
+  //   valueField: "value",
+  // },
 });
 
 // 全局方法挂载

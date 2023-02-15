@@ -2,7 +2,7 @@
   <el-form ref="form" :model="user" :rules="rules" label-width="80px">
     <el-form-item label="用户昵称" prop="nickName">
       <el-input v-model="user.nickName" />
-    </el-form-item> 
+    </el-form-item>
     <el-form-item label="手机号码" prop="phonenumber">
       <el-input v-model="user.phonenumber" maxlength="11" />
     </el-form-item>
@@ -24,7 +24,8 @@
 
 <script>
 import { updateUserProfile } from "@/api/system/user";
-
+import { mapState } from "vuex";
+import { getFirstRouter } from "@/utils/ruoyi";
 export default {
   props: {
     user: {
@@ -57,6 +58,11 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapState({
+      addRoutes: state => state.permission.addRoutes
+    })
+  },
   methods: {
     submit() {
       this.$refs["form"].validate(valid => {
@@ -69,7 +75,7 @@ export default {
     },
     close() {
       this.$store.dispatch("tagsView/delView", this.$route);
-      this.$router.push({ path: "/index" });
+      this.$router.push({ name: getFirstRouter(this.addRoutes) });
     }
   }
 };

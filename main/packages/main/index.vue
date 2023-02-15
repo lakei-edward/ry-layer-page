@@ -591,7 +591,7 @@ export default {
     initDicts(dict) {
       // 查询字典赋值
       this.searchLayer.form.map(item => {
-        if (item.dict) {
+        if (item.dict && typeof item.dict === "string") {
           item.dict = item.dict && dict.type[item.dict];
         }
       });
@@ -714,7 +714,7 @@ export default {
             path: "/2022/11/21/9798c19e-7858-4662-8186-4e0168d09258.xlsx",
             relationId: "138",
             size: "14.3KB"
-          },
+          }
         ];
         this.operateLayer[this.ikey].params.fileList = fileList;
       }

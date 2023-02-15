@@ -8,6 +8,7 @@
         v-if="!readonly"
         v-model="params['deptCode']"
         placeholder="请选择"
+        style="width: 217px"
         @change="handleChange"
       >
         <el-option
@@ -27,6 +28,7 @@
       <el-select
         v-if="!readonly"
         v-model="params['deptName']"
+        style="width: 217px"
         placeholder="请选择"
       >
         <el-option

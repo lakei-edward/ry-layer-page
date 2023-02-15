@@ -13,9 +13,9 @@
   >
     <el-option
       v-for="option in dict"
-      :key="option.value"
-      :label="option.label"
-      :value="option.value"
+      :key="option.dictValue"
+      :label="option.dictLabel"
+      :value="option.dictValue"
     />
   </el-select>
 </template>

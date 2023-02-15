@@ -347,8 +347,12 @@ export default {
           {
             label: "接诊状态",
             model: "status",
-            component: "FormInput"
-          },
+            dict: [
+              { dictLabel: "否", dictValue: "0" },
+              { dictLabel: "是", dictValue: "1" }
+            ],
+            component: "FormSelect"
+          }
           // {
           //   label: "预警时间",
           //   type: "daterange",
@@ -396,7 +400,7 @@ export default {
             prop: "status",
             label: "是否接诊",
             callback: item => {
-              return item.status ? "是" : "否";
+              return item.status === "1" ? "是" : "否";
             }
           },
           {
