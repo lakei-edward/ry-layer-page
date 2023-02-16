@@ -1,11 +1,13 @@
 <template>
-  <ry-layer-page
-    ref="layerpage"
-    :search-layer="searchLayer"
-    :operate-layer="operateLayer"
-    :display-layer="displayLayer"
-    :loading="true"
-  />
+  <div>
+    <ry-layer-page
+      ref="layerpage"
+      :search-layer="searchLayer"
+      :operate-layer="operateLayer"
+      :display-layer="displayLayer"
+      :loading="true"
+    />
+  </div>
 </template>
 <script>
 import Custom from "./Custom";
@@ -121,7 +123,8 @@ export default {
         type: "primary",
         label: "新增",
         params: {
-          mzsj: new Date()
+          mzsj: new Date(),
+          deptPhone: ""
         },
         method: "post",
         url: `${BASE_URL}`,
@@ -217,7 +220,7 @@ export default {
           catch: () => {
             this.$message({
               type: "info",
-              message: "已取消警告"
+              message: "已取消"
             });
           }
         }
@@ -226,7 +229,7 @@ export default {
         size: "mini",
         type: "success",
         disabled: v => {
-          return !!v[0].status;
+          return !(v[0].status === "0" ? true : false);
         },
         label: "接诊",
         url: `${BASE_URL}/recmedical`,
@@ -252,7 +255,7 @@ export default {
         size: "mini",
         type: "danger",
         disabled: v => {
-          return !!!v[0].status;
+          return !(v[0].status === "1" ? true : false);
         },
         label: "停诊",
         url: `${BASE_URL}/susmedical`,

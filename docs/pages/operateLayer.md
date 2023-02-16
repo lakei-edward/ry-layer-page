@@ -110,7 +110,7 @@ export default {
 |plain|是否朴素按钮|boolean|—|false|
 |round|是否圆角按钮|boolean|—|false|
 |circle|是否圆形按钮|boolean|—|false|
-|disabled|单选/多选|string|single/multipe|—|
+|disabled|单选/多选/自定义|string /function(row)|single/multipe|—|
 |label|标题|string|—|—|
 |hasPermi|权限|string|—|—|
 |url|操作按钮最后需要调的接口|string|—|—|
