@@ -36,10 +36,10 @@ import "ry-layer-page/lib/ry-layer-page.css";
 Vue.use(ryLayerPage, {
   http: request,
   dict: getDicts,
-  // dictField: {
-  //   dictLabel: "label",
-  //   dictValue: "value",
-  // },
+  dictField: {
+    dictLabel: "label",
+    dictValue: "value",
+  },
 });
 
 // 全局方法挂载

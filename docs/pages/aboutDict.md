@@ -108,6 +108,8 @@ export default {
 
 在使用该插件的时候，支持传入自定义的字典展示形式，可以自定义和接口中的字段保持一致。
 
+`dictLabel` 和 `dictValue`时接口中的字段名称， `label` 和 `value` 是写在代码中的别名名称。
+
 ```js {9,10}
 import { getDicts } from "@/api/system/dict/data";
 import request from "@/utils/request";
@@ -117,10 +119,27 @@ Vue.use(ryLayerPage, {
   http: request,
   dict: getDicts,
   dictField: {
-    labelField: "label",
-    valueField: "value",
+    dictLabel: "label",
+    dictValue: "value",
   },
 });
+```
+
+```html
+<el-select
+  v-model="queryParams.status"
+  placeholder="用户状态"
+  clearable
+  size="small"
+  style="width: 240px"
+>
+  <el-option
+    v-for="dict in dict.type.sys_normal_disable"
+    :key="dict.value"
+    :label="dict.label"
+    :value="dict.value"
+  />
+</el-select>
 ```
 
 ## 插件中使用字典的情况
