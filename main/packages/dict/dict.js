@@ -8,7 +8,7 @@ export default class Dict {
   init(dicts) {
     const types = dicts;
     const ps = [];
-    types.map((meta) => {
+    types.map(meta => {
       this.type[meta] = {};
       this.label[meta] = {};
       ps.push(loadDict(this, meta));
@@ -21,15 +21,17 @@ function loadDict(that, meta) {
   return request(meta).then(({ data: dicts }) => {
     if (dicts && Array.isArray(dicts)) {
       const types = [];
-      dicts.forEach((r) => {
+      const _field = Object.keys(field);
+      dicts.forEach(r => {
         that.label[meta][r.dictValue] = r.dictLabel;
         types.push({
-          [field.labelField]: r[field.labelField],
-          [field.valueField]: r[field.valueField],
-          raw: r,
+          [field.dictLabel]: r[_field[0]],
+          [field.dictValue]: r[_field[1]],
+          raw: r
         });
       });
       that.type[meta] = types;
+      console.log(that.type);
     }
   });
 }

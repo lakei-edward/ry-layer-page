@@ -10,8 +10,8 @@ const install = function (Vue, opts = {}) {
       throw Error("http must be a function");
     }
     const filed = {
-      labelField: "dictLabel",
-      valueField: "dictValue",
+      dictLabel: "dictLabel",
+      dictValue: "dictValue",
     };
     Vue.use(Dict, {
       dict: opts.dict,

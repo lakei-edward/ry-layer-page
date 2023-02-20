@@ -37,8 +37,8 @@ Vue.use(ryLayerPage, {
   http: request,
   dict: getDicts,
   // dictField: {
-  //   labelField: "label",
-  //   valueField: "value",
+  //   dictLabel: "label",
+  //   dictValue: "value",
   // },
 });
 
