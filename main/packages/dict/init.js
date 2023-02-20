@@ -1,5 +1,5 @@
 import Dict from "./dict";
-export default function (Vue, option) {
+export default function(Vue, option) {
   Vue.mixin({
     data() {
       if (
@@ -9,7 +9,7 @@ export default function (Vue, option) {
       ) {
         return {};
       }
-      const dict = new Dict(option);
+      const dict = new Dict(option, Vue);
       dict.vm = this;
       return {
         dict,
@@ -29,6 +29,6 @@ export default function (Vue, option) {
           }
         });
       });
-    },
+    }
   });
 }

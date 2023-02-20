@@ -650,22 +650,20 @@ export default {
           e.dateTime = [];
         });
       }
-      this.$nextTick(() => {
-        // 自己定义的字段保存起来 重复赋值
-        this.operateLayer[this.ikey].params = this.ryParamsClone;
-        // 查看弹框不需要清除
-        if (!this.operateLayer[this.ikey].mode.readonly) {
-          // 移除整个表单的校验结果
-          this.$refs.forms.clearValidate();
-          this.$refs.forms.resetFields();
-          // 清除选择
-          // 清除文件
-          if (this.$refs.FormUpdate) {
-            this.$refs.FormUpdate[0].$refs.Upload.clearFiles();
-          }
+      // 移除整个表单的校验结果
+      this.$refs.forms.clearValidate();
+      this.$refs.forms.resetFields();
+      // 自己定义的字段保存起来 重复赋值
+      this.operateLayer[this.ikey].params = this.ryParamsClone;
+      // 查看弹框不需要清除
+      if (!this.operateLayer[this.ikey].mode.readonly) {
+        // 清除选择
+        // 清除文件
+        if (this.$refs.FormUpdate) {
+          this.$refs.FormUpdate[0].$refs.Upload.clearFiles();
         }
-        this.clearSelection && this.$refs.multipleTable.clearSelection();
-      });
+      }
+      this.clearSelection && this.$refs.multipleTable.clearSelection();
     },
 
     /* Operation操作事件 */
@@ -700,23 +698,6 @@ export default {
             ...value // 自定义组件只传递详情信息，不传递自定义信息
           });
         }
-        const fileList = [
-          {
-            bucketname: "fabledt",
-            createBy: "10152",
-            createTime: "2022-11-21 17:04:33",
-            deptId: 11001,
-            fileId: "9798c19e-7858-4662-8186-4e0168d09258",
-            format: "xlsx",
-            id: 10214,
-            moduleType: 2,
-            name: "附件模板.xlsx",
-            path: "/2022/11/21/9798c19e-7858-4662-8186-4e0168d09258.xlsx",
-            relationId: "138",
-            size: "14.3KB"
-          }
-        ];
-        this.operateLayer[this.ikey].params.fileList = fileList;
       }
     },
 
@@ -729,10 +710,6 @@ export default {
           this.dialogAddVisible = true;
           // 弹框标题
           this.dialogTitle = item.mode.title ? item.mode.title : item.label;
-          // 移除整个表单的校验结果
-          this.$nextTick(() => {
-            this.$refs.forms.clearValidate();
-          });
           break;
         // 《确认框》
         case isTypes.find(r => r === item.mode.type):

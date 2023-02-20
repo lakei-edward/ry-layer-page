@@ -1,9 +1,10 @@
 export default class Dict {
-  constructor(options) {
+  constructor(options, Vue) {
     this.label = {};
     this.type = {};
     this.vm = null;
     this._dictMetas = options;
+    this._Vue = Vue;
   }
   init(dicts) {
     const types = dicts;
@@ -16,7 +17,7 @@ export default class Dict {
     return Promise.all(ps);
   }
 }
-function loadDict(that, meta) {
+function loadDict(that, meta, _Vue) {
   const { field, request } = that._dictMetas.metas["*"];
   return request(meta).then(({ data: dicts }) => {
     if (dicts && Array.isArray(dicts)) {
@@ -31,7 +32,7 @@ function loadDict(that, meta) {
         });
       });
       that.type[meta] = types;
-      console.log(that.type);
+      return types;
     }
   });
 }
