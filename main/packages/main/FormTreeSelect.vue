@@ -27,51 +27,51 @@ export default {
   name: "FormTreeSelect",
   data() {
     return {
-      deptList: [],
+      deptList: []
     };
   },
   props: {
     form: {
-      type: Object,
+      type: Object
     },
     model: {
       type: String,
-      required: true,
+      required: true
     },
     treeUrl: {
       type: String,
-      required: true,
+      required: true
     },
     placeholder: {
       type: String,
-      default: "请选择",
+      default: "请选择"
     },
     noResultsText: {
       type: String,
-      default: "没有找到该单位",
+      default: "没有找到该单位"
     },
     normalizer: {
-      type: Function,
+      type: Function
     },
     callback: {
-      type: Function,
+      type: Function
     },
     params: {
-      type: Object,
+      type: Object
     },
     width: {
       type: Number,
-      default: 217,
+      default: 217
     },
     formWidth: {
-      type: Number,
+      type: Number
     },
     zIndex: {
       type: Number,
-      default: 999,
+      default: 999
     },
     maxHeight: {
-      type: Number,
+      type: Number
     },
     clearable: Boolean,
     showCount: Boolean,
@@ -79,7 +79,7 @@ export default {
     disabled: Boolean,
     alwaysOpen: Boolean,
     appendToBody: Boolean,
-    flat: Boolean, //是否启用平面模式。
+    flat: Boolean // 是否启用平面模式。
   },
   components: { Treeselectlist },
   inject: ["request"],
@@ -97,7 +97,7 @@ export default {
         const res = await this.request({
           url: this.treeUrl,
           methods: "get",
-          params: this.params,
+          params: this.params
         });
         if (!this.callback) {
           this.deptList = res.data;
@@ -105,7 +105,7 @@ export default {
           this.deptList = this.callback(res.data);
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>

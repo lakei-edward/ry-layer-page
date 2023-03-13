@@ -15,10 +15,14 @@
     :prefix-icon="prefixIcon"
     :suffix-icon="suffixIcon"
     @input="regExp ? handleRegExp(form[model]) : ''"
+    @click.native="click ? click(form) : ''"
+    @change="change ? change($event) : ''"
+    @blur="blur ? blur(form) : ''"
+    @focus="focus ? focus(form) : ''"
   />
 </template>
 <script>
-import REGEXP from '../plugin/regExp';
+import REGEXP from "../plugin/regExp";
 export default {
   props: {
     form: {
@@ -27,11 +31,11 @@ export default {
     },
     model: {
       type: String,
-      default: ''
+      default: ""
     },
     placeholder: {
       type: String,
-      default: '请输入'
+      default: "请输入"
     },
     size: {
       type: String
@@ -46,9 +50,11 @@ export default {
       type: String
     },
     maxlength: {
+      // eslint-disable-next-line vue/require-prop-type-constructor
       type: Number | String
     },
     minlength: {
+      // eslint-disable-next-line vue/require-prop-type-constructor
       type: Number | String
     },
     width: {
@@ -62,11 +68,15 @@ export default {
     showPassword: Boolean,
     disabled: Boolean,
     readonly: Boolean,
-    autofocus: Boolean
+    autofocus: Boolean,
+    click: Function,
+    change: Function,
+    blur: Function,
+    focus: Function
   },
   methods: {
     handleRegExp(value) {
-      value = value.replace(REGEXP[this.regExp], '');
+      value = value.replace(REGEXP[this.regExp], "");
       this.form[this.model] = value;
     }
   }

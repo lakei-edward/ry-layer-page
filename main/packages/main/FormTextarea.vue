@@ -29,49 +29,51 @@ export default {
   props: {
     form: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     model: {
       type: String,
-      default: "",
+      default: ""
     },
     rows: {
-      type: Number,
+      type: Number
     },
     placeholder: {
       type: String,
-      default: "请输入",
+      default: "请输入"
     },
     size: {
-      type: String,
+      type: String
     },
     regExp: {
-      type: String,
+      type: String
     },
     prefixIcon: {
-      type: String,
+      type: String
     },
     suffixIcon: {
-      type: String,
+      type: String
     },
     maxlength: {
-      type: Number | String,
+      // eslint-disable-next-line vue/require-prop-type-constructor
+      type: Number | String
     },
     minlength: {
-      type: Number | String,
+      // eslint-disable-next-line vue/require-prop-type-constructor
+      type: Number | String
     },
     width: {
-      type: Number,
+      type: Number
     },
     formWidth: {
-      type: Number,
+      type: Number
     },
     showWordLimit: Boolean,
     clearable: Boolean,
     showPassword: Boolean,
     disabled: Boolean,
     readonly: Boolean,
-    autofocus: Boolean,
-  },
+    autofocus: Boolean
+  }
 };
 </script>

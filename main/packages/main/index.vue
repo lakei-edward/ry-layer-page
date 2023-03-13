@@ -7,7 +7,7 @@
         v-show="showSearch"
         ref="formList"
         :model="formList"
-        :inline="!_isUndef(searchLayer.inline) ? searchLayer.inline : true"
+        :inline="_isDeTrue(searchLayer.inline)"
         :label-position="searchLayer.labelPosition"
         :label-width="searchLayer.labelWidth"
         :show-message="searchLayer.showMessage"
@@ -20,11 +20,13 @@
       >
         <template v-for="item in searchLayer.form">
           <el-form-item
-            v-if="_judgeType(item.component)"
+            v-if="_judgeType(item.component, item.hidden)"
             :key="item.label"
             :label-width="item.labelWidth"
             :required="item.required"
-            :label="`${item.label}${searchLayer.labelAfter}`"
+            :label="`${item.label}${
+              searchLayer.labelAfter ? searchLayer.labelAfter : '：'
+            }`"
             :show-message="item.showMessage"
             :prop="item.model"
             :size="item.size"
@@ -38,6 +40,8 @@
               :type="item.type"
               :startTimeLabel="item.startTimeLabel"
               :endTimeLabel="item.endTimeLabel"
+              :startPlaceholder="item.startPlaceholder"
+              :endPlaceholder="item.endPlaceholder"
               :editable="item.editable"
               :valueFormat="item.valueFormat"
               :buttonLabel="item.buttonLabel"
@@ -52,6 +56,9 @@
               :showCount="item.showCount"
               :zIndex="item.zIndex"
               :flat="item.flat"
+              :keyModel="item.keyModel"
+              :disabledAfter="item.disabledAfter"
+              :disabledBefore="item.disabledBefore"
               :upload="item.upload"
               :file-id-list="fileIdList"
               :reg="item.reg"
@@ -66,6 +73,7 @@
               :maxlength="item.maxlength"
               :minlength="item.minlength"
               :width="item.width"
+              :hidden="item.hidden"
               :form-width="searchLayer.formWidth"
               :show-password="item.showPassword"
               :disabled="item.disabled"
@@ -85,6 +93,10 @@
               :plain="item.plain"
               :fileListLabel="item.fileListLabel"
               :show-word-limit="item.showWordLimit"
+              :click="item.click"
+              :change="item.change"
+              :blur="item.blur"
+              :focus="item.focus"
             />
           </el-form-item>
           <component
@@ -96,10 +108,14 @@
           />
         </template>
         <el-form-item>
-          <el-button type="primary" @click="handleQuery">
+          <el-button
+            type="primary"
+            :size="searchLayer.operateSize"
+            @click="handleQuery"
+          >
             {{ searchLayer.searchName ? searchLayer.searchName : "搜索" }}
           </el-button>
-          <el-button @click="resetForm">
+          <el-button :size="searchLayer.operateSize" @click="resetForm">
             {{ searchLayer.resetName ? searchLayer.resetName : "重置" }}
           </el-button>
         </el-form-item>
@@ -109,7 +125,7 @@
         <el-col :span="1.5" v-if="_isHaveObject(operateLayer)">
           <template v-for="(value, key) in operateLayer">
             <el-button
-              v-if="_isUndef(value.show) && value.show !== 'table'"
+              v-if="value.show !== 'table'"
               :key="key"
               v-hasPermi="[value.hasPermi]"
               :size="value.size"
@@ -128,7 +144,7 @@
           </template>
         </el-col>
         <right-toolbar
-          v-if="_isUndef(rightToolbar)"
+          v-if="rightToolbar"
           :show-search.sync="showSearch"
           @querylist="queryList"
         />
@@ -170,7 +186,7 @@
             :align="item.align"
             :class-name="item.className"
             :label-class-name="item.labelClassName"
-            :show-overflow-tooltip="_isUndef(item.showOverflowTooltip)"
+            :show-overflow-tooltip="_isDeTrue(item.showOverflowTooltip)"
           >
             <template slot-scope="scope">
               <template v-if="item.operate && _isHaveObject(operateLayer)">
@@ -187,6 +203,7 @@
                     :loading="value.loading"
                     :icon="value.icon"
                     :autofocus="value.autofocus"
+                    :disabled="_setDisabled(value, scope.row)"
                     @click="handleOperation(value, key, scope.row)"
                   >
                     {{ value.label }}
@@ -194,8 +211,21 @@
                 </template>
               </template>
               <template v-else>
-                <span v-if="item.callback">{{ item.callback(scope.row) }}</span>
-                <span v-else>{{ scope.row[item.prop] }}</span>
+                <template v-if="item.component">
+                  <component
+                    :is="item.component.element"
+                    :attr="item.component.attr"
+                    :callback="item.callback"
+                    :row="scope.row"
+                    :prop="item.prop"
+                  ></component>
+                </template>
+                <template v-else>
+                  <template v-if="_isFunction(item.callback)">{{
+                    item.callback(scope.row)
+                  }}</template>
+                  <template v-else>{{ scope.row[item.prop] }}</template>
+                </template>
               </template>
             </template>
           </el-table-column>
@@ -239,13 +269,11 @@
           >
             <template v-for="item in operateLayer[ikey].mode.form">
               <el-form-item
-                v-if="_judgeType(item.component)"
+                v-if="_judgeType(item.component, item.hidden)"
                 :key="item.model"
                 :label="`${item.label}:`"
                 :prop="item.model"
-                :rules="
-                  _isUndef(operateLayer[ikey].mode.rules) ? item.rules : []
-                "
+                :rules="_isUndef(operateLayer[ikey].mode.readonly) ? item.rules : []"
               >
                 <template v-if="!operateLayer[ikey].mode.readonly">
                   <component
@@ -257,6 +285,8 @@
                     :type="item.type"
                     :startTimeLabel="item.startTimeLabel"
                     :endTimeLabel="item.endTimeLabel"
+                    :startPlaceholder="item.startPlaceholder"
+                    :endPlaceholder="item.endPlaceholder"
                     :editable="item.editable"
                     :valueFormat="item.valueFormat"
                     :buttonLabel="item.buttonLabel"
@@ -271,6 +301,9 @@
                     :showCount="item.showCount"
                     :zIndex="item.zIndex"
                     :flat="item.flat"
+                    :keyModel="item.keyModel"
+                    :disabledAfter="item.disabledAfter"
+                    :disabledBefore="item.disabledBefore"
                     :upload="item.upload"
                     :file-id-list="fileIdList"
                     :reg="item.reg"
@@ -302,12 +335,21 @@
                     :round="item.round"
                     :circle="item.circle"
                     :plain="item.plain"
+                    :drag="item.drag"
+                    :rows="item.rows"
                     :fileListLabel="item.fileListLabel"
                     :show-word-limit="item.showWordLimit"
+                    :click="item.click"
+                    :change="item.change"
+                    :blur="item.blur"
+                    :focus="item.focus"
                   />
                 </template>
 
-                <div v-else :style="{ width: _setLongSpan(item) }">
+                <div
+                  v-else
+                  :style="{ width: _setLongSpan(item), wordWrap: 'break-word' }"
+                >
                   <template>{{
                     operateLayer[ikey].params[item.model]
                   }}</template>
@@ -318,9 +360,13 @@
                       ]"
                       :key="file.fileId"
                     >
-                      <el-link type="primary" @click="downFiles(file, item)">{{
-                        file.name
-                      }}</el-link>
+                      <el-link type="primary" @click="downFiles(file, item)"
+                        ><i
+                          style="margin-right: 5px"
+                          class="el-icon-paperclip"
+                        ></i
+                        >{{ file.name }}</el-link
+                      >
                     </div>
                   </template>
                 </div>
@@ -351,7 +397,6 @@
               <el-button
                 v-for="item in operateLayer[ikey].mode.button"
                 :key="item.event"
-                v-hasPermi="[item.hasPermi]"
                 :size="item.size"
                 :type="item.type"
                 :circle="item.circle"
@@ -403,8 +448,16 @@ import FormTreeSelect from "./FormTreeSelect.vue";
 import FormDate from "./FormDate.vue";
 import FormTextarea from "./FormTextarea.vue";
 import FormUpdate from "./FormUpdate.vue";
-import { isUndef, isDef, isTypes, deepClone } from "../plugin/util.js";
-import { download } from "../plugin/download.js";
+import Tag from "../common/Tag.vue";
+import {
+  isUndef,
+  isDef,
+  isTypes,
+  deepClone,
+  handleDicts,
+  judgeType
+} from "../plugin/util.js";
+import { download, exportFiles } from "../plugin/download.js";
 import { ID, REMOVE, SEARCH } from "../plugin/default.js";
 export default {
   name: "ry-layer-page",
@@ -415,7 +468,8 @@ export default {
     FormTreeSelect,
     FormDate,
     FormTextarea,
-    FormUpdate
+    FormUpdate,
+    Tag
   },
   props: {
     // 页数
@@ -480,7 +534,8 @@ export default {
       // 搜索列表
       formList: {
         pageNum: this.pageNum,
-        pageSize: this.pageSize
+        pageSize: this.pageSize,
+        ...this.searchLayer.params
       },
       // 弹框标题
       dialogTitle: "",
@@ -516,12 +571,19 @@ export default {
   computed: {
     // 动态设置禁用选项
     _setDisabled() {
-      return function(v) {
+      return function (v, row) {
         if (v.disabled && v.disabled instanceof Function) {
-          if (!this.single) {
-            return v.disabled(this.sections);
+          // 如果显示在表格内，则传递row信息过去，不受单选和多选的控制了
+          if (v.show) {
+            return v.disabled([row]); // 把选择信息传递过去
           } else {
-            return true;
+            // disabledType不传默认单选，也可以根据disabledType传递multipe控制多选
+            // 双重判断，首先根据函数判断，再根据disabledType判断
+            if (v.disabledType ? !this[v.disabledType] : !this.single) {
+              return v.disabled(this.sections); // 把选择信息传递过去
+            } else {
+              return true;
+            }
           }
         } else {
           if (v.disabled && v.disabled === "single") {
@@ -535,20 +597,56 @@ export default {
     },
     // 动态设置form组件
     _setLongSpan() {
-      return function(v) {
-        return v.width ? v.width + "px" : "217px";
+      return function (v) {
+        return v.width ? `${v.width}px` : "217px";
       };
     },
-    // 判断传入的是否为字符串
+    /**
+     * 只有时字符串的并且hidden不为true时为true
+     */
     _judgeType() {
-      return function(v) {
-        return typeof v === "string";
+      return function (v, hidden) {
+        if (typeof v === "string" && isUndef(hidden)) {
+          return true;
+        }
       };
     },
-    // 判断为真
+    /**
+     * 配置为null和undifined是，也就是没有该项配置，结果为true，
+     * 配置为true时，取反
+     */
     _isUndef() {
-      return function(v) {
-        return isUndef(v) ? true : !!v;
+      return function (v) {
+        return isUndef(v) ? true : !v;
+      };
+    },
+    /**
+     * 默认为true
+     * 定稿，只用来判断属性为Boolean，其他的不判断
+     * 场景：默认为true时，不传就为true,传的话根据true/false判断
+     * 当该项不传时：true
+     * 当该项传true：true
+     * 当该项传false：false
+     */
+    _isDeTrue() {
+      return function (v) {
+        return isUndef(v) ? true : v;
+      };
+    },
+    /**
+     * 默认为false
+     */
+    _isDeFalse() {
+      return function (v) {
+        return isUndef(v) ? false : v;
+      };
+    },
+    /**
+     * 是否是函数
+     */
+    _isFunction() {
+      return function (v) {
+        return judgeType(v) === "Function";
       };
     },
     // 判断弹框方式
@@ -567,10 +665,10 @@ export default {
     },
     // 对象是否有值
     _isHaveObject() {
-      return function(v) {
+      return function (v) {
         return Object.keys(v).length > 0;
       };
-    }
+    },
   },
   mounted() {
     // 获取列表
@@ -590,32 +688,21 @@ export default {
     // 初始化字典项
     initDicts(dict) {
       // 查询字典赋值
-      this.searchLayer.form.map(item => {
-        if (item.dict && typeof item.dict === "string") {
+      this.searchLayer.form.map(async (item) => {
+        if (judgeType(item.dict) === "string") {
           item.dict = item.dict && dict.type[item.dict];
+        } else if (judgeType(item.dict) === "Promise") {
+          item.dict = await item.dict;
         }
       });
       // 弹框中的字典赋值
-      this.handleDicts(this.operateLayer, dict);
+      handleDicts(this.operateLayer, dict);
       // 表格内的弹窗字典
-      this.displayLayer.data.forEach(item => {
+      this.displayLayer.data.forEach((item) => {
         if (item.operate) {
-          this.handleDicts(item.operate, dict);
+          handleDicts(item.operate, dict);
         }
       });
-    },
-
-    // 处理多出字典
-    handleDicts(object, dict) {
-      for (const key in object) {
-        if (Array.isArray(this.operateLayer[key].mode.form)) {
-          this.operateLayer[key].mode.form.forEach(item => {
-            if (typeof item.dict === "string") {
-              item.dict = item.dict && dict.type[item.dict];
-            }
-          });
-        }
-      }
     },
 
     // 关闭dialog
@@ -646,7 +733,7 @@ export default {
       this.fileIdList = [];
       // 日期选择清空
       if (this.$refs.FormDateRange) {
-        Array.from(this.$refs.FormDateRange, e => {
+        Array.from(this.$refs.FormDateRange, (e) => {
           e.dateTime = [];
         });
       }
@@ -672,20 +759,25 @@ export default {
       this.ikey = key;
       // 自己定义的字段保存起来
       this.ryParamsClone =
-        (item.params && JSON.parse(JSON.stringify(item.params))) || [];
-      // 处理不同类型事件
-      this.handleModeType(item, row, key);
-      // 根据id查看详情
-      this.getDetail(item, row);
-      // 打开弹框的回调
-      this.$emit("handleOperation", item, key);
+        item.params && JSON.parse(JSON.stringify(item.params)) || [];
+      // 如果没有mode，则默认直接调取接口
+      if (item.mode) {
+        // 处理不同类型事件
+        this.handleModeType(item, row, key);
+        // 根据id查看详情
+        this.getDetail(item, row);
+        // 打开弹框的回调
+        this.$emit("handleOperation", item, key);
+      } else {
+        this.handleRequest(item);
+      }
     },
 
     // 根据id查看详情
     async getDetail(item, row) {
-      if (item.mode.detail) {
-        let value;
-        value = row
+      // detail查看详情属性，并且type不等于RouterPage，因为RouterPage有自己的方式获取
+      if (item.mode.detail && item.mode.type !== "RouterPage") {
+        let value = row
           ? await this.handleInfo(row)
           : await this.handleInfo(this.sections[0]);
         if (item.mode.type === "dialog") {
@@ -704,47 +796,82 @@ export default {
     // 处理不同类型事件
     async handleModeType(item, row, key) {
       switch (item.mode.type) {
-        // 《内置弹框》
-        case "Dialog":
-          // 打开弹框
-          this.dialogAddVisible = true;
-          // 弹框标题
-          this.dialogTitle = item.mode.title ? item.mode.title : item.label;
-          break;
+      // 《内置弹框》
+      case "Dialog":
+        // 打开弹框
+        this.dialogAddVisible = true;
+        // 弹框标题
+        this.dialogTitle = item.mode.title ? item.mode.title : item.label;
+        break;
         // 《确认框》
-        case isTypes.find(r => r === item.mode.type):
-          // 解决删除时不会清除拼接的id
-          item = deepClone(item);
-          this.handleComfirm(item, row, key);
-          break;
+      case isTypes.find((r) => r === item.mode.type):
+        // 解决删除时不会清除拼接的id
+        item = deepClone(item);
+        this.handleComfirm(item, row, key);
+        break;
         // 《自定义弹框》
-        case "CustomDialog":
-          this.dialogVisible = true;
-          break;
+      case "CustomDialog":
+        this.dialogVisible = true;
+        break;
         // 《自定义页面》
-        case "CustomPage":
-          this.pageVisible = true;
-          break;
+      case "CustomPage":
+        this.pageVisible = true;
+        break;
         // 《自定义路由页面》
-        case "RouterPage":
-          // 把详情信息通过路由传过去 支持name和path方式跳转
+      case "RouterPage":
+        // 把详情信息通过路由传过去 支持name和path方式跳转
+        if (item.mode.router && judgeType(item.mode.router) === "Object") {
           const _routerInfo = item.mode.router;
+          // 当detail没传时，判断参数传递情况，1、detailId不传：则默认传递row，2、传递detailId：则获取row里面的对应的id传过去，可根据该id获取详情
+          const _id = item.mode.detailId || null;
+          _routerInfo.query = _routerInfo.query || {};
+          // 有时接口返回的数据太大了，不能够用路由参数的方式去传输，而且自定义路由页面本身就是一个单独的组件，可以在该组件内调取详情接口
+          // 路由传参方式，如果有detail，则获取信息接口数据，否则返回row数据
           if (item.mode.detail) {
-            _routerInfo.query = _routerInfo.query || {};
             let value = row
               ? await this.handleInfo(row)
               : await this.handleInfo(this.sections[0]);
-            this.$set(_routerInfo.query, "params", {
-              ...value
-            });
+            this.$set(_routerInfo.query, "params", JSON.stringify(value));
+          } else {
+            // 有的话，只传递id
+            if (_id) {
+              this.$set(_routerInfo.query, _id, this.sections[0][_id]);
+            } else {
+              // 无的话，传递row
+              this.$set(
+                _routerInfo.query,
+                "params",
+                JSON.stringify(this.sections[0])
+              );
+            }
           }
-
           this.$router.push(_routerInfo);
-          break;
+        } else {
+          throw new Error("router is undefined");
+        }
+        break;
+        // 《自定义页面》
+      case "export":
+        this.handleExport(item);
+        break;
       }
     },
 
-    /* 删除数据 */
+    /** 导出按钮操作 */
+    handleExport(item) {
+      const label = item.mode.label || ID;
+      const exportName = item.mode.exportName;
+      const params = {
+        [item.mode.paramsLabel]: [],
+        ...item.params // 把自定义的params带进来
+      };
+      this.sections.forEach((v) => {
+        params[item.mode.paramsLabel].push(v[label]);
+      });
+      exportFiles(item.url, params, exportName, this.$options.methods.request);
+    },
+
+    /* 删除确认数据操作方式 */
     handleComfirm(item, row, key) {
       if (!item.mode.subscribe) {
         throw Error("subscribe is null");
@@ -756,6 +883,7 @@ export default {
         subscribe = item.mode.subscribe;
       }
       const label = item.mode.label || ID;
+      const paramsLabel = item.mode.paramsLabel || ID;
       const type = item.mode.type;
       const title = item.mode.title || "提示";
       const confirmButtonText = item.mode.confirmButtonText || "确定";
@@ -770,18 +898,31 @@ export default {
         roundButton: item.mode.roundButton
       })
         .then(() => {
-          if (key === REMOVE || isTypes.includes(type)) {
+          let params = {};
+          if (!item.mode.paramsType) {
+            if (key === REMOVE || isTypes.includes(type)) {
+              if (row) {
+                item.url = `${item.url}/${row[label]}`;
+              } else {
+                // 支持多选删除 两个以上进行拼接[,]
+                const ids = this.sections.map((r) => r[label]).join(",");
+                if (ids) {
+                  item.url = `${item.url}/${ids}`;
+                }
+              }
+            }
+          } else {
             if (row) {
-              item.url = `${item.url}/${row[label]}`;
+              params[paramsLabel] = row[label];
             } else {
               // 支持多选删除 两个以上进行拼接[,]
-              const ids = this.sections.map(r => r[label]).join(",");
+              const ids = this.sections.map((r) => r[label]).join(",");
               if (ids) {
-                item.url = `${item.url}/${ids}`;
+                params[paramsLabel] = ids;
               }
             }
           }
-          this.handleRequest(item);
+          this.handleRequest(item, params);
         })
         .catch(() => {
           item.mode.catch && item.mode.catch();
@@ -791,7 +932,7 @@ export default {
     /* 提交按钮 */
     submitForm() {
       this.isCatch = false;
-      this.$refs["forms"].validate(valid => {
+      this.$refs["forms"].validate((valid) => {
         if (valid) {
           this.submitLoad = true;
           /* 处理多选框 拼接成字符串 */
@@ -799,9 +940,8 @@ export default {
           if (_multiples && _multiples.length > 0) {
             for (const i in this.operateLayer[this.ikey].params) {
               if (_multiples.includes(i)) {
-                this.operateLayer[this.ikey].params[i] = this.operateLayer[
-                  this.ikey
-                ].params[i].join(",");
+                this.operateLayer[this.ikey].params[i] =
+                  this.operateLayer[this.ikey].params[i].join(",");
               }
             }
           }
@@ -811,13 +951,13 @@ export default {
       });
     },
 
-    //附件下载
+    // 附件下载
     downFiles(file, item) {
       if (item.downloadWay === "new-window") {
-        window.open("/dev-api/file/minio/download/" + file.fileId);
+        window.open(`/dev-api/file/minio/download/${file.fileId}`);
       } else {
         download(
-          "/file/minio/download/" + file.fileId,
+          `/file/minio/download/${file.fileId}`,
           {},
           file.name,
           this.$options.methods.request
@@ -847,7 +987,7 @@ export default {
         if (this.request) {
           const res = await this.request({
             url: this.displayLayer.url,
-            params: this.formList
+            params: { ...this.formList, ...this.displayLayer.params }
           });
           if (res.code === 200) {
             this.tableLoad = false;
@@ -861,7 +1001,7 @@ export default {
     /* 查询 */
     handleQuery() {
       this.$nextTick(() => {
-        this.$refs.formList.validate(valid => {
+        this.$refs.formList.validate((valid) => {
           if (valid) {
             this.queryList();
           }
@@ -879,7 +1019,7 @@ export default {
       if (this.$refs.FormDateRange) {
         // 日期选择清空
         if (this.$refs.FormDateRange) {
-          Array.from(this.$refs.FormDateRange, e => {
+          Array.from(this.$refs.FormDateRange, (e) => {
             e.dateTime = [];
           });
         }
@@ -888,31 +1028,45 @@ export default {
     },
 
     // 选中当前的行
-    rowClcik(row) {
-      if (!this._isUndef(this.displayLayer.rowclick)) {
+    rowClcik(row, column) {
+      if (column.property === "operate") {
         return;
+      } else {
+        if (this._isDeTrue(this.displayLayer.rowclick)) {
+          this.$refs.multipleTable.toggleRowSelection(row);
+        }
       }
-      this.$refs.multipleTable.toggleRowSelection(row);
     },
 
     // 获取详情信息
     handleInfo(item) {
-      // 处理自定义id名
       const serach_item = this.operateLayer[SEARCH];
-      const label = serach_item.mode.label || ID;
-      // 尾部拼接id
-      serach_item.url = `${this.serach_url}/${item[label]}`;
+      const multiPath = serach_item.multiPath || 0;
+      if (multiPath) {
+        // 多个path拼接
+        let path = "";
+        multiPath.forEach((v) => {
+          path += `/${item[v]}`;
+        });
+        serach_item.url = `${this.serach_url}${path}`;
+      } else {
+        // 处理自定义id名
+        const label = serach_item.mode.label || ID;
+        // 尾部拼接id
+        serach_item.url = `${this.serach_url}/${item[label]}`;
+      }
       return this.handleRequest(serach_item, false, true);
     },
 
     /* 调取数据 */
-    async handleRequest(item, params = false, value = false) {
+    async handleRequest(item, params = {}, value = false) {
       if (this.request) {
+        const flag = Object.keys(params).length > 0; // 判断params有没有参数
         const res = await this.request({
           method: item.method,
           url: item.url,
-          data: params ? {} : item.params,
-          params
+          data: flag ? "" : item.params,
+          params: flag ? params : ""
         });
         if (res.code === 200) {
           if (value && res.data) {
@@ -931,25 +1085,19 @@ export default {
 
     /* 获取双击事件 */
     async dblclick(row) {
-      if (
-        !(
-          this._isUndef(this.displayLayer.dblclick) &&
-          this._isHaveObject(this.operateLayer)
-        )
-      ) {
-        return;
+      if (this._isDeFalse(this.displayLayer.dblclick)) {
+        this.ikey = SEARCH;
+        // 打开弹框
+        this.dialogAddVisible = true;
+        // 弹框标题
+        this.dialogTitle = this.operateLayer[this.ikey].label;
+        // 给弹框表单赋值
+        const value = await this.handleInfo(row);
+        this.operateLayer[this.ikey].params = {
+          ...this.operateLayer[this.ikey].params,
+          ...value
+        };
       }
-      this.ikey = SEARCH;
-      // 打开弹框
-      this.dialogAddVisible = true;
-      // 弹框标题
-      this.dialogTitle = this.operateLayer[this.ikey].label;
-      // 给弹框表单赋值
-      const value = await this.handleInfo(row);
-      this.operateLayer[this.ikey].params = {
-        ...this.operateLayer[this.ikey].params,
-        ...value
-      };
     }
   }
 };

@@ -12,7 +12,7 @@ export default function(Vue, option) {
       const dict = new Dict(option, Vue);
       dict.vm = this;
       return {
-        dict,
+        dict
       };
     },
     created() {

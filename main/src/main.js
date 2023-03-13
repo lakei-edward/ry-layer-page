@@ -21,7 +21,7 @@ import {
   selectDictLabel,
   selectDictLabels,
   download,
-  handleTree,
+  handleTree
 } from "@/utils/ruoyi";
 import Pagination from "@/components/Pagination";
 // 自定义表格工具扩展
@@ -37,11 +37,10 @@ Vue.use(ryLayerPage, {
   http: request,
   dict: getDicts,
   dictField: {
-    dictLabel: "label",
-    dictValue: "value",
-  },
+    dictLabel: "dictLabel",
+    dictValue: "dictValue"
+  }
 });
-
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts;
 Vue.prototype.getConfigKey = getConfigKey;
@@ -53,15 +52,15 @@ Vue.prototype.selectDictLabels = selectDictLabels;
 Vue.prototype.download = download;
 Vue.prototype.handleTree = handleTree;
 
-Vue.prototype.msgSuccess = function (msg) {
+Vue.prototype.msgSuccess = function(msg) {
   this.$message({ showClose: true, message: msg, type: "success" });
 };
 
-Vue.prototype.msgError = function (msg) {
+Vue.prototype.msgError = function(msg) {
   this.$message({ showClose: true, message: msg, type: "error" });
 };
 
-Vue.prototype.msgInfo = function (msg) {
+Vue.prototype.msgInfo = function(msg) {
   this.$message.info(msg);
 };
 
@@ -81,7 +80,7 @@ Vue.use(permission);
  */
 
 Vue.use(Element, {
-  size: Cookies.get("size") || "medium", // set element-ui default size
+  size: Cookies.get("size") || "medium" // set element-ui default size
 });
 
 Vue.config.productionTip = false;
@@ -90,5 +89,5 @@ new Vue({
   el: "#app",
   router,
   store,
-  render: (h) => h(App),
+  render: h => h(App)
 });

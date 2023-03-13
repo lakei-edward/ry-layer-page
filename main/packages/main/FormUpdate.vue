@@ -2,6 +2,7 @@
   <div id="FormUpdate">
     <el-upload
       ref="Upload"
+      :drag="drag"
       :multiple="multiple"
       :action="upload.action"
       :before-upload="beforeFileUpload"
@@ -14,28 +15,44 @@
       :headers="upload.headers"
       :style="{ width: width ? width + 'px' : formWidth + 'px' }"
     >
-      <el-button
-        :type="type"
-        :circle="circle"
-        :round="round"
-        :plain="plain"
-        :icon="icon"
-        :size="size"
-        :disabled="disabled"
-      >
-        <template
-          v-if="buttonLabel === 'string' && buttonLabel.length === 0"
-        ></template>
-        <template v-else> {{ buttonLabel }} </template>
-      </el-button>
-      <div slot="tip" class="el-upload__tip">
-        <span
-          v-html="
-            upload.textLabel ||
-            '请上传 大小不超过 10MB 格式为 doc/docx/xls/xlsx/txt/pdf/jpg/png 的文件'
-          "
-        ></span>
-      </div>
+      <template v-if="!drag">
+        <el-button
+          :type="type"
+          :circle="circle"
+          :round="round"
+          :plain="plain"
+          :icon="icon"
+          :size="size"
+          :disabled="disabled"
+        >
+          <template
+            v-if="buttonLabel === 'string' && buttonLabel.length === 0"
+          ></template>
+          <template v-else> {{ buttonLabel }} </template>
+        </el-button>
+        <div slot="tip" class="el-upload__tip">
+          <span
+            v-html="
+              upload.textLabel ||
+              '请上传 大小不超过 10MB 格式为 doc/docx/xls/xlsx/txt/pdf/jpg/png 的文件'
+            "
+          ></span>
+        </div>
+      </template>
+      <template v-else>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">
+          <div>将文件拖到此处，或<em>点击上传</em></div>
+          <div class="textLabel">
+            <span
+              v-html="
+                upload.textLabel ||
+                '请上传 大小不超过 10MB 格式为 doc/docx/xls/xlsx/txt/pdf/jpg/png 的文件'
+              "
+            ></span>
+          </div>
+        </div>
+      </template>
     </el-upload>
   </div>
 </template>
@@ -44,39 +61,41 @@ import regExp from "../plugin/regExp";
 export default {
   name: "FormUpdate",
   data() {
-    return {};
+    return {
+      fileIdList: []
+    };
   },
   props: {
     form: {
-      type: Object,
+      type: Object
     },
     model: {
-      type: String,
+      type: String
     },
-    fileIdList: {
-      type: Array,
-      default: () => [],
-    },
+    // fileIdList: {
+    //   type: Array,
+    //   default: () => []
+    // },
     upload: {
       type: Object,
       required: true,
-      default: () => {},
+      default: () => {}
     },
     fileListLabel: {
       type: String,
-      default: "fileList",
+      default: "fileList"
     },
     type: {
       type: String,
-      default: "primary",
+      default: "primary"
     },
     size: {
       type: String,
-      default: "small",
+      default: "small"
     },
     buttonLabel: {
       type: String,
-      default: "点击上传",
+      default: "点击上传"
     },
     width: Number,
     limit: Number,
@@ -86,6 +105,7 @@ export default {
     plain: Boolean,
     icon: String,
     multiple: Boolean,
+    drag: Boolean
   },
   watch: {
     form(v) {
@@ -95,18 +115,21 @@ export default {
         });
         this.form[this.model] = this.fileIdList.join(",");
       }
-    },
+    }
+  },
+  beforeDestroy() {
+    this.fileIdList = [];
   },
   methods: {
     // 导入文件之前
     beforeFileUpload(file) {
       // 默认设置
-      const reg = this.upload.reg || regExp.files;
+      const reg = this.upload.reg; //
       const _size = this.upload.size || 10;
-      if (!reg.test(file.name)) {
-        //校验不通过
+      if (reg && !reg.test(file.name)) {
+        // 校验不通过
         this.$alert("暂不支持该格式！", "提示", {
-          type: "warning",
+          type: "warning"
         });
         return false;
       } else if (file.size / 1024 / 1024 > _size) {
@@ -121,8 +144,12 @@ export default {
 
     // 上传成功
     uploadSuccess(file) {
-      this.fileIdList.push(file.data.fileId);
-      this.form[this.model] = this.fileIdList.join(",");
+      if (file.code === 200) {
+        this.fileIdList.push(file.data.fileId);
+        this.form[this.model] = this.fileIdList.join(",");
+      } else {
+        this.$message.error("上传失败");
+      }
     },
 
     // 上传失败
@@ -133,11 +160,17 @@ export default {
     //  移除文件
     handleRemoveFile(file) {
       if (file) {
-        const id = file.response ? file.response.data.fileId : file.fileId;
+        const id = file.response ? file.response.data.fileId[0] : file.fileId;
         this.fileIdList.splice(this.fileIdList.indexOf(id), 1);
         this.form[this.model] = this.fileIdList.join(",");
       }
-    },
-  },
+    }
+  }
 };
 </script>
+<style scoped>
+.textLabel {
+  opacity: 0.7;
+  font-size: 13px;
+}
+</style>

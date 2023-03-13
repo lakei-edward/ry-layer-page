@@ -4,6 +4,10 @@ export function isUndef(v) {
   return v === undefined || v === null;
 }
 
+export function judgeType(v) {
+  return Object.prototype.toString.call(v).slice(8, -1);
+}
+
 export function isDef(v) {
   return v !== undefined && v !== null;
 }
@@ -47,4 +51,30 @@ export function deepClone(target) {
     }
   }
   return clone(target);
+}
+// 处理多出字典
+export function handleDicts(object, dict, flag = true) {
+  if (flag) {
+    for (const key in object) {
+      if (object[key].mode && Array.isArray(object[key].mode.form)) {
+        object[key].mode.form.forEach(async (item) => {
+          if (judgeType(item.dict) === "String") {
+            item.dict = item.dict && dict.type[item.dict];
+          } else if (judgeType(item.dict) === "Promise") {
+            item.dict = await item.dict;
+          }
+        });
+      }
+    }
+  } else {
+    if (Array.isArray(object.mode.form)) {
+      object.mode.form.forEach(async (item) => {
+        if (judgeType(item.dict) === "String") {
+          item.dict = item.dict && dict.type[item.dict];
+        } else if (judgeType(item.dict) === "Promise") {
+          item.dict = await item.dict;
+        }
+      });
+    }
+  }
 }

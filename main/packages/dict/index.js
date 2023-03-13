@@ -4,9 +4,9 @@ function install(Vue, options) {
     metas: {
       "*": {
         request: options.dict,
-        field: options.dictField,
-      },
-    },
+        field: options.dictField
+      }
+    }
   });
 }
 export default install;
