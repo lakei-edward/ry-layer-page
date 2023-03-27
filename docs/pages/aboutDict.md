@@ -108,7 +108,8 @@ export default {
 
 在使用该插件的时候，支持传入自定义的字典展示形式，可以自定义和接口中的字段保持一致。
 
-`dictLabel` 和 `dictValue`时接口中的字段名称， `label` 和 `value` 是写在代码中的别名名称。
+- `dictLabel` 和 `dictValue`是接口中的字段名称，要和字典接口返回数据的字段对应上；这里是可配置的，万一返回的字段变了，可以改变这两项保持对应！
+- `label` 和 `value` 是写在代码中的别名名称，也就是选择器中的`label`和`value`
 
 ```js {9,10}
 import { getDicts } from "@/api/system/dict/data";

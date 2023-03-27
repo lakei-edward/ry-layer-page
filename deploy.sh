@@ -12,4 +12,4 @@ git add -A
 git commit -m 'update 优化文档'
 
 # 上传至服务器
-scp -r * root@43.142.176.173:/usr/local/nginx/html/ry-layer-page/
+scp -r * root@43.142.176.173:/data/nginx/html/ry-layer-page/

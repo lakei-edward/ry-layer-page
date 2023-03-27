@@ -24,9 +24,11 @@
             :key="item.label"
             :label-width="item.labelWidth"
             :required="item.required"
-            :label="`${item.label}${
-              searchLayer.labelAfter ? searchLayer.labelAfter : '：'
-            }`"
+            :label="
+              `${item.label}${
+                searchLayer.labelAfter ? searchLayer.labelAfter : '：'
+              }`
+            "
             :show-message="item.showMessage"
             :prop="item.model"
             :size="item.size"
@@ -273,7 +275,9 @@
                 :key="item.model"
                 :label="`${item.label}:`"
                 :prop="item.model"
-                :rules="_isUndef(operateLayer[ikey].mode.readonly) ? item.rules : []"
+                :rules="
+                  _isUndef(operateLayer[ikey].mode.readonly) ? item.rules : []
+                "
               >
                 <template v-if="!operateLayer[ikey].mode.readonly">
                   <component
@@ -571,7 +575,7 @@ export default {
   computed: {
     // 动态设置禁用选项
     _setDisabled() {
-      return function (v, row) {
+      return function(v, row) {
         if (v.disabled && v.disabled instanceof Function) {
           // 如果显示在表格内，则传递row信息过去，不受单选和多选的控制了
           if (v.show) {
@@ -597,7 +601,7 @@ export default {
     },
     // 动态设置form组件
     _setLongSpan() {
-      return function (v) {
+      return function(v) {
         return v.width ? `${v.width}px` : "217px";
       };
     },
@@ -605,8 +609,8 @@ export default {
      * 只有时字符串的并且hidden不为true时为true
      */
     _judgeType() {
-      return function (v, hidden) {
-        if (typeof v === "string" && isUndef(hidden)) {
+      return function(v, hidden) {
+        if (typeof v === "string" && this._isDeFalse(hidden)) {
           return true;
         }
       };
@@ -616,7 +620,7 @@ export default {
      * 配置为true时，取反
      */
     _isUndef() {
-      return function (v) {
+      return function(v) {
         return isUndef(v) ? true : !v;
       };
     },
@@ -629,7 +633,7 @@ export default {
      * 当该项传false：false
      */
     _isDeTrue() {
-      return function (v) {
+      return function(v) {
         return isUndef(v) ? true : v;
       };
     },
@@ -637,7 +641,7 @@ export default {
      * 默认为false
      */
     _isDeFalse() {
-      return function (v) {
+      return function(v) {
         return isUndef(v) ? false : v;
       };
     },
@@ -645,7 +649,7 @@ export default {
      * 是否是函数
      */
     _isFunction() {
-      return function (v) {
+      return function(v) {
         return judgeType(v) === "Function";
       };
     },
@@ -665,10 +669,10 @@ export default {
     },
     // 对象是否有值
     _isHaveObject() {
-      return function (v) {
+      return function(v) {
         return Object.keys(v).length > 0;
       };
-    },
+    }
   },
   mounted() {
     // 获取列表
@@ -688,7 +692,7 @@ export default {
     // 初始化字典项
     initDicts(dict) {
       // 查询字典赋值
-      this.searchLayer.form.map(async (item) => {
+      this.searchLayer.form.map(async item => {
         if (judgeType(item.dict) === "string") {
           item.dict = item.dict && dict.type[item.dict];
         } else if (judgeType(item.dict) === "Promise") {
@@ -698,7 +702,7 @@ export default {
       // 弹框中的字典赋值
       handleDicts(this.operateLayer, dict);
       // 表格内的弹窗字典
-      this.displayLayer.data.forEach((item) => {
+      this.displayLayer.data.forEach(item => {
         if (item.operate) {
           handleDicts(item.operate, dict);
         }
@@ -733,7 +737,7 @@ export default {
       this.fileIdList = [];
       // 日期选择清空
       if (this.$refs.FormDateRange) {
-        Array.from(this.$refs.FormDateRange, (e) => {
+        Array.from(this.$refs.FormDateRange, e => {
           e.dateTime = [];
         });
       }
@@ -759,7 +763,7 @@ export default {
       this.ikey = key;
       // 自己定义的字段保存起来
       this.ryParamsClone =
-        item.params && JSON.parse(JSON.stringify(item.params)) || [];
+        (item.params && JSON.parse(JSON.stringify(item.params))) || [];
       // 如果没有mode，则默认直接调取接口
       if (item.mode) {
         // 处理不同类型事件
@@ -796,77 +800,78 @@ export default {
     // 处理不同类型事件
     async handleModeType(item, row, key) {
       switch (item.mode.type) {
-      // 《内置弹框》
-      case "Dialog":
-        // 打开弹框
-        this.dialogAddVisible = true;
-        // 弹框标题
-        this.dialogTitle = item.mode.title ? item.mode.title : item.label;
-        break;
+        // 《内置弹框》
+        case "Dialog":
+          // 打开弹框
+          this.dialogAddVisible = true;
+          // 弹框标题
+          this.dialogTitle = item.mode.title ? item.mode.title : item.label;
+          break;
         // 《确认框》
-      case isTypes.find((r) => r === item.mode.type):
-        // 解决删除时不会清除拼接的id
-        item = deepClone(item);
-        this.handleComfirm(item, row, key);
-        break;
+        case isTypes.find(r => r === item.mode.type):
+          // 解决删除时不会清除拼接的id
+          item = deepClone(item);
+          this.handleComfirm(item, row, key);
+          break;
         // 《自定义弹框》
-      case "CustomDialog":
-        this.dialogVisible = true;
-        break;
+        case "CustomDialog":
+          this.dialogVisible = true;
+          break;
         // 《自定义页面》
-      case "CustomPage":
-        this.pageVisible = true;
-        break;
+        case "CustomPage":
+          this.pageVisible = true;
+          break;
         // 《自定义路由页面》
-      case "RouterPage":
-        // 把详情信息通过路由传过去 支持name和path方式跳转
-        if (item.mode.router && judgeType(item.mode.router) === "Object") {
-          const _routerInfo = item.mode.router;
-          // 当detail没传时，判断参数传递情况，1、detailId不传：则默认传递row，2、传递detailId：则获取row里面的对应的id传过去，可根据该id获取详情
-          const _id = item.mode.detailId || null;
-          _routerInfo.query = _routerInfo.query || {};
-          // 有时接口返回的数据太大了，不能够用路由参数的方式去传输，而且自定义路由页面本身就是一个单独的组件，可以在该组件内调取详情接口
-          // 路由传参方式，如果有detail，则获取信息接口数据，否则返回row数据
-          if (item.mode.detail) {
-            let value = row
-              ? await this.handleInfo(row)
-              : await this.handleInfo(this.sections[0]);
-            this.$set(_routerInfo.query, "params", JSON.stringify(value));
-          } else {
-            // 有的话，只传递id
-            if (_id) {
-              this.$set(_routerInfo.query, _id, this.sections[0][_id]);
+        case "RouterPage":
+          // 把详情信息通过路由传过去 支持name和path方式跳转
+          if (item.mode.router && judgeType(item.mode.router) === "Object") {
+            const _routerInfo = item.mode.router;
+            // 当detail没传时，判断参数传递情况，1、detailId不传：则默认传递row，2、传递detailId：则获取row里面的对应的id传过去，可根据该id获取详情
+            const _id = item.mode.detailId || null;
+            _routerInfo.query = _routerInfo.query || {};
+            // 有时接口返回的数据太大了，不能够用路由参数的方式去传输，而且自定义路由页面本身就是一个单独的组件，可以在该组件内调取详情接口
+            // 路由传参方式，如果有detail，则获取信息接口数据，否则返回row数据
+            if (item.mode.detail) {
+              let value = row
+                ? await this.handleInfo(row)
+                : await this.handleInfo(this.sections[0]);
+              this.$set(_routerInfo.query, "params", JSON.stringify(value));
             } else {
-              // 无的话，传递row
-              this.$set(
-                _routerInfo.query,
-                "params",
-                JSON.stringify(this.sections[0])
-              );
+              // 有的话，只传递id
+              if (_id) {
+                this.$set(_routerInfo.query, _id, this.sections[0][_id]);
+              } else {
+                // 无的话，传递row
+                this.$set(
+                  _routerInfo.query,
+                  "params",
+                  JSON.stringify(this.sections[0])
+                );
+              }
             }
+            this.$router.push(_routerInfo);
+          } else {
+            throw new Error("router is undefined");
           }
-          this.$router.push(_routerInfo);
-        } else {
-          throw new Error("router is undefined");
-        }
-        break;
+          break;
         // 《自定义页面》
-      case "export":
-        this.handleExport(item);
-        break;
+        case "Export":
+          this.handleExport(item);
+          break;
       }
     },
 
     /** 导出按钮操作 */
     handleExport(item) {
       const label = item.mode.label || ID;
-      const exportName = item.mode.exportName;
+      const _paramsLabel = item.mode.paramsLabel || ID;
+      const exportName = item.mode.exportName || "列表文件.xlsx";
       const params = {
-        [item.mode.paramsLabel]: [],
+        [_paramsLabel]: [],
         ...item.params // 把自定义的params带进来
       };
-      this.sections.forEach((v) => {
-        params[item.mode.paramsLabel].push(v[label]);
+      this.sections.forEach(v => {
+        params[_paramsLabel].push(v[label]);
       });
       exportFiles(item.url, params, exportName, this.$options.methods.request);
     },
@@ -905,7 +910,7 @@ export default {
                 item.url = `${item.url}/${row[label]}`;
               } else {
                 // 支持多选删除 两个以上进行拼接[,]
-                const ids = this.sections.map((r) => r[label]).join(",");
+                const ids = this.sections.map(r => r[label]).join(",");
                 if (ids) {
                   item.url = `${item.url}/${ids}`;
                 }
@@ -916,7 +921,7 @@ export default {
               params[paramsLabel] = row[label];
             } else {
               // 支持多选删除 两个以上进行拼接[,]
-              const ids = this.sections.map((r) => r[label]).join(",");
+              const ids = this.sections.map(r => r[label]).join(",");
               if (ids) {
                 params[paramsLabel] = ids;
               }
@@ -932,7 +937,7 @@ export default {
     /* 提交按钮 */
     submitForm() {
       this.isCatch = false;
-      this.$refs["forms"].validate((valid) => {
+      this.$refs["forms"].validate(valid => {
         if (valid) {
           this.submitLoad = true;
           /* 处理多选框 拼接成字符串 */
@@ -940,8 +945,9 @@ export default {
           if (_multiples && _multiples.length > 0) {
             for (const i in this.operateLayer[this.ikey].params) {
               if (_multiples.includes(i)) {
-                this.operateLayer[this.ikey].params[i] =
-                  this.operateLayer[this.ikey].params[i].join(",");
+                this.operateLayer[this.ikey].params[i] = this.operateLayer[
+                  this.ikey
+                ].params[i].join(",");
               }
             }
           }
@@ -1001,7 +1007,7 @@ export default {
     /* 查询 */
     handleQuery() {
       this.$nextTick(() => {
-        this.$refs.formList.validate((valid) => {
+        this.$refs.formList.validate(valid => {
           if (valid) {
             this.queryList();
           }
@@ -1019,7 +1025,7 @@ export default {
       if (this.$refs.FormDateRange) {
         // 日期选择清空
         if (this.$refs.FormDateRange) {
-          Array.from(this.$refs.FormDateRange, (e) => {
+          Array.from(this.$refs.FormDateRange, e => {
             e.dateTime = [];
           });
         }
@@ -1045,7 +1051,7 @@ export default {
       if (multiPath) {
         // 多个path拼接
         let path = "";
-        multiPath.forEach((v) => {
+        multiPath.forEach(v => {
           path += `/${item[v]}`;
         });
         serach_item.url = `${this.serach_url}${path}`;

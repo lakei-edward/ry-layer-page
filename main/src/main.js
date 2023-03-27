@@ -1,5 +1,4 @@
 import Vue from "vue";
-
 import Cookies from "js-cookie";
 
 import Element from "element-ui";

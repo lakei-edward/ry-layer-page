@@ -27,7 +27,7 @@ export default {
         customDialog: {
           params: {},
           label: "自定义弹框",
-          show: "table",//展示到表格操作列中
+          show: "table", //展示到表格操作列中
           mode: {},
         },
       },
@@ -63,6 +63,7 @@ export default {
             },
           },
           {
+            prop: "operate", // 当该列为操作列时，该属性为“operate”必传
             label: "操作",
             operate: true, // 当operateLayer中show字段为true时，自动把该操作放入表格列中
             width: "500",
@@ -82,40 +83,83 @@ export default {
 </script>
 ```
 
+### 展示 el-tag
+
+在表格内展示`el-tag`组件类型样式
+
+```vue
+<template>
+  <ry-layer-page
+    :search-layer="searchLayer"
+    :operate-layer="operateLayer"
+    :display-layer="displayLayer"
+  />
+</template>
+<script>
+export default {
+  data() {
+    const BASE_URL = "/his/office";
+    return {
+      // 展示层
+      displayLayer: {
+        url: `${BASE_URL}/list`,
+        data: [
+          {
+            prop: "status",
+            label: "提交状态",
+            component: {
+              element: "Tag",
+              attr: {
+                type: "success",
+              },
+            },
+            callback: (row) => {
+              return row.status === "Y" ? "已提交" : "未提交";
+            },
+          },
+        ],
+      },
+    };
+  },
+};
+</script>
+```
 
 ### 表格属性
 
-| 属性     | 说明        | 类型  | 可选值 | 默认值
-| :------- | :----------- | :------ | :------------------------------------------ | :----- |
-|url|获取表格数据的接口，为Get方法获取|string|—|—|
-|dblclick|是否可以通过双击表格行进行查看详情|boolean|—|true|
-|rowclick|是否可以通过点击表格行选中该行|boolean|—|true|
-|stripe|是否为斑马纹 table|boolean|—|false|
-|border|是否带有纵向边框|boolean|—|false|
-|size|Table 的尺寸|string|medium / small / mini|—|
-|showHeader|是否显示表头|boolean|—|true|
-|highlightCurrentRow|是否要高亮当前行|boolean|—|false|
-|maxHeight|Table 的最大高度。合法的值为数字或者单位为 px 的高度。|string/number|—|—|
-|height|Table 的高度，默认为自动高度。|string/number|—|—|
-|headerCellStyle|表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style。|Function({row, column, rowIndex, columnIndex})/Object|—|—|
-|cellStyle|单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有单元格设置一样的 Style。|Function({row, column, rowIndex, columnIndex})/Object|—|—|
-|data|表格数据的具体字段信息，在下面进行详细配置|array|—|—|
+| 属性                | 说明                                                                                          | 类型                                                  | 可选值                | 默认值 |
+| :------------------ | :-------------------------------------------------------------------------------------------- | :---------------------------------------------------- | :-------------------- | :----- |
+| url                 | 获取表格数据的接口，为 Get 方法获取                                                           | string                                                | —                     | —      |
+| dblclick            | 是否可以通过双击表格行进行查看详情                                                            | boolean                                               | —                     | false  |
+| rowclick            | 是否可以通过点击表格行选中该行                                                                | boolean                                               | —                     | true   |
+| stripe              | 是否为斑马纹 table                                                                            | boolean                                               | —                     | false  |
+| border              | 是否带有纵向边框                                                                              | boolean                                               | —                     | false  |
+| size                | Table 的尺寸                                                                                  | string                                                | medium / small / mini | —      |
+| showHeader          | 是否显示表头                                                                                  | boolean                                               | —                     | true   |
+| highlightCurrentRow | 是否要高亮当前行                                                                              | boolean                                               | —                     | false  |
+| maxHeight           | Table 的最大高度。合法的值为数字或者单位为 px 的高度。                                        | string/number                                         | —                     | —      |
+| height              | Table 的高度，默认为自动高度。                                                                | string/number                                         | —                     | —      |
+| headerCellStyle     | 表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style。 | Function({row, column, rowIndex, columnIndex})/Object | —                     | —      |
+| cellStyle           | 单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有单元格设置一样的 Style。         | Function({row, column, rowIndex, columnIndex})/Object | —                     | —      |
+| data                | 表格数据的具体字段信息，在下面进行详细配置                                                    | array                                                 | —                     | —      |
 
 ### 表格列属性
-| 属性     | 说明        | 类型  | 可选值 | 默认值
-| :------- | :----------- | :------ | :------------------------------------------ | :----- |
-|prop|对应列内容的字段名，也可以使用 property 属性|string|—|—|
-|label|显示的标题|string|—|—|
-|operate|是否为操作列，当operateLayer中show字段为true时，自动把该操作放入表格列中|boolean|—|—|
-|width|对应列的宽度|string|—|—|
-|minWidth|对应列的最小宽度，与 width 的区别是 width 是固定的，min-width 会把剩余宽度按比例分配给设置了 min-width 的列|string|—|—|
-|fixed|列是否固定在左侧或者右侧，true 表示固定在左侧|string, boolean|true, left, right|—|
-|formatter|用来格式化内容|Function(row, column, cellValue, index)|—|—|
-|align|对齐方式|String|left/center/right|left|
-|className|列的 className|string|—|—|
-|labelClassName|当前列标题的自定义类名|string|—|—|
-|showOverflowTooltip|当内容过长被隐藏时显示 tooltip|boolean|—|true|
-|callback|单元格的回调，用于处理单元格的内容为想要的数据|function|—|—|
+
+| 属性                | 说明                                                                                                        | 类型                                    | 可选值            | 默认值 |
+| :------------------ | :---------------------------------------------------------------------------------------------------------- | :-------------------------------------- | :---------------- | :----- |
+| prop                | 对应列内容的字段名，也可以使用 property 属性                                                                | string                                  | —                 | —      |
+| label               | 显示的标题                                                                                                  | string                                  | —                 | —      |
+| operate             | 是否为操作列，当 operateLayer 中 show 字段为 true 时，自动把该操作放入表格列中                              | boolean                                 | —                 | —      |
+| width               | 对应列的宽度                                                                                                | string                                  | —                 | —      |
+| minWidth            | 对应列的最小宽度，与 width 的区别是 width 是固定的，min-width 会把剩余宽度按比例分配给设置了 min-width 的列 | string                                  | —                 | —      |
+| fixed               | 列是否固定在左侧或者右侧，true 表示固定在左侧                                                               | string, boolean                         | true, left, right | —      |
+| formatter           | 用来格式化内容                                                                                              | Function(row, column, cellValue, index) | —                 | —      |
+| align               | 对齐方式                                                                                                    | String                                  | left/center/right | left   |
+| className           | 列的 className                                                                                              | string                                  | —                 | —      |
+| labelClassName      | 当前列标题的自定义类名                                                                                      | string                                  | —                 | —      |
+| showOverflowTooltip | 当内容过长被隐藏时显示 tooltip                                                                              | boolean                                 | —                 | true   |
+| callback            | 单元格的回调，用于处理单元格的内容为想要的数据                                                              | function                                | —                 | —      |
+| component           | 具体看示例                                                                                                  | object                                  | —                 | —      |
 
 <style>
 table th:nth-of-type(1) {

@@ -72,6 +72,8 @@ export default {
 |valueFormat|可选，绑定值的格式。不指定则绑定值为 Date 对象|string|见日期格式|yyyy-MM-dd|
 |prefixIcon|自定义头部图标的类名|string|—|el-icon-date|
 |appendToBody|DetePicker 自身是否插入至 body 元素上。|boolean|—|true|
+|appendToBody|DetePicker 自身是否插入至 body 元素上。|boolean|—|true|
+|disabledDate |设置禁用选择日期，禁用今天之前/今天之后|string|before/after|—|
 
 <style>
 table th:nth-of-type(1) {

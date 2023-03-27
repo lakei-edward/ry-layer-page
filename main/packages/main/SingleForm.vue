@@ -152,11 +152,19 @@ export default {
   // },
   computed: {
     /**
+     * 默认为false
+     */
+    _isDeFalse() {
+      return function(v) {
+        return isUndef(v) ? false : v;
+      };
+    },
+    /**
      * 只有时字符串的并且hidden不为true时为true
      */
     _judgeType() {
-      return function (v, hidden) {
-        if (typeof v === "string" && isUndef(hidden)) {
+      return function(v, hidden) {
+        if (typeof v === "string" && this._isDeFalse(hidden)) {
           return true;
         }
       };
@@ -165,7 +173,7 @@ export default {
      * 只有时字符串的并且hidden不为true时为true
      */
     _judegeFunction() {
-      return function (v) {
+      return function(v) {
         return typeof v !== "string";
       };
     },
@@ -173,7 +181,7 @@ export default {
      * 动态设置form组件
      */
     _setLongSpan() {
-      return function (v) {
+      return function(v) {
         return v.width ? `${v.width}px` : "217px";
       };
     },
@@ -182,7 +190,7 @@ export default {
      * 配置为true时，取反
      */
     _isUndef() {
-      return function (v) {
+      return function(v) {
         return isUndef(v) ? true : !v;
       };
     }
@@ -206,8 +214,8 @@ export default {
   methods: {
     /** 检查表格校验 */
     checkout() {
-      return new Promise((res) => {
-        this.$refs.forms.validate((valid) => {
+      return new Promise(res => {
+        this.$refs.forms.validate(valid => {
           res(valid);
         });
       });
