@@ -19,6 +19,7 @@
         :validate-on-rule-change="searchLayer.validateOnRuleChange"
       >
         <template v-for="item in searchLayer.form">
+          <!-- 单表单组件 -->
           <el-form-item
             v-if="_judgeType(item.component, item.hidden)"
             :key="item.label"
@@ -40,6 +41,7 @@
               :ref="item.component"
               :form="formList"
               :type="item.type"
+              :model="item.model"
               :startTimeLabel="item.startTimeLabel"
               :endTimeLabel="item.endTimeLabel"
               :startPlaceholder="item.startPlaceholder"
@@ -70,7 +72,6 @@
               :limit="item.limit"
               :dict="item.dict"
               :children="item.children"
-              :model="item.model"
               :clearable="item.clearable"
               :maxlength="item.maxlength"
               :minlength="item.minlength"
@@ -101,12 +102,15 @@
               :focus="item.focus"
             />
           </el-form-item>
+          <!-- 自定组件 -->
           <component
             v-else
             v-bind="$attrs"
             :is="item.component"
             :key="item.name"
             :params="formList"
+            :model="item.model"
+            :noRule="_isDeTrue(item.noRule)"
           />
         </template>
         <el-form-item>
@@ -610,8 +614,10 @@ export default {
      */
     _judgeType() {
       return function(v, hidden) {
-        if (typeof v === "string" && this._isDeFalse(hidden)) {
-          return true;
+        if (typeof v !== "string") {
+          return false;
+        } else {
+          return !this._isDeFalse(hidden); // 如果不是自定义函数，根据hidden判断显隐
         }
       };
     },
@@ -1006,17 +1012,18 @@ export default {
 
     /* 查询 */
     handleQuery() {
-      this.$nextTick(() => {
-        this.$refs.formList.validate(valid => {
-          if (valid) {
-            this.queryList();
-          }
-        });
+      this.$refs.formList.validate(valid => {
+        console.log(valid);
+        if (valid) {
+          this.queryList();
+        }
       });
     },
 
     // 重置
     resetForm() {
+      // 移除校验
+      this.$refs.formList.clearValidate();
       this.formList = {
         pageNum: this.pageNum,
         pageSize: this.pageSize

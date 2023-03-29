@@ -55,8 +55,6 @@ export default {
         model: "dept",
         component: "FormTreeSelect",
         treeUrl: "/system/dept/list",
-        // multiple: true,
-        // alwaysOpen: true,
         showCount: true,
         normalizer(node) {
           return {
@@ -75,24 +73,8 @@ export default {
         label: "时间",
         model: "mzsj",
         type: "datetime",
-        // type:"daterange",
         component: "FormDate"
       },
-      // {
-      //   label: "预警时间",
-      //   type: "daterange",
-      //   width: 300,
-      //   component: "FormDateRange"
-      // },
-      // {
-      //   label: "门诊时间",
-      //   type: "monthrange",
-      //   width: 300,
-      //   valueFormat: "yyyy-MM",
-      //   startTimeLabel: "startTimeMZ",
-      //   endTimeLabel: "endTimeMZ",
-      //   component: "FormDateRange"
-      // },
       {
         label: "附件",
         model: "fileId",
@@ -129,24 +111,9 @@ export default {
         method: "post",
         url: `${BASE_URL}`,
         hasPermi: `${route}:add`,
-        // show: false,
         mode: {
           type: "Dialog",
-          // title: "1",
-          // width: 1000,
-          // fullscreen: true,
-          // modal: false,
-          // modalAppendToBody: false,
-          // appendToBody: false,
-          // closeOnPressEscape: false,
-          // showClose: false,
-          // lockScroll: false,
-          // beforeClose: this.beforeClose,
-          // center: true,//居中布局
-          // closeOnClickModal: false,
-          // destroyOnClose: true,
           customClass: "dark",
-          // top: "25vh", // 距离顶部距离
           form
         }
       },
@@ -345,7 +312,7 @@ export default {
           {
             label: "科室负责人",
             model: "deptLeader",
-            component: "FormInput"
+            component: "FormInput",
           },
           {
             label: "接诊状态",
@@ -356,13 +323,6 @@ export default {
             ],
             component: "FormSelect"
           }
-          // {
-          //   label: "预警时间",
-          //   type: "daterange",
-          //   startTimeLabel: "startTimeYJ",
-          //   endTimeLabel: "endTimeYJ",
-          //   component: "FormDateRange"
-          // }
         ]
       },
       // 操作层
@@ -370,18 +330,9 @@ export default {
       // 展示层
       displayLayer: {
         url: `${BASE_URL}/list`,
-        // dblclick: false, //双击可查看
-        // rowclick: false, // 点击行选择
-        // stripe: false,//	是否为斑马纹
         border: true, // 是否带有纵向边框
-        // size: "mini", //Table 的尺寸
-        // showHeader: false, //是否显示表头
-        // highlightCurrentRow: false, //是否要高亮当前行
-        // maxHeight: 100, // Table 的最大高度。合法的值为数字或者单位为 px 的高度。
-        // height: 50, //Table 的高度，默认为自动高度。如果 height 为 number 类型，单位 px；如果 height 为 string 类型，则这个高度会设置为 Table 的 style.height 的值，Table 的高度会受控于外部样式。
         headerCellStyle: { textAlign: "center" }, // 表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style。
         cellStyle: { "text-align": "center" }, // 单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有单元格设置一样的 Style。
-        // cellStyle: this.cellStyle, // 单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有单元格设置一样的 Style。
         data: [
           {
             prop: "deptName",
@@ -429,8 +380,10 @@ export default {
         return { color: "#ff0053", border: "3px solid #567824" };
       }
     },
-
-    // 字典加载完成的回调
+    /**
+     * @brief 字典加载完成的回调
+     * @param {dict} 字段获取完成的回调
+     */
     onDictReady(dict) {
       // 初始化字典项
       this.$refs.layerpage.initDicts(dict);

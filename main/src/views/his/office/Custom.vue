@@ -2,10 +2,11 @@
   <span>
     <el-form-item
       label="科室类别:"
+      prop="deptCode"
       :rules="
-        readonly
-          ? []
-          : [{ required: true, message: '请输入科室类别', trigger: 'blur' }]
+        setRules([
+          { required: true, message: '请输入科室类别', trigger: 'blur' }
+        ])
       "
     >
       <el-select
@@ -29,10 +30,11 @@
     </el-form-item>
     <el-form-item
       label="科室名称:"
+      prop="deptName"
       :rules="
-        readonly
-          ? []
-          : [{ required: true, message: '请输入科室名称', trigger: 'blur' }]
+        setRules([
+          { required: true, message: '请输入科室名称', trigger: 'blur' }
+        ])
       "
     >
       <el-select
@@ -63,7 +65,8 @@ export default {
       requird: true,
       default: () => {}
     },
-    readonly: Boolean
+    readonly: Boolean,
+    noRule: Boolean
   },
   dicts: ["his_office_class"],
   data() {
@@ -97,6 +100,15 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    /** 根据情况设置校验 */
+    setRules() {
+      return function(val) {
+        // 因为这一个地方在三处使用，所以判断的复杂点；搜索层、新增和查看中用的是一个组件
+        return this.readonly || this.noRule ? [] : val;
+      };
+    }
   },
   watch: {
     "params.deptCode": {
