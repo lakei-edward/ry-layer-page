@@ -1,5 +1,9 @@
 <template>
-  <div ref="rightPanel" :class="{show:show}" class="rightPanel-container">
+  <div
+    ref="rightPanel"
+    :class="{show:show}"
+    class="rightPanel-container"
+  >
     <div class="rightPanel-background" />
     <div class="rightPanel">
       <div class="rightPanel-items">
@@ -10,7 +14,7 @@
 </template>
 
 <script>
-import { addClass, removeClass } from '@/utils'
+import { addClass, removeClass } from '@/utils';
 
 export default {
   name: 'RightPanel',
@@ -27,57 +31,57 @@ export default {
   computed: {
     show: {
       get() {
-        return this.$store.state.settings.showSettings
+        return this.$store.state.settings.showSettings;
       },
       set(val) {
         this.$store.dispatch('settings/changeSetting', {
           key: 'showSettings',
           value: val
-        })
+        });
       }
     },
     theme() {
-      return this.$store.state.settings.theme
-    },
+      return this.$store.state.settings.theme;
+    }
   },
   watch: {
     show(value) {
       if (value && !this.clickNotClose) {
-        this.addEventClick()
+        this.addEventClick();
       }
       if (value) {
-        addClass(document.body, 'showRightPanel')
+        addClass(document.body, 'showRightPanel');
       } else {
-        removeClass(document.body, 'showRightPanel')
+        removeClass(document.body, 'showRightPanel');
       }
     }
   },
   mounted() {
-    this.insertToBody()
-    this.addEventClick()
+    this.insertToBody();
+    this.addEventClick();
   },
   beforeDestroy() {
-    const elx = this.$refs.rightPanel
-    elx.remove()
+    const elx = this.$refs.rightPanel;
+    elx.remove();
   },
   methods: {
     addEventClick() {
-      window.addEventListener('click', this.closeSidebar)
+      window.addEventListener('click', this.closeSidebar);
     },
     closeSidebar(evt) {
-      const parent = evt.target.closest('.rightPanel')
+      const parent = evt.target.closest('.rightPanel');
       if (!parent) {
-        this.show = false
-        window.removeEventListener('click', this.closeSidebar)
+        this.show = false;
+        window.removeEventListener('click', this.closeSidebar);
       }
     },
     insertToBody() {
-      const elx = this.$refs.rightPanel
-      const body = document.querySelector('body')
-      body.insertBefore(elx, body.firstChild)
+      const elx = this.$refs.rightPanel;
+      const body = document.querySelector('body');
+      body.insertBefore(elx, body.firstChild);
     }
   }
-}
+};
 </script>
 
 <style>

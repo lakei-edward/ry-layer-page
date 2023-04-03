@@ -1,7 +1,7 @@
 <template>
   <el-form ref="form" :model="user" :rules="rules" label-width="80px">
     <el-form-item label="用户昵称" prop="nickName">
-      <el-input v-model="user.nickName" />
+      <el-input v-model="user.nickName" maxlength="30" />
     </el-form-item>
     <el-form-item label="手机号码" prop="phonenumber">
       <el-input v-model="user.phonenumber" maxlength="11" />
@@ -11,21 +11,29 @@
     </el-form-item>
     <el-form-item label="性别">
       <el-radio-group v-model="user.sex">
-        <el-radio label="0">男</el-radio>
-        <el-radio label="1">女</el-radio>
+        <el-radio label="0">
+          男
+        </el-radio>
+        <el-radio label="1">
+          女
+        </el-radio>
       </el-radio-group>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" size="mini" @click="submit">保存</el-button>
-      <el-button type="danger" size="mini" @click="close">关闭</el-button>
+      <el-button type="primary" size="mini" @click="submit">
+        保存
+      </el-button>
+      <el-button type="danger" size="mini" @click="close">
+        关闭
+      </el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
 import { updateUserProfile } from "@/api/system/user";
-import { mapState } from "vuex";
-import { getFirstRouter } from "@/utils/ruoyi";
+import { getFirstRouter } from "@/utils/shuke";
+
 export default {
   props: {
     user: {
@@ -58,24 +66,20 @@ export default {
       }
     };
   },
-  computed: {
-    ...mapState({
-      addRoutes: state => state.permission.addRoutes
-    })
-  },
   methods: {
     submit() {
       this.$refs["form"].validate(valid => {
         if (valid) {
           updateUserProfile(this.user).then(response => {
-            this.msgSuccess("修改成功");
+            this.$modal.msgSuccess("修改成功");
           });
         }
       });
     },
     close() {
-      this.$store.dispatch("tagsView/delView", this.$route);
-      this.$router.push({ name: getFirstRouter(this.addRoutes) });
+      this.$router.push({
+        name: getFirstRouter(this.$store.state.permission.addRoutes).name
+      });
     }
   }
 };

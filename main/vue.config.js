@@ -33,22 +33,22 @@ module.exports = {
     open: true,
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
-        // target: `http://localhost:5050`,
-       target: `http://43.142.176.173:5050`,
+        target: `http://localhost:5050`,
+        //  target: `http://43.142.176.173:5050`,
         changeOrigin: true,
         pathRewrite: {
-          ["^" + process.env.VUE_APP_BASE_API]: "",
-        },
-      },
+          ["^" + process.env.VUE_APP_BASE_API]: ""
+        }
+      }
     },
-    disableHostCheck: true,
+    disableHostCheck: true
   },
   configureWebpack: {
     name: name,
     resolve: {
       alias: {
-        "@": resolve("src"),
-      },
-    },
-  },
+        "@": resolve("src")
+      }
+    }
+  }
 };

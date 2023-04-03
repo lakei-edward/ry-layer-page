@@ -1,11 +1,14 @@
 <template>
   <div>
-    <div class="user-info-head" @click="editCropper()">
+    <div
+      class="user-info-head"
+      @click="editCropper()"
+    >
       <img
-        v-bind:src="options.img"
+        :src="options.img"
         title="点击上传头像"
         class="img-circle img-lg"
-      />
+      >
     </div>
     <el-dialog
       :title="title"
@@ -13,31 +16,45 @@
       width="800px"
       append-to-body
       @opened="modalOpened"
-      @close="closeDialog()"
+      @close="closeDialog"
     >
       <el-row>
-        <el-col :xs="24" :md="12" :style="{ height: '350px' }">
+        <el-col
+          :xs="24"
+          :md="12"
+          :style="{height: '350px'}"
+        >
           <vue-cropper
+            v-if="visible"
             ref="cropper"
             :img="options.img"
             :info="true"
-            :autoCrop="options.autoCrop"
-            :autoCropWidth="options.autoCropWidth"
-            :autoCropHeight="options.autoCropHeight"
-            :fixedBox="options.fixedBox"
+            :auto-crop="options.autoCrop"
+            :auto-crop-width="options.autoCropWidth"
+            :auto-crop-height="options.autoCropHeight"
+            :fixed-box="options.fixedBox"
             @realTime="realTime"
-            v-if="visible"
           />
         </el-col>
-        <el-col :xs="24" :md="12" :style="{ height: '350px' }">
+        <el-col
+          :xs="24"
+          :md="12"
+          :style="{height: '350px'}"
+        >
           <div class="avatar-upload-preview">
-            <img :src="previews.url" :style="previews.img" />
+            <img
+              :src="previews.url"
+              :style="previews.img"
+            >
           </div>
         </el-col>
       </el-row>
-      <br />
+      <br>
       <el-row>
-        <el-col :lg="2" :md="2">
+        <el-col
+          :lg="2"
+          :md="2"
+        >
           <el-upload
             action="#"
             :http-request="requestUpload"
@@ -46,42 +63,61 @@
           >
             <el-button size="small">
               选择
-              <i class="el-icon-upload el-icon--right"></i>
+              <i class="el-icon-upload el-icon--right" />
             </el-button>
           </el-upload>
         </el-col>
-        <el-col :lg="{ span: 1, offset: 2 }" :md="2">
+        <el-col
+          :lg="{span: 1, offset: 2}"
+          :md="2"
+        >
           <el-button
             icon="el-icon-plus"
             size="small"
             @click="changeScale(1)"
-          ></el-button>
+          />
         </el-col>
-        <el-col :lg="{ span: 1, offset: 1 }" :md="2">
+        <el-col
+          :lg="{span: 1, offset: 1}"
+          :md="2"
+        >
           <el-button
             icon="el-icon-minus"
             size="small"
             @click="changeScale(-1)"
-          ></el-button>
+          />
         </el-col>
-        <el-col :lg="{ span: 1, offset: 1 }" :md="2">
+        <el-col
+          :lg="{span: 1, offset: 1}"
+          :md="2"
+        >
           <el-button
             icon="el-icon-refresh-left"
             size="small"
             @click="rotateLeft()"
-          ></el-button>
+          />
         </el-col>
-        <el-col :lg="{ span: 1, offset: 1 }" :md="2">
+        <el-col
+          :lg="{span: 1, offset: 1}"
+          :md="2"
+        >
           <el-button
             icon="el-icon-refresh-right"
             size="small"
             @click="rotateRight()"
-          ></el-button>
+          />
         </el-col>
-        <el-col :lg="{ span: 2, offset: 6 }" :md="2">
-          <el-button type="primary" size="small" @click="uploadImg()"
-            >提 交</el-button
+        <el-col
+          :lg="{span: 2, offset: 6}"
+          :md="2"
+        >
+          <el-button
+            type="primary"
+            size="small"
+            @click="uploadImg()"
           >
+            提 交
+          </el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -109,7 +145,7 @@ export default {
       // 弹出层标题
       title: "修改头像",
       options: {
-        img: store.getters.avatar, //裁剪图片的地址
+        img: store.getters.avatar, // 裁剪图片的地址
         autoCrop: true, // 是否默认生成截图框
         autoCropWidth: 200, // 默认生成截图框宽度
         autoCropHeight: 200, // 默认生成截图框高度
@@ -128,7 +164,8 @@ export default {
       this.visible = true;
     },
     // 覆盖默认的上传行为
-    requestUpload() {},
+    requestUpload() {
+    },
     // 向左旋转
     rotateLeft() {
       this.$refs.cropper.rotateLeft();
@@ -145,7 +182,7 @@ export default {
     // 上传预处理
     beforeUpload(file) {
       if (file.type.indexOf("image/") == -1) {
-        this.msgError("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
+        this.$modal.msgError("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
       } else {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -162,8 +199,8 @@ export default {
         uploadAvatar(formData).then(response => {
           this.open = false;
           this.options.img = process.env.VUE_APP_BASE_API + response.imgUrl;
-          store.commit("SET_AVATAR", this.options.img);
-          this.msgSuccess("修改成功");
+          store.commit('SET_AVATAR', this.options.img);
+          this.$modal.msgSuccess("修改成功");
           this.visible = false;
         });
       });
@@ -188,7 +225,7 @@ export default {
 }
 
 .user-info-head:hover:after {
-  content: "+";
+  content: '+';
   position: absolute;
   left: 0;
   right: 0;

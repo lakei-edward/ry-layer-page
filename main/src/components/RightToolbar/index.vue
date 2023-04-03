@@ -1,29 +1,73 @@
 <template>
   <div class="top-right-btn">
     <el-row>
-      <el-tooltip class="item" effect="dark" :content="showSearch ? '隐藏搜索' : '显示搜索'" placement="top">
-        <el-button size="mini" circle icon="el-icon-search" @click="toggleSearch()" />
+      <el-tooltip
+        class="item"
+        effect="dark"
+        :content="showSearch ? '隐藏搜索' : '显示搜索'"
+        placement="top"
+      >
+        <el-button
+          size="mini"
+          circle
+          icon="el-icon-search"
+          @click="toggleSearch()"
+        />
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-        <el-button size="mini" circle icon="el-icon-refresh" @click="refresh()" />
+      <el-tooltip
+        class="item"
+        effect="dark"
+        content="刷新"
+        placement="top"
+      >
+        <el-button
+          size="mini"
+          circle
+          icon="el-icon-refresh"
+          @click="refresh()"
+        />
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="显隐列" placement="top" v-if="columns">
-        <el-button size="mini" circle icon="el-icon-menu" @click="showColumn()" />
+      <el-tooltip
+        v-if="columns"
+        class="item"
+        effect="dark"
+        content="显隐列"
+        placement="top"
+      >
+        <el-button
+          size="mini"
+          circle
+          icon="el-icon-menu"
+          @click="showColumn()"
+        />
       </el-tooltip>
     </el-row>
-    <el-dialog :title="title" :visible.sync="open" append-to-body>
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      append-to-body
+    >
       <el-transfer
-        :titles="['显示', '隐藏']"
         v-model="value"
+        :titles="['显示', '隐藏']"
         :data="columns"
         @change="dataChange"
-      ></el-transfer>
+      />
     </el-dialog>
   </div>
 </template>
 <script>
 export default {
   name: "RightToolbar",
+  props: {
+    showSearch: {
+      type: Boolean,
+      default: true
+    },
+    columns: {
+      type: Array
+    }
+  },
   data() {
     return {
       // 显隐数据
@@ -31,17 +75,8 @@ export default {
       // 弹出层标题
       title: "显示/隐藏",
       // 是否显示弹出层
-      open: false,
+      open: false
     };
-  },
-  props: {
-    showSearch: {
-      type: Boolean,
-      default: true,
-    },
-    columns: {
-      type: Array,
-    },
   },
   created() {
     // 显隐列初始默认隐藏列
@@ -58,11 +93,11 @@ export default {
     },
     // 刷新
     refresh() {
-      this.$emit("querylist");
+      this.$emit("queryTable");
     },
     // 右侧列表元素变化
     dataChange(data) {
-      for (var item in this.columns) {
+      for (let item in this.columns) {
         const key = this.columns[item].key;
         this.columns[item].visible = !data.includes(key);
       }
@@ -70,8 +105,8 @@ export default {
     // 打开显隐列dialog
     showColumn() {
       this.open = true;
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

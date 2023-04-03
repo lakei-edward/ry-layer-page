@@ -6,7 +6,7 @@
       :rules="loginRules"
       class="login-form"
     >
-      <h3 class="title">若依后台管理系统</h3>
+      <h3 class="title">后台管理系统</h3>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
@@ -36,7 +36,7 @@
           />
         </el-input>
       </el-form-item>
-      <el-form-item prop="code">
+      <el-form-item v-if="captchaOnOff" prop="code">
         <el-input
           v-model="loginForm.code"
           auto-complete="off"
@@ -51,14 +51,15 @@
           />
         </el-input>
         <div class="login-code">
-          <img :src="codeUrl" @click="getCode" class="login-code-img" />
+          <img :src="codeUrl" class="login-code-img" @click="getCode" />
         </div>
       </el-form-item>
       <el-checkbox
         v-model="loginForm.rememberMe"
         style="margin: 0px 0px 25px 0px"
-        >记住密码</el-checkbox
       >
+        记住密码
+      </el-checkbox>
       <el-form-item style="width: 100%">
         <el-button
           :loading="loading"
@@ -70,11 +71,16 @@
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
+        <div v-if="register" style="float: right">
+          <router-link class="link-type" :to="'/register'">
+            立即注册
+          </router-link>
+        </div>
       </el-form-item>
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2021 ruoyi.vip All Rights Reserved.</span>
+      <span>Copyright © 2018-2021 shuke.vip All Rights Reserved.</span>
     </div>
   </div>
 </template>
@@ -89,36 +95,37 @@ export default {
   data() {
     return {
       codeUrl: "",
-      cookiePassword: "",
       loginForm: {
         username: "admin",
         password: "admin123",
         rememberMe: false,
         code: "",
-        uuid: "",
+        uuid: ""
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", message: "用户名不能为空" },
+          { required: true, trigger: "blur", message: "请输入您的账号" }
         ],
         password: [
-          { required: true, trigger: "blur", message: "密码不能为空" },
+          { required: true, trigger: "blur", message: "请输入您的密码" }
         ],
-        code: [
-          { required: true, trigger: "change", message: "验证码不能为空" },
-        ],
+        code: [{ required: true, trigger: "change", message: "请输入验证码" }]
       },
       loading: false,
-      redirect: undefined,
+      // 验证码开关
+      captchaOnOff: true,
+      // 注册开关
+      register: false,
+      redirect: undefined
     };
   },
   watch: {
     $route: {
-      handler: function (route) {
+      handler(route) {
         this.redirect = route.query && route.query.redirect;
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   created() {
     this.getCode();
@@ -127,8 +134,12 @@ export default {
   methods: {
     getCode() {
       getCodeImg().then((res) => {
-        this.codeUrl = "data:image/gif;base64," + res.img;
-        this.loginForm.uuid = res.uuid;
+        this.captchaOnOff =
+          res.captchaOnOff === undefined ? true : res.captchaOnOff;
+        if (this.captchaOnOff) {
+          this.codeUrl = `data:image/gif;base64,${res.img}`;
+          this.loginForm.uuid = res.uuid;
+        }
       });
     },
     getCookie() {
@@ -139,7 +150,7 @@ export default {
         username: username === undefined ? this.loginForm.username : username,
         password:
           password === undefined ? this.loginForm.password : decrypt(password),
-        rememberMe: rememberMe === undefined ? false : Boolean(rememberMe),
+        rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
       };
     },
     handleLogin() {
@@ -149,10 +160,10 @@ export default {
           if (this.loginForm.rememberMe) {
             Cookies.set("username", this.loginForm.username, { expires: 30 });
             Cookies.set("password", encrypt(this.loginForm.password), {
-              expires: 30,
+              expires: 30
             });
             Cookies.set("rememberMe", this.loginForm.rememberMe, {
-              expires: 30,
+              expires: 30
             });
           } else {
             Cookies.remove("username");
@@ -162,16 +173,18 @@ export default {
           this.$store
             .dispatch("Login", this.loginForm)
             .then(() => {
-              this.$router.push({ path: "/his/office" }).catch(() => {});
+              this.$router.push({ path: this.redirect || "/" }).catch(() => {});
             })
             .catch(() => {
               this.loading = false;
-              this.getCode();
+              if (this.captchaOnOff) {
+                this.getCode();
+              }
             });
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -1,21 +1,61 @@
 <template>
-  <div class="sidebar-logo-container" :class="{'collapse':collapse}" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBg : variables.menuLightBg }">
+  <div
+    class="sidebar-logo-container"
+    :class="{'collapse':collapse}"
+    :style="{ backgroundColor: sideTheme === 'theme-dark' ?
+      variables.menuBackground : sideTheme === 'theme-light' ? variables.menuLightBackground : sideTheme === 'theme-blue' ? variables.menuBlueBackground : variables.logoLightBlueTitleBackground}"
+  >
     <transition name="sidebarLogoFade">
-      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 v-else class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.sidebarTitle : variables.sidebarLightTitle }">{{ title }} </h1>
+      <router-link
+        v-if="collapse"
+        key="collapse"
+        class="sidebar-logo-link"
+        to="/"
+      >
+        <img
+          v-if="logo"
+          :src="logo"
+          class="sidebar-logo"
+        >
+        <h1
+          v-else
+          class="sidebar-title"
+          :style="{ color: sideTheme === 'theme-dark' ?
+            variables.logoTitleColor : sideTheme === 'theme-light' ?
+              variables.logoLightTitleColor : sideTheme === 'theme-blue' ?
+                variables.logoBlueTitleColor : variables.logoLightBlueTitleColor} "
+        >
+          {{ title }}
+        </h1>
       </router-link>
-      <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.sidebarTitle : variables.sidebarLightTitle }">{{ title }} </h1>
+      <router-link
+        v-else
+        key="expand"
+        class="sidebar-logo-link"
+        to="/"
+      >
+        <img
+          v-if="logo"
+          :src="logo"
+          class="sidebar-logo"
+        >
+        <h1
+          class="sidebar-title"
+          :style="{ color: sideTheme === 'theme-dark' ?
+            variables.logoTitleColor : sideTheme === 'theme-light' ?
+              variables.logoLightTitleColor : sideTheme === 'theme-blue' ?
+                variables.logoBlueTitleColor : variables.logoLightBlueTitleColor}"
+        >
+          {{ title }}
+        </h1>
       </router-link>
     </transition>
   </div>
 </template>
 
 <script>
-import logoImg from '@/assets/logo/logo.png'
-import variables from '@/assets/styles/variables.scss'
+import logoImg from '@/assets/logo/logo.png';
+import variables from '@/assets/styles/variables.scss';
 
 export default {
   name: 'SidebarLogo',
@@ -25,21 +65,21 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      title: '管理系统',
+      logo: logoImg
+    };
+  },
   computed: {
     variables() {
       return variables;
     },
-	sideTheme() {
-      return this.$store.state.settings.sideTheme
-    }
-  },
-  data() {
-    return {
-      title: "若依分层页面",
-      logo: logoImg
+    sideTheme() {
+      return this.$store.state.settings.sideTheme;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,23 +1,43 @@
 <template>
   <el-form ref="form" :model="user" :rules="rules" label-width="80px">
     <el-form-item label="旧密码" prop="oldPassword">
-      <el-input v-model="user.oldPassword" placeholder="请输入旧密码" type="password" />
+      <el-input
+        v-model="user.oldPassword"
+        placeholder="请输入旧密码"
+        type="password"
+        show-password
+      />
     </el-form-item>
     <el-form-item label="新密码" prop="newPassword">
-      <el-input v-model="user.newPassword" placeholder="请输入新密码" type="password" />
+      <el-input
+        v-model="user.newPassword"
+        placeholder="请输入新密码"
+        type="password"
+        show-password
+      />
     </el-form-item>
     <el-form-item label="确认密码" prop="confirmPassword">
-      <el-input v-model="user.confirmPassword" placeholder="请确认密码" type="password" />
+      <el-input
+        v-model="user.confirmPassword"
+        placeholder="请确认密码"
+        type="password"
+        show-password
+      />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" size="mini" @click="submit">保存</el-button>
-      <el-button type="danger" size="mini" @click="close">关闭</el-button>
+      <el-button type="primary" size="mini" @click="submit">
+        保存
+      </el-button>
+      <el-button type="danger" size="mini" @click="close">
+        关闭
+      </el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
 import { updateUserPwd } from "@/api/system/user";
+import { getFirstRouter } from "@/utils/shuke";
 
 export default {
   data() {
@@ -29,7 +49,6 @@ export default {
       }
     };
     return {
-      test: "1test",
       user: {
         oldPassword: undefined,
         newPassword: undefined,
@@ -57,15 +76,16 @@ export default {
         if (valid) {
           updateUserPwd(this.user.oldPassword, this.user.newPassword).then(
             response => {
-              this.msgSuccess("修改成功");
+              this.$modal.msgSuccess("修改成功");
             }
           );
         }
       });
     },
     close() {
-      this.$store.dispatch("tagsView/delView", this.$route);
-      this.$router.push({ path: "/index" });
+      this.$router.push({
+        name: getFirstRouter(this.$store.state.permission.addRoutes).name
+      });
     }
   }
 };

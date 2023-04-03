@@ -26,7 +26,7 @@ const layouts = {
     if (this.formConf.unFocusedComponentBorder) className += ' unfocus-bordered'
     return (
       <el-col span={element.span} class={className}
-        nativeOnClick={event => { activeItem(element); event.stopPropagation() }}>
+        nativeOnClick={event => {activeItem(element); event.stopPropagation()}}>
         <el-form-item label-width={element.labelWidth ? `${element.labelWidth}px` : null}
           label={element.label} required={element.required}>
           <render key={element.renderKey} conf={element} onInput={ event => {
@@ -43,13 +43,13 @@ const layouts = {
     let child = renderChildren.apply(this, arguments)
     if (element.type === 'flex') {
       child = <el-row type={element.type} justify={element.justify} align={element.align}>
-              {child}
-            </el-row>
+        {child}
+      </el-row>
     }
     return (
       <el-col span={element.span}>
         <el-row gutter={element.gutter} class={className}
-          nativeOnClick={event => { activeItem(element); event.stopPropagation() }}>
+          nativeOnClick={event => {activeItem(element); event.stopPropagation()}}>
           <span class="component-name">{element.componentName}</span>
           <draggable list={element.children} animation={340} group="componentsGroup" class="drag-wrapper">
             {child}

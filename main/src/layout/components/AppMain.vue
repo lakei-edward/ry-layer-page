@@ -1,25 +1,34 @@
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
-      <keep-alive :include="cachedViews">
+      <keep-alive v-if="isKeepAlive">
         <router-view :key="key" />
       </keep-alive>
+      <template v-else>
+        <router-view :key="key" />
+      </template>
     </transition>
   </section>
 </template>
 
 <script>
+import { isKeepAlive } from "@/settings.js";
 export default {
-  name: 'AppMain',
+  name: "AppMain",
+  data() {
+    return {
+      isKeepAlive
+    };
+  },
   computed: {
     cachedViews() {
-      return this.$store.state.tagsView.cachedViews
+      return this.$store.state.tagsView.cachedViews;
     },
     key() {
-      return this.$route.path
+      return this.$route.path;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -29,9 +38,10 @@ export default {
   width: 100%;
   position: relative;
   overflow: hidden;
+  background-color: rgb(240, 242, 245);
 }
 
-.fixed-header+.app-main {
+.fixed-header + .app-main {
   padding-top: 50px;
 }
 
@@ -41,7 +51,7 @@ export default {
     min-height: calc(100vh - 84px);
   }
 
-  .fixed-header+.app-main {
+  .fixed-header + .app-main {
     padding-top: 84px;
   }
 }
@@ -51,7 +61,7 @@ export default {
 // fix css style bug in open el-dialog
 .el-popup-parent--hidden {
   .fixed-header {
-    padding-right: 15px;
+    padding-right: 17px;
   }
 }
 </style>

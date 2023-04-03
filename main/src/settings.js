@@ -1,9 +1,8 @@
 module.exports = {
-  title: "Lakeiedward",
-
   /**
-   * 侧边栏主题 深色主题theme-dark，浅色主题theme-light
+   * 侧边栏主题 深色主题theme-dark，浅色主题theme-light，蓝色主题theme-blue ，亮蓝色主题theme-light-blue
    */
+  // sideTheme: "theme-light-blue",
   sideTheme: "theme-dark",
 
   /**
@@ -19,7 +18,7 @@ module.exports = {
   /**
    * 是否显示 tagsView
    */
-  tagsView: true,
+  tagsView: false,
 
   /**
    * 是否固定头部
@@ -32,9 +31,19 @@ module.exports = {
   sidebarLogo: true,
 
   /**
-   * 是否需要首页
+   * 是否显示动态标题
    */
-  homePage: false,
+  dynamicTitle: false,
+
+  /**
+   * 是否开启keep-alive
+   */
+  isKeepAlive: false,
+
+  /**
+   * 是否开启标签页拖拽
+   */
+  isDraggable: true,
 
   /**
    * @type {string | array} 'production' | ['production', 'development']

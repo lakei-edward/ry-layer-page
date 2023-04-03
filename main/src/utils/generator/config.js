@@ -9,7 +9,7 @@ export const formConf = {
   disabled: false,
   span: 24,
   formBtns: true
-}
+};
 
 export const inputComponents = [
   {
@@ -102,7 +102,7 @@ export const inputComponents = [
     changeTag: true,
     document: 'https://element.eleme.cn/#/zh-CN/component/input-number'
   }
-]
+];
 
 export const selectComponents = [
   {
@@ -393,7 +393,7 @@ export const selectComponents = [
     changeTag: true,
     document: 'https://element.eleme.cn/#/zh-CN/component/upload'
   }
-]
+];
 
 export const layoutComponents = [
   {
@@ -422,7 +422,7 @@ export const layoutComponents = [
     disabled: false,
     document: 'https://element.eleme.cn/#/zh-CN/component/button'
   }
-]
+];
 
 // 组件rule的触发方式，无触发方式的组件不生成rule
 export const trigger = {
@@ -435,4 +435,4 @@ export const trigger = {
   'el-time-picker': 'change',
   'el-date-picker': 'change',
   'el-rate': 'change'
-}
+};

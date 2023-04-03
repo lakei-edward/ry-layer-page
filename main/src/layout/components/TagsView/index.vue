@@ -5,38 +5,74 @@
       class="tags-view-wrapper"
       @scroll="handleScroll"
     >
-      <router-link
-        v-for="tag in visitedViews"
-        ref="tag"
-        :key="tag.path"
-        :class="isActive(tag) ? 'active' : ''"
-        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-        tag="span"
-        class="tags-view-item"
-        :style="activeStyle(tag)"
-        @click.middle.native="!isAffix(tag) ? closeSelectedTag(tag) : ''"
-        @contextmenu.prevent.native="openMenu(tag, $event)"
-      >
-        {{ tag.title }}
-        <span
-          v-if="!isAffix(tag)"
-          class="el-icon-close"
-          @click.prevent.stop="closeSelectedTag(tag)"
-        />
-      </router-link>
+      <template v-if="isDraggable">
+        <draggable v-model="visitedViewsClone">
+          <router-link
+            v-for="tag in visitedViewsClone"
+            ref="tag"
+            :key="tag.path"
+            :class="isActive(tag) ? 'active' : ''"
+            :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+            tag="span"
+            class="tags-view-item"
+            :style="activeStyle(tag)"
+            @click.middle.native="!isAffix(tag) ? closeSelectedTag(tag) : ''"
+            @contextmenu.prevent.native="openMenu(tag, $event)"
+          >
+            {{ tag.title }}
+            <span
+              v-if="!isAffix(tag)"
+              class="el-icon-close"
+              @click.prevent.stop="closeSelectedTag(tag)"
+            />
+          </router-link>
+        </draggable>
+      </template>
+      <template v-else>
+        <router-link
+          v-for="tag in visitedViewsClone"
+          ref="tag"
+          :key="tag.path"
+          :class="isActive(tag) ? 'active' : ''"
+          :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+          tag="span"
+          class="tags-view-item"
+          :style="activeStyle(tag)"
+          @click.middle.native="!isAffix(tag) ? closeSelectedTag(tag) : ''"
+          @contextmenu.prevent.native="openMenu(tag, $event)"
+        >
+          {{ tag.title }}
+          <span
+            v-if="!isAffix(tag)"
+            class="el-icon-close"
+            @click.prevent.stop="closeSelectedTag(tag)"
+          />
+        </router-link>
+      </template>
     </scroll-pane>
     <ul
       v-show="visible"
       :style="{ left: left + 'px', top: top + 'px' }"
       class="contextmenu"
     >
-      <li @click="refreshSelectedTag(selectedTag)">刷新页面</li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
-        关闭当前
+      <li @click="refreshSelectedTag(selectedTag)">
+        <i class="el-icon-refresh-right" /> 刷新页面
       </li>
-      <li @click="closeOthersTags">关闭其他</li>
-      <li v-if="!isLastView()" @click="closeRightTags">关闭右侧</li>
-      <li @click="closeAllTags(selectedTag)">关闭所有</li>
+      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
+        <i class="el-icon-close" /> 关闭当前
+      </li>
+      <li @click="closeOthersTags">
+        <i class="el-icon-circle-close" /> 关闭其他
+      </li>
+      <li v-if="!isFirstView()" @click="closeLeftTags">
+        <i class="el-icon-back" /> 关闭左侧
+      </li>
+      <li v-if="!isLastView()" @click="closeRightTags">
+        <i class="el-icon-right" /> 关闭右侧
+      </li>
+      <li @click="closeAllTags(selectedTag)">
+        <i class="el-icon-circle-close" /> 全部关闭
+      </li>
     </ul>
   </div>
 </template>
@@ -44,16 +80,20 @@
 <script>
 import ScrollPane from "./ScrollPane";
 import path from "path";
-import { homePage } from "@/settings";
+import draggable from "vuedraggable";
+import { isDraggable } from "@/settings.js";
+import { getFirstRouter } from "@/utils/shuke";
 export default {
-  components: { ScrollPane },
+  components: { ScrollPane, draggable },
   data() {
     return {
       visible: false,
       top: 0,
       left: 0,
       selectedTag: {},
-      affixTags: []
+      affixTags: [],
+      visitedViewsClone: [],
+      isDraggable
     };
   },
   computed: {
@@ -81,7 +121,8 @@ export default {
     }
   },
   mounted() {
-    this.initTags();
+    this.visitedViewsClone = this.visitedViews;
+    // this.initTags();
     this.addTags();
   },
   methods: {
@@ -97,6 +138,16 @@ export default {
     },
     isAffix(tag) {
       return tag.meta && tag.meta.affix;
+    },
+    isFirstView() {
+      try {
+        return (
+          this.selectedTag.fullPath === this.visitedViews[1].fullPath ||
+          this.selectedTag.fullPath === "/index"
+        );
+      } catch (err) {
+        return false;
+      }
     },
     isLastView() {
       try {
@@ -130,12 +181,11 @@ export default {
       return tags;
     },
     initTags() {
-      if (homePage) {
-        const affixTags = (this.affixTags = this.filterAffixTags(this.routes));
-        for (const tag of affixTags) {
-          if (tag.name) {
-            this.$store.dispatch("tagsView/addVisitedView", tag);
-          }
+      const affixTags = (this.affixTags = this.filterAffixTags(this.routes));
+      for (const tag of affixTags) {
+        // Must have tag name
+        if (tag.name) {
+          this.$store.dispatch("tagsView/addVisitedView", tag);
         }
       }
     },
@@ -162,43 +212,50 @@ export default {
       });
     },
     refreshSelectedTag(view) {
-      this.$store.dispatch("tagsView/delCachedView", view).then(() => {
-        const { fullPath } = view;
-        this.$nextTick(() => {
-          this.$router.replace({
-            path: "/redirect" + fullPath
-          });
-        });
-      });
+      this.$tab.refreshPage(view);
     },
     closeSelectedTag(view) {
-      this.$store
-        .dispatch("tagsView/delView", view)
-        .then(({ visitedViews }) => {
-          if (this.isActive(view)) {
-            this.toLastView(visitedViews, view);
-          }
-        });
+      this.$tab.closePage(view).then(({ visitedViews }) => {
+        if (this.isActive(view)) {
+          this.toLastView(visitedViews, view);
+        }
+        // 解决删除后clone的数据没有更新
+        this.visitedViewsClone = this.visitedViews;
+        if (visitedViews.length === 0) {
+          // 跳转到返回的第一个路由
+          const flag = getFirstRouter(this.$store.state.permission.addRoutes);
+          this.$router
+            .push({
+              name: flag.name
+            })
+            .catch(err => {});
+        }
+        // 关闭时重置当前页面 需要到每个页面中监听重置事件
+        this.$bus.$emit(view.name);
+      });
     },
     closeRightTags() {
-      this.$store
-        .dispatch("tagsView/delRightTags", this.selectedTag)
-        .then(visitedViews => {
-          if (!visitedViews.find(i => i.fullPath === this.$route.fullPath)) {
-            this.toLastView(visitedViews);
-          }
-        });
+      this.$tab.closeRightPage(this.selectedTag).then(visitedViews => {
+        if (!visitedViews.find(i => i.fullPath === this.$route.fullPath)) {
+          this.toLastView(visitedViews);
+        }
+      });
+    },
+    closeLeftTags() {
+      this.$tab.closeLeftPage(this.selectedTag).then(visitedViews => {
+        if (!visitedViews.find(i => i.fullPath === this.$route.fullPath)) {
+          this.toLastView(visitedViews);
+        }
+      });
     },
     closeOthersTags() {
       this.$router.push(this.selectedTag).catch(() => {});
-      this.$store
-        .dispatch("tagsView/delOthersViews", this.selectedTag)
-        .then(() => {
-          this.moveToCurrentTag();
-        });
+      this.$tab.closeOtherPage(this.selectedTag).then(() => {
+        this.moveToCurrentTag();
+      });
     },
     closeAllTags(view) {
-      this.$store.dispatch("tagsView/delAllViews").then(({ visitedViews }) => {
+      this.$tab.closeAllPage().then(({ visitedViews }) => {
         if (this.affixTags.some(tag => tag.path === this.$route.path)) {
           return;
         }
@@ -214,7 +271,7 @@ export default {
         // you can adjust it according to your needs.
         if (view.name === "Dashboard") {
           // to reload home page
-          this.$router.replace({ path: "/redirect" + view.fullPath });
+          this.$router.replace({ path: `/redirect${view.fullPath}` });
         } else {
           this.$router.push("/");
         }

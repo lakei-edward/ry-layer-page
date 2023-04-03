@@ -71,7 +71,7 @@
   </div>
 </template>
 <script>
-import { isNumberStr } from '@/utils/index'
+import { isNumberStr } from '@/utils/index';
 
 export default {
   components: {},
@@ -111,13 +111,13 @@ export default {
           value: 'number'
         }
       ]
-    }
+    };
   },
   computed: {},
   watch: {
     // eslint-disable-next-line func-names
-    'formData.value': function (val) {
-      this.dataType = isNumberStr(val) ? 'number' : 'string'
+    'formData.value' (val) {
+      this.dataType = isNumberStr(val) ? 'number' : 'string';
     }
   },
   created() {},
@@ -127,23 +127,23 @@ export default {
       this.formData = {
         label: undefined,
         value: undefined
-      }
+      };
     },
     onClose() {},
     close() {
-      this.$emit('update:visible', false)
+      this.$emit('update:visible', false);
     },
     handelConfirm() {
       this.$refs.elForm.validate(valid => {
-        if (!valid) return
+        if (!valid) return;
         if (this.dataType === 'number') {
-          this.formData.value = parseFloat(this.formData.value)
+          this.formData.value = parseFloat(this.formData.value);
         }
-        this.formData.id = this.id++
-        this.$emit('commit', this.formData)
-        this.close()
-      })
+        this.formData.id = this.id++;
+        this.$emit('commit', this.formData);
+        this.close();
+      });
     }
   }
-}
+};
 </script>

@@ -26,4 +26,4 @@ export default [
       message: '手机号格式错误'
     }]
   }
-]
+];
