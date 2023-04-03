@@ -196,7 +196,7 @@ export default {
         size: "mini",
         type: "success",
         disabled: v => {
-          return !(v[0].status === "0" ? true : false);
+          return !(v[0].statusHis === "0" ? true : false);
         },
         label: "接诊",
         url: `${BASE_URL}/recmedical`,
@@ -222,7 +222,7 @@ export default {
         size: "mini",
         type: "danger",
         disabled: v => {
-          return !(v[0].status === "1" ? true : false);
+          return !(v[0].statusHis === "1" ? true : false);
         },
         label: "停诊",
         url: `${BASE_URL}/susmedical`,
@@ -312,11 +312,11 @@ export default {
           {
             label: "科室负责人",
             model: "deptLeader",
-            component: "FormInput",
+            component: "FormInput"
           },
           {
             label: "接诊状态",
-            model: "status",
+            model: "statusHis",
             dict: [
               { dictLabel: "否", dictValue: "0" },
               { dictLabel: "是", dictValue: "1" }
@@ -351,10 +351,10 @@ export default {
             label: "科室电话"
           },
           {
-            prop: "status",
+            prop: "statusHis",
             label: "是否接诊",
             callback: item => {
-              return item.status === "1" ? "是" : "否";
+              return item.statusHis === "1" ? "是" : "否";
             }
           },
           {
