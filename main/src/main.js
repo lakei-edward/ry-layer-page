@@ -65,6 +65,9 @@ Vue.prototype.$format = format;
 Vue.prototype.$axios = axios;
 Vue.prototype.$bus = new Vue();
 Vue.prototype._ = _;
+Vue.prototype.msgSuccess = function (msg) {
+  this.$message({ showClose: true, message: msg, type: "success" });
+};
 
 // 全局组件挂载
 Vue.component("DictTag", DictTag);
@@ -73,6 +76,8 @@ Vue.component("RightToolbar", RightToolbar);
 Vue.component("Editor", Editor);
 Vue.component("FileUpload", FileUpload);
 Vue.component("ImageUpload", ImageUpload);
+
+
 
 Vue.use(directive);
 Vue.use(mixin);

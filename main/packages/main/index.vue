@@ -1013,7 +1013,6 @@ export default {
     /* 查询 */
     handleQuery() {
       this.$refs.formList.validate(valid => {
-        console.log(valid);
         if (valid) {
           this.queryList();
         }
@@ -1082,6 +1081,7 @@ export default {
           params: flag ? params : ""
         });
         if (res.code === 200) {
+          debugger;
           if (value && res.data) {
             return res.data;
           }

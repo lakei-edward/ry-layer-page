@@ -28,11 +28,10 @@
           {{ title }}
         </h1>
       </router-link>
-      <router-link
+      <div
         v-else
         key="expand"
         class="sidebar-logo-link"
-        to="/"
       >
         <img
           v-if="logo"
@@ -48,7 +47,7 @@
         >
           {{ title }}
         </h1>
-      </router-link>
+      </div>
     </transition>
   </div>
 </template>
@@ -67,7 +66,7 @@ export default {
   },
   data() {
     return {
-      title: '管理系统',
+      title: '装备展览',
       logo: logoImg
     };
   },

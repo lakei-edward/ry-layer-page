@@ -24,11 +24,14 @@ router.beforeEach((to, from, next) => {
         store
           .dispatch("GetInfo")
           .then(() => {
-            store.dispatch("GenerateRoutes").then((accessRoutes) => {
+            store.dispatch("GenerateRoutes").then(accessRoutes => {
               // 根据roles权限生成可访问的路由表
               router.addRoutes(accessRoutes); // 动态添加可访问路由表
               // 跳转到返回的第一个路由
-              if (accessRoutes.length > 0 && from.path === "/login") {
+              if (
+                (accessRoutes.length > 0 && from.path === "/login") ||
+                to.path === "/"
+              ) {
                 let firstRouter = getFirstRouter(accessRoutes);
                 // 有参数JSON的query参数转成对象格式
                 if (
@@ -43,7 +46,7 @@ router.beforeEach((to, from, next) => {
               }
             });
           })
-          .catch((err) => {
+          .catch(err => {
             store.dispatch("LogOut").then(() => {
               Message.error(err);
               next({ path: "/" });
