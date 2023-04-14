@@ -217,10 +217,10 @@
                 </template>
               </template>
               <template v-else>
-                <template v-if="item.component">
+                <template v-if="item.use">
                   <component
-                    :is="item.component.element"
-                    :attr="item.component.attr"
+                    :is="item.use.element"
+                    :attr="item.use.attr"
                     :callback="item.callback"
                     :row="scope.row"
                     :prop="item.prop"
@@ -277,12 +277,13 @@
               <el-form-item
                 v-if="_judgeType(item.component, item.hidden)"
                 :key="item.model"
-                :label="`${item.label}:`"
+                :label="`${item.label}：`"
                 :prop="item.model"
                 :rules="
                   _isUndef(operateLayer[ikey].mode.readonly) ? item.rules : []
                 "
               >
+                <!-- 新增和修改 -->
                 <template v-if="!operateLayer[ikey].mode.readonly">
                   <component
                     v-bind="$attrs"
@@ -347,28 +348,49 @@
                     :rows="item.rows"
                     :fileListLabel="item.fileListLabel"
                     :show-word-limit="item.showWordLimit"
+                    :storage="item.storage"
+                    :list-type="item.listType"
                     :click="item.click"
                     :change="item.change"
                     :blur="item.blur"
                     :focus="item.focus"
                   />
                 </template>
-
+                <!-- 纯文本查看 -->
                 <div
                   v-else
                   :style="{ width: _setLongSpan(item), wordWrap: 'break-word' }"
                 >
-                  <template>{{
-                    operateLayer[ikey].params[item.model]
+                  <template v-if="item.component !== 'FormUpdate'">{{
+                    setDetailLabel(item)
                   }}</template>
-                  <template v-if="item.component === 'FormUpdate'">
+                  <!-- <template v-if="item.component !== 'FormUpdate'">{{
+                     item.dict.find(
+                      r => r.value === operateLayer[ikey].params[item.model]
+                    ).label
+                  }}</template> -->
+                  <template v-else>
                     <div
                       v-for="file in operateLayer[ikey].params[
                         item.fileListLabel ? item.fileListLabel : 'fileList'
                       ]"
                       :key="file.fileId"
                     >
-                      <el-link type="primary" @click="downFiles(file, item)"
+                      <img
+                        v-if="item.image && item.image.show"
+                        :src="file[item.pathLabel ? item.pathLabel : 'path']"
+                        :alt="item.image.alt"
+                        :style="{
+                          width:
+                            (item.image.width ? item.image.width : 150) + 'px',
+                          height:
+                            (item.image.height ? item.image.height : '') + 'px'
+                        }"
+                      />
+                      <el-link
+                        v-else
+                        type="primary"
+                        @click="downFiles(file, item)"
                         ><i
                           style="margin-right: 5px"
                           class="el-icon-paperclip"
@@ -457,6 +479,7 @@ import FormDate from "./FormDate.vue";
 import FormTextarea from "./FormTextarea.vue";
 import FormUpdate from "./FormUpdate.vue";
 import Tag from "../common/Tag.vue";
+import Avatar from "../common/Avatar.vue";
 import {
   isUndef,
   isDef,
@@ -477,7 +500,8 @@ export default {
     FormDate,
     FormTextarea,
     FormUpdate,
-    Tag
+    Tag,
+    Avatar
   },
   props: {
     // 页数
@@ -678,6 +702,23 @@ export default {
       return function(v) {
         return Object.keys(v).length > 0;
       };
+    },
+    // 设置查看中展示字段内容
+    setDetailLabel() {
+      return function(v) {
+        if (v.dict) {
+          let flag = v.dict.find(
+            r => r.value === this.operateLayer[this.ikey].params[v.model]
+          );
+          if (flag) return flag[this.GET_KEY[0]];
+        } else {
+          return this.operateLayer[this.ikey].params[v.model];
+        }
+      };
+    },
+    /** 根据main.js中配置的dictField来取字典中的别名名称 */
+    GET_KEY() {
+      return Object.values(this.$options.filed);
     }
   },
   mounted() {
@@ -965,11 +1006,12 @@ export default {
 
     // 附件下载
     downFiles(file, item) {
+      const url = item.downloadUrl ? item.downloadUrl : "/minio/download";
       if (item.downloadWay === "new-window") {
-        window.open(`/dev-api/file/minio/download/${file.fileId}`);
+        window.open(`${url}/${file.fileId}`);
       } else {
         download(
-          `/file/minio/download/${file.fileId}`,
+          `${url}/${file.fileId}`,
           {},
           file.name,
           this.$options.methods.request
@@ -1081,7 +1123,6 @@ export default {
           params: flag ? params : ""
         });
         if (res.code === 200) {
-          debugger;
           if (value && res.data) {
             return res.data;
           }

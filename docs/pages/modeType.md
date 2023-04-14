@@ -87,7 +87,7 @@ export default {
 | form               | 移步阅读 单表单组件章节                                                            | array                                | —                  | —      |
 | button             | 自定义弹框中按钮的文字以及显隐，不加此项，默认按钮为'取消'，'确定'                 | array                                | —                  | —      |
 | detail             | 默认传递表格row信息；当type为RouterPage并且detail为true时，则路由模式中的query接受详情信息，但是过大的详情信息不建议走路由传参！ | boolean                              | —                  | false  |
-| rules              | 弹框中的表单是否需要校验                                                           | boolean                              | —                  | false  |
+| rules              | 详见element的rules规则                                                           | array                              | —                  | —   |
 | readonly           | 用于查看功能等，弹框中的信息是否为纯文本展示                                       | boolean                              | —                  | false  |
 | title              | Dialog 的标题；为空时取按钮的文本（label 字段）                                    | string                               | —                  | —      |
 | width              | Dialog 的宽度                                                                      | string                               | —                  | 50%    |

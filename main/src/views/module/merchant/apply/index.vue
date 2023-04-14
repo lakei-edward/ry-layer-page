@@ -5,17 +5,14 @@
       :search-layer="searchLayer"
       :operate-layer="operateLayer"
       :display-layer="displayLayer"
-      :loading="false"
+      :loading="true"
     />
   </div>
 </template>
 <script>
 import { getToken } from "@/utils/auth";
 export default {
-  dicts: ["sys_normal_disable", "sys_show_hide"],
   data() {
-    const route = this.$route.name.toLowerCase();
-    const kpType = this.$route.query.type;
     const BASE_URL = `/merApply`;
     const form = [
       {
@@ -39,10 +36,10 @@ export default {
       {
         label: "报名日期",
         model: "createTime",
-        type: "daterange",
+        type: "datetimerange",
         component: "FormDateRange" /* 年月日 */,
-        startTimeLabel: "startGrjdzjrq",
-        endTimeLabel: "endGrjdzjrq",
+        startTimeLabel: "startTime",
+        endTimeLabel: "endTime",
         startPlaceholder: "开始日期",
         endPlaceholder: "结束日期",
         width: 260
@@ -55,23 +52,35 @@ export default {
         width: 260
       }
     ];
+    const rules = message => {
+      return [
+        {
+          required: true,
+          message,
+          trigger: "change"
+        }
+      ];
+    };
     const addForm = [
       {
         label: "单位名称",
         model: "unit",
         component: "FormInput",
+        rules: rules("请输入单位名称"),
         width: 260
       },
       {
         label: "手机号",
         model: "phone",
         component: "FormInput",
+        rules: rules("请输入手机号"),
         width: 260
       },
       {
         label: "城市",
         model: "city",
         component: "FormInput",
+        rules: rules("请输入城市"),
         width: 260
       },
       {
@@ -79,27 +88,38 @@ export default {
         model: "isJoin",
         component: "FormSelect",
         dict: [{ label: "参加", value: "Y" }, { label: "不参加", value: "N" }],
+        rules: rules("请选择是否参加本次活动"),
         width: 260
       },
       {
-        label: "附件",
-        model: "fileId",
+        label: "企业Logo",
+        model: "logoPath",
         size: "small",
         component: "FormUpdate",
+        rules: rules("请上传企业Logo"),
         width: 380,
         drag: true,
         icon: "el-icon-receiving",
-        fileListLabel: "lsfi",
-        multiple: true,
+        fileListLabel: "lsfj",
+        multiple: false,
+        listType: "picture",
+        image: {
+          show: true,
+          alt: "图片异常",
+          width: 200
+        },
+        pathLabel: "path",
+        limit: 1,
+        storage: "single",
         buttonLabel: "上传图片",
         upload: {
           action: `${process.env.VUE_APP_BASE_API}/minio/upload`,
           headers: { Authorization: `Bearer ${getToken()}` },
-          // reg: /^.*\.(?:jpg|jpeg|png|map4|doc|docx|xls|xlxs)$/i,
-          size: 100,
+          reg: /^.*\.(?:jpg|jpeg|png)$/i,
+          size: 5,
           textLabel:
-            "请上传大小不超过 <span style='color:#ff0078'>100MB</span> 的文件",
-          sizeLabel: "上传文件大小不能超过100MB"
+            "请上传大小不超过 <span style='color:#ff0078'>5MB</span> 的文件",
+          sizeLabel: "上传文件大小不能超过5MB"
         }
       }
     ];
@@ -120,26 +140,16 @@ export default {
       submit: {
         size: "mini",
         type: "primary",
-        label: "提交",
+        label: "修改",
         params: {},
-        disabled: val => {
-          return val[0].tjzt === "Y";
-        },
-        method: "post",
-        url: `${BASE_URL}/updateTRckpGrjdzjByIds`,
+        disabled: "single",
+        method: "put",
+        url: `${BASE_URL}`,
         mode: {
-          subscribe: "提交后，考核数据立即生效，确认无误后可点击确定。",
-          type: "warning",
-          title: "提示",
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          showConfirmButton: true,
-          showCancelButton: true,
-          center: false,
-          roundButton: false,
-          paramsType: true // params传参模式，不是path传参
-          // label: "deptId", // 取值id的别名
-          // paramsLabel: "ids" // 参数别名
+          type: "Dialog",
+          width: "70%",
+          detail: true,
+          form: addForm
         }
       },
       search: {
@@ -150,28 +160,24 @@ export default {
         disabled: "single",
         method: "get",
         url: `${BASE_URL}`,
-        multiPath: ["id", "type"], // 这里的type取得是undefined,后端接受的就是这个，因为type在list中没有这个字段，无所谓是什么
         mode: {
-          type: "RouterPage",
+          type: "Dialog",
+          width: "70%",
           detail: true,
-          router: {
-            path: "/rckp/grjdzj-info/index/",
-            query: {
-              type: kpType,
-              mode: "search"
-            }
-          }
+          readonly: true,
+          form: addForm
         }
       },
       remove: {
         size: "mini",
         type: "primary",
-        label: "删除", // todo 选择导出还未联调
+        label: "删除",
         params: {},
         method: "delete",
+        disabled: "multipe",
         url: `${BASE_URL}`,
         mode: {
-          subscribe: "提交后，考核数据立即生效，确认无误后可点击确定。",
+          subscribe: "确认删除改数据？",
           type: "warning",
           title: "提示",
           confirmButtonText: "确定"
@@ -180,12 +186,12 @@ export default {
       export: {
         size: "mini",
         type: "primary",
-        label: "导出", // todo 选择导出还未联调
+        label: "导出",
         params: {},
         method: "post",
         url: `${BASE_URL}/export`,
         mode: {
-          type: "export",
+          type: "Export",
           paramsLabel: "exportIds",
           exportName: "个人季度总结.xlsx"
         }
@@ -209,14 +215,28 @@ export default {
         url: `${BASE_URL}`,
         params: {},
         dblclick: false, // 双击可查看
-        // border: true, // 是否带有纵向边框
+        border: true, // 是否带有纵向边框
         headerCellStyle: { textAlign: "center" }, // 表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style。
         cellStyle: { "text-align": "center" }, // 单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有单元格设置一样的 Style。
         data: [
           {
+            prop: "logo",
+            label: "企业Logo",
+            use: {
+              element: "Avatar",
+              attr: {
+                path: "picPath",
+                show: true,
+                alt: "图片异常",
+                width: 50
+              }
+            }
+          },
+          {
             prop: "unit",
             label: "单位名称"
           },
+
           {
             prop: "phone",
             label: "手机号"
@@ -225,16 +245,23 @@ export default {
             prop: "city",
             label: "城市"
           },
+
           {
             prop: "createTime",
             label: "报名日期"
           },
           {
             prop: "isJoin",
-            label: "是否参加"
-            // callback: row => {
-            //   return row.tjzt === "Y" ? "参加" : "不参加";
-            // }
+            label: "是否参加",
+            use: {
+              element: "Tag",
+              attr: {
+                type: "primary"
+              }
+            },
+            callback: row => {
+              return row.isJoin === "Y" ? "参加" : "不参加";
+            }
           }
         ]
       }

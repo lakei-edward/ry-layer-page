@@ -155,6 +155,7 @@ export const constantRoutes = [
 
 export default new Router({
   mode: 'history', // 去掉url中的#
+  base:"/ry-test-system/",
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 });

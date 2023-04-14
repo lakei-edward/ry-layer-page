@@ -21,7 +21,7 @@ const install = function(Vue, opts = {}) {
     };
     const dictField = opts.dictField ? opts.dictField : filed;
     FormSelect.filed = dictField;
-
+    ryLayerPage.filed = dictField;
     Vue.use(Dict, {
       dict: opts.dict,
       dictField

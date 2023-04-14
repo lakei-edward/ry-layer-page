@@ -1,9 +1,9 @@
 <template>
   <div id="FormUpdate">
     <el-upload
-      ref="Upload"
+      ref="upload"
       :drag="drag"
-      :multiple="multiple"
+      :multiple="handleMultiple"
       :action="upload.action"
       :before-upload="beforeFileUpload"
       :on-success="uploadSuccess"
@@ -13,6 +13,7 @@
       :limit="limit"
       :file-list="form[fileListLabel]"
       :headers="upload.headers"
+      :list-type="listType"
       :style="{ width: width ? width + 'px' : formWidth + 'px' }"
     >
       <template v-if="!drag">
@@ -28,13 +29,15 @@
           <template
             v-if="buttonLabel === 'string' && buttonLabel.length === 0"
           ></template>
-          <template v-else> {{ buttonLabel }} </template>
+          <template v-else>
+            {{ buttonLabel }}
+          </template>
         </el-button>
         <div slot="tip" class="el-upload__tip">
           <span
             v-html="
               upload.textLabel ||
-              '请上传 大小不超过 10MB 格式为 doc/docx/xls/xlsx/txt/pdf/jpg/png 的文件'
+                '请上传 大小不超过 10MB 格式为 doc/docx/xls/xlsx/txt/pdf/jpg/png 的文件'
             "
           ></span>
         </div>
@@ -47,7 +50,7 @@
             <span
               v-html="
                 upload.textLabel ||
-                '请上传 大小不超过 10MB 格式为 doc/docx/xls/xlsx/txt/pdf/jpg/png 的文件'
+                  '请上传 大小不超过 10MB 格式为 doc/docx/xls/xlsx/txt/pdf/jpg/png 的文件'
               "
             ></span>
           </div>
@@ -57,7 +60,6 @@
   </div>
 </template>
 <script>
-import regExp from "../plugin/regExp";
 export default {
   name: "FormUpdate",
   data() {
@@ -72,10 +74,6 @@ export default {
     model: {
       type: String
     },
-    // fileIdList: {
-    //   type: Array,
-    //   default: () => []
-    // },
     upload: {
       type: Object,
       required: true,
@@ -97,6 +95,14 @@ export default {
       type: String,
       default: "点击上传"
     },
+    storage: {
+      type: String,
+      default: "multiple"
+    },
+    listType: {
+      type: String,
+      default: "text"
+    },
     width: Number,
     limit: Number,
     disabled: Boolean,
@@ -107,10 +113,21 @@ export default {
     multiple: Boolean,
     drag: Boolean
   },
+  computed: {
+    /** 处理上传方式 */
+    handleMultiple() {
+      // 存储文件方式，如果存储方式为单文件，则不允许多选文件上传，否则允许多选或单选上传
+      return this.isSingle ? false : this.multiple;
+    },
+    /** 是单存储 */
+    isSingle() {
+      return this.storage === "single";
+    }
+  },
   watch: {
     form(v) {
       if (v[this.fileListLabel]) {
-        v[this.fileListLabel].forEach((item) => {
+        v[this.fileListLabel].forEach(item => {
           this.fileIdList.push(item.fileId);
         });
         this.form[this.model] = this.fileIdList.join(",");
@@ -145,8 +162,12 @@ export default {
     // 上传成功
     uploadSuccess(file) {
       if (file.code === 200) {
-        this.fileIdList.push(file.data.fileId);
-        this.form[this.model] = this.fileIdList.join(",");
+        if (this.isSingle) {
+          this.form[this.model] = file.data.fileId;
+        } else {
+          this.fileIdList.push(file.data.fileId);
+          this.form[this.model] = this.fileIdList.join(",");
+        }
       } else {
         this.$message.error("上传失败");
       }
@@ -160,9 +181,13 @@ export default {
     //  移除文件
     handleRemoveFile(file) {
       if (file) {
-        const id = file.response ? file.response.data.fileId[0] : file.fileId;
-        this.fileIdList.splice(this.fileIdList.indexOf(id), 1);
-        this.form[this.model] = this.fileIdList.join(",");
+        if (this.isSingle) {
+          this.form[this.model] = "";
+        } else {
+          const id = file.response ? file.response.data.fileId[0] : file.fileId;
+          this.fileIdList.splice(this.fileIdList.indexOf(id), 1);
+          this.form[this.model] = this.fileIdList.join(",");
+        }
       }
     }
   }

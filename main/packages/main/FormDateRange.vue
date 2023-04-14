@@ -1,13 +1,13 @@
 <template>
   <el-date-picker
     v-model="dateTime"
+    :size="size"
     :type="type"
     :format="format"
     :disabled="disabled"
     :editable="editable"
     :clearable="clearable"
     :placeholder="placeholder"
-    :size="size"
     :value-format="valueFormat"
     :popper-class="popperClass"
     :prefix-icon="prefixIcon"
@@ -43,6 +43,10 @@ export default {
     popperClass: {
       type: String
     },
+    format: {
+      type: String,
+      default: "yyyy-MM-dd"
+    },
     valueFormat: {
       type: String,
       default: "yyyy-MM-dd"
@@ -75,10 +79,6 @@ export default {
     },
     formWidth: {
       type: Number
-    },
-    format: {
-      type: String,
-      default: "yyyy-MM-dd"
     },
     disabled: Boolean,
     editable: Boolean,

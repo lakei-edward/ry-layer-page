@@ -75,7 +75,6 @@ export default {
   },
   methods: {
     handleChange(val) {
-      console.log(val)
       this.change && this.change(val);
     },
   },
