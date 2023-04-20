@@ -81,29 +81,29 @@ export default {
 
 #### 属性
 
-| 属性               | 说明                                                                               | 类型                                 | 可选值             | 默认值 |
-| :----------------- | :--------------------------------------------------------------------------------- | :----------------------------------- | :----------------- | :----- |
-| type               | 点击按钮后，需要触发的操作类型                                                     | string                               | 见 mode 的六种类型 | —      |
-| form               | 移步阅读 单表单组件章节                                                            | array                                | —                  | —      |
-| button             | 自定义弹框中按钮的文字以及显隐，不加此项，默认按钮为'取消'，'确定'                 | array                                | —                  | —      |
-| detail             | 默认传递表格row信息；当type为RouterPage并且detail为true时，则路由模式中的query接受详情信息，但是过大的详情信息不建议走路由传参！ | boolean                              | —                  | false  |
-| rules              | 详见element的rules规则                                                           | array                              | —                  | —   |
-| readonly           | 用于查看功能等，弹框中的信息是否为纯文本展示                                       | boolean                              | —                  | false  |
-| title              | Dialog 的标题；为空时取按钮的文本（label 字段）                                    | string                               | —                  | —      |
-| width              | Dialog 的宽度                                                                      | string                               | —                  | 50%    |
-| fullscreen         | 是否为全屏 Dialog                                                                  | boolean                              | —                  | false  |
-| top                | Dialog CSS 中的 margin-top 值                                                      | string                               | —                  | 15vh   |
-| modal              | 是否需要遮罩层                                                                     | boolean                              | —                  | true   |
-| modalAppendToBody  | 遮罩层是否插入至 body 元素上，若为 false，则遮罩层会插入至 Dialog 的父元素上       | boolean                              | —                  | true   |
-| appendToBody       | Dialog 自身是否插入至 body 元素上。嵌套的 Dialog 必须指定该属性并赋值为 true       | boolean                              | —                  | false  |
-| lockScroll         | 是否在 Dialog 出现时将 body 滚动锁定                                               | boolean                              | —                  | true   |
-| customClass        | Dialog 的自定义类名                                                                | string                               | —                  | —      |
-| closeOnClickModal  | 是否可以通过点击 modal 关闭 Dialog                                                 | boolean                              | —                  | true   |
-| closeOnPressEscape | 是否可以通过按下 ESC 关闭 Dialog                                                   | boolean                              | —                  | true   |
-| showClose          | 是否显示关闭按钮                                                                   | boolean                              | —                  | true   |
-| beforeClose        | 关闭前的回调，会暂停 Dialog 的关闭                                                 | function(done)，done 用于关闭 Dialog | —                  | —      |
-| center             | 是否对头部和底部采用居中布局                                                       | boolean                              | —                  | false  |
-| destroyOnClose     | 关闭时销毁 Dialog 中的元素                                                         | boolean                              | —                  | false  |
+| 属性               | 说明                                                                                                                                         | 类型                                 | 可选值             | 默认值 |
+| :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------- | :----------------- | :----- |
+| type               | 点击按钮后，需要触发的操作类型                                                                                                               | string                               | 见 mode 的六种类型 | —      |
+| form               | 移步阅读 单表单组件章节                                                                                                                      | array                                | —                  | —      |
+| button             | 自定义弹框中按钮的文字以及显隐，不加此项，默认按钮为'取消'，'确定'                                                                           | array                                | —                  | —      |
+| detail             | 默认传递表格 row 信息；当 type 为 RouterPage 并且 detail 为 true 时，则路由模式中的 query 接受详情信息，但是过大的详情信息不建议走路由传参！ | boolean                              | —                  | false  |
+| rules              | 详见 element 的 rules 规则                                                                                                                   | array                                | —                  | —      |
+| readonly           | 用于查看功能等，弹框中的信息是否为纯文本展示                                                                                                 | boolean                              | —                  | false  |
+| title              | Dialog 的标题；为空时取按钮的文本（label 字段）                                                                                              | string                               | —                  | —      |
+| width              | Dialog 的宽度                                                                                                                                | string                               | —                  | 50%    |
+| fullscreen         | 是否为全屏 Dialog                                                                                                                            | boolean                              | —                  | false  |
+| top                | Dialog CSS 中的 margin-top 值                                                                                                                | string                               | —                  | 15vh   |
+| modal              | 是否需要遮罩层                                                                                                                               | boolean                              | —                  | true   |
+| modalAppendToBody  | 遮罩层是否插入至 body 元素上，若为 false，则遮罩层会插入至 Dialog 的父元素上                                                                 | boolean                              | —                  | true   |
+| appendToBody       | Dialog 自身是否插入至 body 元素上。嵌套的 Dialog 必须指定该属性并赋值为 true                                                                 | boolean                              | —                  | false  |
+| lockScroll         | 是否在 Dialog 出现时将 body 滚动锁定                                                                                                         | boolean                              | —                  | true   |
+| customClass        | Dialog 的自定义类名                                                                                                                          | string                               | —                  | —      |
+| closeOnClickModal  | 是否可以通过点击 modal 关闭 Dialog                                                                                                           | boolean                              | —                  | true   |
+| closeOnPressEscape | 是否可以通过按下 ESC 关闭 Dialog                                                                                                             | boolean                              | —                  | true   |
+| showClose          | 是否显示关闭按钮                                                                                                                             | boolean                              | —                  | true   |
+| beforeClose        | 关闭前的回调，会暂停 Dialog 的关闭                                                                                                           | function(done)，done 用于关闭 Dialog | —                  | —      |
+| center             | 是否对头部和底部采用居中布局                                                                                                                 | boolean                              | —                  | false  |
+| destroyOnClose     | 关闭时销毁 Dialog 中的元素                                                                                                                   | boolean                              | —                  | false  |
 
 ## 确认弹框
 
@@ -130,7 +130,7 @@ export default {
             subscribe: "是否确认删除这些数据?",
             type: "warning",
             title: "提示",
-            label: "deptId",
+            label: "deptId", // path接口传参为：http://xxxx/deptId
           },
         },
         warn: {
@@ -146,7 +146,9 @@ export default {
               return `${item.deptLeader}已被严重警告`;
             },
             title: "警告",
+            requestParams: true, // params传参：{ids：deptId}
             label: "deptId",
+            paramsLabel: "ids",
             catch: () => {
               this.$message({
                 type: "info",
@@ -160,6 +162,46 @@ export default {
   },
 };
 </script>
+```
+
+#### 多个参数/复杂参数
+
+当需要传递多个参数时，选用 `multiParams`，可选参数有：
+
+- `field` 为字段名
+- `label` 为选择行数据中的取值字段
+- `hidden` 当组件复用时，可判断是否需要传递该参数
+- `type` 为可选 array 数组类型传参，会把表格中选中行数的目标字段全部加到 filed 中
+
+```js {23,24,25,26}
+submit: {
+  size: "mini",
+  type: "primary",
+  label: "下发",
+  disabled: "multipe",
+  params: {},
+  disabled: (val) => {
+    return val[0].status !== "0";
+  },
+  method: "post",
+  url: `${BASE_URL}/distributeSdzg`,
+  mode: {
+    subscribe: "提交后，下发数据立即生效，确认无误后可点击确定。",
+    type: "warning",
+    title: "提示",
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    showConfirmButton: true,
+    showCancelButton: true,
+    center: false,
+    roundButton: false,
+    requestParams: true, // 是params传参
+    multiParams: [
+      { field: "id", label: "id", type:'array'}, // 选择多行，多行的id添加到id字段中了
+      { field: "type", label: "type"},
+    ]
+  }
+},
 ```
 
 #### 属性
@@ -176,8 +218,10 @@ export default {
 | center            | 是否居中布局                                                   | boolean                 | —                  | false                                           |
 | roundButton       | 是否使用圆角按钮                                               | boolean                 | —                  | false                                           |
 | catch             | 取消按钮后的回调                                               | function                | —                  | —                                               |
-| label             | 操作的 id 别名，默认为 id 字段                                 | string                  | —                  | id                                              |
-| paramsType        | 改为 params 传参，不传则为 path 路径传参,可搭配 label 一起使用 | boolean                 | true               | —                                               |
+| label             | 选择行取值的别名字段                                           | string                  | —                  | id                                              |
+| paramsLabel       | 参数字段的别名                                                 | string                  | —                  | id                                              |
+| requestParams     | 改为 params 传参，不传则为 path 路径传参,可搭配 label 一起使用 | boolean                 | true               | —                                               |
+| multiParams       | 多个参数判断或单个参数复杂判断                                 | array                   | —                  | id                                              |
 
 ## CustomDialog
 
@@ -394,12 +438,12 @@ export default {
 
 #### 属性
 
-| 属性   | 说明                                                              | 类型   | 可选值             | 默认值 |
-| :----- | :---------------------------------------------------------------- | :----- | :----------------- | :----- |
-| type   | 点击按钮后，需要触发的操作类型                                    | string | 见 mode 的六种类型 | —      |
-| name   | 自定义弹框时，name 必传;自定义组件都要有 name 作为该组件的 ref 值 | string | —                  | —      |
-| detail             | 默认传递表格row信息；当type为RouterPage并且detail为true时，则路由模式中的query接受详情信息，但是过大的详情信息不建议走路由传参！ | boolean                              | —                  | false  |
-| router | 路由跳转的一些配置                                                | object | —                  | —      |
+| 属性   | 说明                                                                                                                                         | 类型    | 可选值             | 默认值 |
+| :----- | :------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :----------------- | :----- |
+| type   | 点击按钮后，需要触发的操作类型                                                                                                               | string  | 见 mode 的六种类型 | —      |
+| name   | 自定义弹框时，name 必传;自定义组件都要有 name 作为该组件的 ref 值                                                                            | string  | —                  | —      |
+| detail | 默认传递表格 row 信息；当 type 为 RouterPage 并且 detail 为 true 时，则路由模式中的 query 接受详情信息，但是过大的详情信息不建议走路由传参！ | boolean | —                  | false  |
+| router | 路由跳转的一些配置                                                                                                                           | object  | —                  | —      |
 
 #### 自定义路由页面的使用
 
@@ -433,7 +477,7 @@ export default {
 当使用导出功能时，会出现两种情况：
 
 - 不传参数，则全部导出
-- 传递一个数组参数，按照数组中的“id”进行部分导出
+- 传递一个数组参数，按照数组中的 `id` 进行部分导出
 
 ```vue {14}
 <script>
@@ -462,11 +506,69 @@ export default {
 </script>
 ```
 
+#### 复杂参数/多个参数 multiParams
+
+当需要传递多个参数时，选用 `multiParams`，可选参数有：
+
+- `field` 为字段名
+- `label` 为选择行数据中的取值字段
+- `hidden` 当组件复用时，可判断是否需要传递该参数
+- `type` 为可选 array 数组类型传参，会把表格中选中行数的目标字段全部加到 filed 中
+
+```js
+export: {
+  size: "mini",
+  type: "primary",
+  label: "生成考核表",
+  params: {},
+  method: "post",
+  disabled: "single",
+  url: `${BASE_URL}/generateAssessmentForm`,
+  mode: {
+    type: "export",
+    paramsType: "string",
+    multiParams: [
+      {
+        field: "deptId",
+        label: "deptId",
+        hidden: kpType === "lzkp"
+      },
+      { field: "khjdYear", label: "khjdYear" },
+      { field: "khjdType", label: "khjdType" }
+    ],
+    exportName: "考核表.zip"
+  }
+},
+```
+
+```js
+export: {
+  size: "mini",
+  type: "primary",
+  label: "导出",
+  params: { type: khlrType },
+  method: "post",
+  url: `${BASE_URL}/export`,
+  mode: {
+    type: "export",
+    multiParams: [
+      {
+        field: "exportIds",
+        label: "id",
+        type: "array"
+      }
+    ],
+    exportName: `${types[khlrType].label}.xlsx`
+  }
+}
+```
+
 #### 属性
 
-| 属性        | 说明                           | 类型   | 可选值             | 默认值        |
-| :---------- | :----------------------------- | :----- | :----------------- | :------------ |
-| type        | 点击按钮后，需要触发的操作类型 | string | 见 mode 的六种类型 | —             |
-| label       | 取值的别名                     | string | —                  | id            |
-| paramsLabel | 参数字段的别名                 | string | —                  | id            |
-| exportName  | 导出附件的名称                 | string | —                  | 列表文件.xlsx |
+| 属性        | 说明                                                 | 类型                 | 可选值             | 默认值        |
+| :---------- | :--------------------------------------------------- | :------------------- | :----------------- | :------------ |
+| type        | 点击按钮后，需要触发的操作类型                       | string               | 见 mode 的六种类型 | —             |
+| label       | 选择行取值的别名字段                                 | string               | —                  | id            |
+| paramsLabel | 参数字段的别名                                       | string               | —                  | id            |
+| multiParams | 多个参数判断或单个参数复杂判断                       | array                | —                  | id            |
+| exportName  | 导出附件的名称；支持回调函数，参数为选择当前行的信息 | string/function(row) | —                  | 列表文件.xlsx |

@@ -16,7 +16,7 @@ export default {
     const BASE_URL = `/merApply`;
     const form = [
       {
-        label: "单位名称",
+        label: "公司名称",
         model: "unit",
         component: "FormInput",
         width: 260
@@ -63,10 +63,11 @@ export default {
     };
     const addForm = [
       {
-        label: "单位名称",
+        label: "公司名称",
         model: "unit",
         component: "FormInput",
-        rules: rules("请输入单位名称"),
+        hidden: true,
+        rules: rules("请输入公司名称"),
         width: 260
       },
       {
@@ -74,6 +75,13 @@ export default {
         model: "phone",
         component: "FormInput",
         rules: rules("请输入手机号"),
+        width: 260
+      },
+      {
+        label: "公司官网",
+        model: "website",
+        component: "FormInput",
+        rules: rules("请输入官网"),
         width: 260
       },
       {
@@ -90,6 +98,16 @@ export default {
         dict: [{ label: "参加", value: "Y" }, { label: "不参加", value: "N" }],
         rules: rules("请选择是否参加本次活动"),
         width: 260
+      },
+      {
+        label: "活动建议",
+        model: "adviceInfo",
+        component: "FormTextarea",
+        rules: rules("请输入手机号"),
+        maxlength: 300,
+        showWordLimit: true,
+        rows: 5,
+        width: 650
       },
       {
         label: "企业Logo",
@@ -127,8 +145,12 @@ export default {
       add: {
         size: "mini",
         type: "primary",
-        label: "新增单位",
-        params: {},
+        label: "新增公司",
+        icon: "el-icon-plus",
+        params: {
+          website: "https://github.com/lakei-edward",
+          adviceInfo: "我的建议就是没建议..."
+        },
         method: "post",
         url: `${BASE_URL}`,
         mode: {
@@ -141,6 +163,7 @@ export default {
         size: "mini",
         type: "primary",
         label: "修改",
+        icon: "el-icon-edit",
         params: {},
         disabled: "single",
         method: "put",
@@ -156,6 +179,7 @@ export default {
         size: "mini",
         type: "primary",
         label: "查看",
+        icon: "el-icon-tickets",
         params: {},
         disabled: "single",
         method: "get",
@@ -172,6 +196,7 @@ export default {
         size: "mini",
         type: "primary",
         label: "删除",
+        icon: "el-icon-delete",
         params: {},
         method: "delete",
         disabled: "multipe",
@@ -186,14 +211,34 @@ export default {
       export: {
         size: "mini",
         type: "primary",
-        label: "导出",
+        label: "导出Excel",
+        icon: "el-icon-download",
         params: {},
         method: "post",
         url: `${BASE_URL}/export`,
         mode: {
           type: "Export",
           paramsLabel: "exportIds",
-          exportName: "个人季度总结.xlsx"
+          exportName: "公司信息.xlsx"
+        }
+      },
+      exportWord: {
+        size: "mini",
+        type: "primary",
+        label: "导出Word",
+        icon: "el-icon-document-add",
+        params: {},
+        method: "post",
+        disabled: "single",
+        url: `${BASE_URL}/exportWord`,
+        mode: {
+          type: "Export",
+          // paramsLabel: "exportIds",
+          paramsType: "string",
+          // exportName: "公司信息.docx"
+          exportName: row => {
+            return `${row.unit}.docx`;
+          }
         }
       }
     };
@@ -234,7 +279,7 @@ export default {
           },
           {
             prop: "unit",
-            label: "单位名称"
+            label: "公司名称"
           },
 
           {

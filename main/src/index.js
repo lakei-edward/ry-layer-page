@@ -1,17 +1,17 @@
-import ryLayerPage from "../packages/main/index.vue";
+import FormSelect from "../packages/form/FormSelect.vue";
+import ryLayerPage from "../packages/main/LayerPage.vue";
+import OperateForm from "../packages/main/OperateForm";
 import SingleForm from "../packages/main/SingleForm.vue";
-import SingleFormPiece from "../packages/main/SingleFormPiece.vue";
 import Dict from "../packages/dict/index";
-import FormSelect from "../packages/main/FormSelect.vue";
 
 const install = function(Vue, opts = {}) {
   if (opts) {
     if (opts.http instanceof Function) {
       ryLayerPage.methods.request = opts.http;
-      SingleForm.methods.request = opts.http;
+      OperateForm.methods.request = opts.http;
       Vue.component(ryLayerPage.name, ryLayerPage);
+      Vue.component(OperateForm.name, OperateForm);
       Vue.component(SingleForm.name, SingleForm);
-      Vue.component(SingleFormPiece.name, SingleFormPiece);
     } else {
       throw Error("http must be a function");
     }

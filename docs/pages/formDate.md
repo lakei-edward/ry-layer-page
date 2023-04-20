@@ -75,6 +75,12 @@ export default {
 |appendToBody|DetePicker 自身是否插入至 body 元素上。|boolean|—|true|
 |disabledDate |设置禁用选择日期，禁用今天之前/今天之后|string|before/after|—|
 
+## 事件
+
+| 属性   | 说明                 | 回调参数       |
+| :----- | :------------------- | :------------- |
+| change | 选中值发生变化时触发 | 目前的选中数据 |
+
 <style>
 table th:nth-of-type(1) {
     width: 20%;

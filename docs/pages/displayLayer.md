@@ -83,6 +83,42 @@ export default {
 </script>
 ```
 
+### 解构判断
+
+复用组件时，需要根据不同业务展示不同列，可以直接通过数组的解构来判断！
+
+```js
+const kpType = this.$route.query.type;
+displayLayer: {
+  url: `${BASE_URL}/list`,
+  params: {},
+  data: [
+    ...[
+      kpType !== "lzkp"
+        ? {
+          prop: "deptName",
+          label: "被考核单位名称"
+        }
+        : {
+          prop: "khlx",
+          label: "考核人类型"
+        }
+    ],
+    {
+      prop: "updateTime",
+      label: "更新日期"
+    },
+    {
+      prop: "deptCode",
+      label: "提交状态",
+      callback: (row) => {
+        return row.tjzt === "Y" ? "已提交" : "未提交";
+      }
+    }
+  ]
+}
+```
+
 ### 展示 el-tag
 
 在表格内展示`el-tag`组件类型样式

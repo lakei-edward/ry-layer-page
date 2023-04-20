@@ -103,7 +103,7 @@ export default {
 ### 属性
 | 属性     | 说明        | 类型  | 可选值 | 默认值
 | :------- | :----------- | :------ | :------------------------------------------ | :----- |
-|show|是否显示,以及按钮的位置，默认在表格上，可配置在表格内；|boolean | string|true/false/table|true|
+|show|是否显示,以及按钮的位置，默认在表格上，可配置在表格内；|string |table|—|
 |size|尺寸|string|—|—|
 |type|类型|string|success / info / warning / error|—|
 |icon|图标类名|string|—|—|

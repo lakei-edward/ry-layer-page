@@ -12,6 +12,7 @@ specifiers:
   core-js: 3.8.1
   css-loader: ^6.7.2
   echarts: 4.9.0
+  element-china-area-data: ^5.0.2
   element-ui: 2.15.0
   file-saver: 2.0.4
   fuse.js: 6.4.3
@@ -51,6 +52,7 @@ dependencies:
   clipboard: registry.npmmirror.com/clipboard/2.0.6
   core-js: registry.npmmirror.com/core-js/3.8.1
   echarts: registry.npmmirror.com/echarts/4.9.0
+  element-china-area-data: 5.0.2
   element-ui: registry.npmmirror.com/element-ui/2.15.0_vue@2.6.12
   file-saver: registry.npmmirror.com/file-saver/2.0.4
   fuse.js: registry.npmmirror.com/fuse.js/6.4.3
@@ -178,6 +180,10 @@ packages:
       function-bind: 1.1.1
       get-intrinsic: 1.2.0
 
+  /china-area-data/5.0.1:
+    resolution: {integrity: sha512-BQDPpiv5Nn+018ekcJK2oSD9PAD+E1bvXB0wgabc//dFVS/KvRqCgg0QOEUt3vBkx9XzB5a9BmkJCEZDBxVjVw==}
+    dev: false
+
   /chokidar/2.1.8:
     resolution: {integrity: sha512-ZmZUazfOzf0Nve7duiCKD23PFSCs4JPoYyccjUFF3aQkQadqBhfzhjkwBH2mNOG9cTBwhamM37EIsIkZw3nRgg==}
     deprecated: Chokidar 2 does not receive security updates since 2019. Upgrade to chokidar 3 with 15x fewer dependencies
@@ -301,6 +307,13 @@ packages:
       lru-cache: 4.1.5
       semver: 5.7.1
       sigmund: 1.0.1
+    dev: false
+
+  /element-china-area-data/5.0.2:
+    resolution: {integrity: sha512-vLQuvOKJy/uiX7MRHEk3x/j09hipuIl6DJ/C4XFUG7D7Pj3O47sy+Y6aAArM6k9v8cD9UX6e+yz2S4J+IPnZ8g==}
+    dependencies:
+      china-area-data: 5.0.1
+      lodash-es: 4.17.21
     dev: false
 
   /element-ui/2.15.0_vue@2.6.12:
@@ -505,6 +518,10 @@ packages:
 
   /jsencrypt/3.0.0-rc.1:
     resolution: {integrity: sha512-gcvGaqerlUJy1Kq6tNgPYteVEoWNemu+9hBe2CdsCIz4rVcwjoTQ72iD1W76/PRMlnkzG0yVh7nwOOMOOUfKmg==}
+    dev: false
+
+  /lodash-es/4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
     dev: false
 
   /lodash/4.17.21:

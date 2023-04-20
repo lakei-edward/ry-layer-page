@@ -12,8 +12,8 @@ module.exports = {
     nav: [
       { text: "首页", link: "/" },
       { text: "快速入门", link: "/pages/" },
-      { text: "案例系统", link: "http://43.142.176.173/ry-test-system/" },
-      { text: "个人博客", link: "http://43.142.176.173/lakeiedward/" },
+      { text: "案例系统", link: "http://www.luckyui.cn/ry-test-system/" },
+      { text: "个人博客", link: "http://www.luckyui.cn/lakeiedward/" },
       { text: "GitHub", link: "https://github.com/lakei-edward/ry-layer-page" },
       // { text: "在线访问", link: "http://www.json-sql.com" },
     ],

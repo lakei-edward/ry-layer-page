@@ -126,23 +126,24 @@ async fetchSelectData() {
 
 ## 属性
 
-| 方法名       | 说明                                           | 参数    | 可选值            | 默认值 |
-| :----------- | :--------------------------------------------- | :------ | :---------------- | :----- |
-| component    | 当前使用的单表单组件                           | object  | —                 | —      |
-| label        | 描述                                           | string  | —                 | —      |
-| model        | 该组件需向接口传递的字段                       | string   | —                 | —      |
-| dict         | 字典选项                                       | string/array/function |  | —                 | —      |
-| multiple     | 是否多选                                       | boolean | —                 | false  |
-| disabled     | 是否禁用                                       | boolean | —                 | false  |
-| size         | 输入框尺寸                                     | string  | medium/small/mini | —      |
-| clearable    | 是否可以清空选项                               | boolean | —                 | false  |
-| placeholder  | 占位符                                         | string  | —                 | 请选择 |
-| allow-create | 是否允许用户创建新条目，需配合 filterable 使用 | boolean | —                 | false  |
-| popper-class | Select 下拉框的类名                            | string  | —                 | —      |
-| filterable   | 是否可搜索                                     | boolean | —                 | false  |
-| formWidth    | 宽度                                           | number  | —                 | —      |
-| rules        | elementUI 规则校验                             | array   | —                 | —      |
-| keyModel     | 绑定在select中的key字段，避免value值重复时，一直报错，示例`keyModel: "createTime"`| string   | —                 | value      |
+| 方法名       | 说明                                                                                         | 参数                  | 可选值            | 默认值 |
+| :----------- | :------------------------------------------------------------------------------------------- | :-------------------- | :---------------- | :----- | --- |
+| component    | 当前使用的单表单组件                                                                         | object                | —                 | —      |
+| label        | 描述                                                                                         | string                | —                 | —      |
+| model        | 该组件需向接口传递的字段                                                                     | string                | —                 | —      |
+| dict         | 字典选项                                                                                     | string/array/function |                   | —      | —   |
+| multiple     | 是否多选                                                                                     | boolean               | —                 | false  |
+| disabled     | 是否禁用                                                                                     | boolean               | —                 | false  |
+| size         | 输入框尺寸                                                                                   | string                | medium/small/mini | —      |
+| clearable    | 是否可以清空选项                                                                             | boolean               | —                 | false  |
+| placeholder  | 占位符                                                                                       | string                | —                 | 请选择 |
+| allow-create | 是否允许用户创建新条目，需配合 filterable 使用                                               | boolean               | —                 | false  |
+| popper-class | Select 下拉框的类名                                                                          | string                | —                 | —      |
+| filterable   | 是否可搜索                                                                                   | boolean               | —                 | false  |
+| formWidth    | 宽度                                                                                         | number                | —                 | —      |
+| rules        | elementUI 规则校验                                                                           | array                 | —                 | —      |
+| optionValue  | 使用 change 事件时生效，当绑定 change 事件，则默认返回对象，当该值为 true 时，则只返回 value | boolean               | —                 | —      |
+| keyModel     | 绑定在 select 中的 key 字段，避免 value 值重复时，一直报错，示例`keyModel: "createTime"`     | string                | —                 | value  |
 
 ## 事件
 

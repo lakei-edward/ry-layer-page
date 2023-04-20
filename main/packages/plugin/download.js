@@ -25,14 +25,14 @@ export function download(url, params, filename, service) {
   return service
     .post(url, params, {
       transformRequest: [
-        (params) => {
+        params => {
           return tansParams(params);
-        },
+        }
       ],
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      responseType: "blob",
+      responseType: "blob"
     })
-    .then(async (data) => {
+    .then(async data => {
       const isLogin = await blobValidate(data);
       if (isLogin) {
         const blob = new Blob([data]);
@@ -41,7 +41,7 @@ export function download(url, params, filename, service) {
         Message.error("无效的会话，或者会话已过期，请重新登录。");
       }
     })
-    .catch((r) => {
+    .catch(r => {
       Message.error("下载文件出现错误，请联系管理员！");
     });
 }
@@ -58,18 +58,18 @@ export async function blobValidate(data) {
 }
 
 // 通用下载方法
-export function exportFiles(url, params, filename, service) {
+export function exportFiles(url, data, filename, service) {
   return service
-    .post(url, params, {
+    .post(url, data, {
       transformRequest: [
-        (params) => {
+        params => {
           return tansParams(params);
-        },
+        }
       ],
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      responseType: "blob",
+      responseType: "blob"
     })
-    .then(async (data) => {
+    .then(async data => {
       const isLogin = await blobValidate(data);
       if (isLogin) {
         const blob = new Blob([data]);
@@ -78,7 +78,7 @@ export function exportFiles(url, params, filename, service) {
         Message.error("无效的会话，或者会话已过期，请重新登录。");
       }
     })
-    .catch((r) => {
+    .catch(r => {
       Message.error("下载文件出现错误，请联系管理员！");
     });
 }

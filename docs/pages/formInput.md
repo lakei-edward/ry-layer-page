@@ -141,7 +141,7 @@ chhoseContent(val) {
 | formWidth       | 宽度                                                                 | number  | —                     | —                      |
 | regExp          | 输入时的正则校验，内置的正则或者自定义正则                           | string  | regExp                | number/english/chinese | —   |
 | rules           | elementUI 规则校验                                                   | array   | —                     | —                      |
-| hidden          | 控制表单项的显隐                                                     | boolean | —                     | —                      |
+| hidden          | 控制表单项的显隐，其他单表单组件一致                                                     | boolean | —                     | —                      |
 
 ## 事件
 
