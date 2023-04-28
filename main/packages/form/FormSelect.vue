@@ -9,7 +9,7 @@
     :filterable="filterable"
     :allow-create="allowCreate"
     :popper-class="popperClass"
-    :style="{ width: width ? width + 'px' : formWidth + 'px' }"
+    :style="setStyle"
     @change="handleChange($event)"
   >
     <el-option
@@ -47,7 +47,7 @@ export default {
       type: Number
     },
     width: {
-      type: Number
+      type: Number | String
     },
     dict: {
       // eslint-disable-next-line vue/require-prop-type-constructor
@@ -70,6 +70,16 @@ export default {
     optionValue: Boolean
   },
   computed: {
+    /** 区分类型 */
+    setStyle() {
+      return {
+        width: this.width
+          ? typeof this.width === "string"
+            ? this.width
+            : this.width + "px"
+          : this.formWidth + "px"
+      };
+    },
     /** 根据main.js中配置的dictField来取 */
     GET_KEY() {
       return Object.values(this.$options.filed);
@@ -79,12 +89,12 @@ export default {
       return function(option) {
         if (this.change) {
           if (this.optionValue) {
-            return option[GET_KEY[1]];
+            return option[this.GET_KEY[1]];
           } else {
             return option;
           }
         } else {
-          return option[GET_KEY[1]];
+          return option[this.GET_KEY[1]];
         }
       };
     }

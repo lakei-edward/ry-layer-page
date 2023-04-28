@@ -65,8 +65,20 @@ export default {
     }
   },
   methods: {
-    /** 附件下载 */
-    $downFiles(file, item) {
+    $info(msg) {
+      this.$message({ showClose: true, message: msg, type: "info" });
+    },
+    $warning(msg) {
+      this.$message({ showClose: true, message: msg, type: "warning" });
+    },
+    $error(msg) {
+      this.$message({ showClose: true, message: msg, type: "error" });
+    },
+    $success(msg) {
+      this.$message({ showClose: true, message: msg, type: "success" });
+    },
+    /** minio附件下载 不是导出功能 */
+    $minioDownFiles(file, item) {
       const url = item.downloadUrl ? item.downloadUrl : "/minio/download";
       download(
         `${url}/${file.fileId}`,

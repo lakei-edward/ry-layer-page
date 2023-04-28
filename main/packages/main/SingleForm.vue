@@ -8,7 +8,7 @@
  */
 import Attr from "../form/Attr.vue";
 export default {
-  name: "SingleFormPiece",
+  name: "SingleForm",
   components: {
     Attr
   },

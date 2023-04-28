@@ -51,7 +51,17 @@ export default {
 
 ### 纯文本查看
 
-当设置readonly为true时，即为纯文本查看
+当设置readonly为true时，即为纯文本查看;可设置单位展示
+
+```js
+{
+  label: "单位人数",
+  model: "peoples",
+  component: "FormInput",
+  unit: "人",
+  width: 260
+}
+```
 
 ```vue
 <script>

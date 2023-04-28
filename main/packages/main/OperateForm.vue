@@ -2,7 +2,7 @@
   <div>
     <el-form
       ref="forms"
-      :inline="true"
+      :inline="$isDeTrue(operateLayer.inline)"
       :model="operateLayer.params"
       :label-width="operateLayer.labelWidth"
     >
@@ -29,7 +29,7 @@
                 ]"
                 :key="file.fileId"
               >
-                <el-link type="primary" @click="$downFiles(file, item)"
+                <el-link type="primary" @click="$minioDownFiles(file, item)"
                   ><i style="margin-right: 5px" class="el-icon-paperclip"></i
                   >{{ file.name }}</el-link
                 >
@@ -59,10 +59,10 @@
  * 传入单个operateLayer，直接使用操作层的表单，不需要与整体的三层捆绑
  */
 import Attr from "../form/Attr.vue";
-import { isUndef, handleDicts } from "../plugin/util.js";
+import { handleDicts } from "../plugin/util.js";
 import mixins from "../plugin/mixin";
 export default {
-  name: "SingleForm",
+  name: "OperateForm",
   /** 单表单组件 */
   components: {
     Attr

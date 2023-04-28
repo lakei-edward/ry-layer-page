@@ -64,6 +64,12 @@
     :storage="attrs.storage"
     :optionValue="attrs.optionValue"
     :list-type="attrs.listType"
+    :optionProps="attrs.optionProps"
+    :fieldValue="attrs.fieldValue"
+    :separator="attrs.separator"
+    :options="attrs.options"
+    :isPhoneCode="attrs.isPhoneCode"
+    :code="attrs.code"
     :click="attrs.click"
     :change="attrs.change"
     :blur="attrs.blur"
@@ -78,6 +84,7 @@ import FormTreeSelect from "./FormTreeSelect.vue";
 import FormDate from "./FormDate.vue";
 import FormTextarea from "./FormTextarea.vue";
 import FormUpdate from "./FormUpdate.vue";
+import FormArea from "./FormArea.vue";
 export default {
   components: {
     FormSelect,
@@ -86,7 +93,8 @@ export default {
     FormTreeSelect,
     FormDate,
     FormTextarea,
-    FormUpdate
+    FormUpdate,
+    FormArea
   },
   props: {
     attrs: {

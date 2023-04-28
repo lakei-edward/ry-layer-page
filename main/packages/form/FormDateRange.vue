@@ -85,6 +85,9 @@ export default {
     clearable: Boolean,
     appendToBody: Boolean
   },
+  beforeDestroy() {
+    this.dateTime = [];
+  },
   methods: {
     changeDate(val) {
       if (val && val.length > 0) {

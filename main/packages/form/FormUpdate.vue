@@ -99,6 +99,9 @@ export default {
       type: String,
       default: "multiple"
     },
+    formWidth: {
+      type: Number
+    },
     listType: {
       type: String,
       default: "text"

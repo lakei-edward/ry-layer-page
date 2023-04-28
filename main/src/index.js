@@ -1,4 +1,5 @@
 import FormSelect from "../packages/form/FormSelect.vue";
+import FormInput from "../packages/form/FormInput.vue";
 import ryLayerPage from "../packages/main/LayerPage.vue";
 import OperateForm from "../packages/main/OperateForm";
 import SingleForm from "../packages/main/SingleForm.vue";
@@ -9,6 +10,7 @@ const install = function(Vue, opts = {}) {
     if (opts.http instanceof Function) {
       ryLayerPage.methods.request = opts.http;
       OperateForm.methods.request = opts.http;
+      FormInput.methods.request = opts.http;
       Vue.component(ryLayerPage.name, ryLayerPage);
       Vue.component(OperateForm.name, OperateForm);
       Vue.component(SingleForm.name, SingleForm);

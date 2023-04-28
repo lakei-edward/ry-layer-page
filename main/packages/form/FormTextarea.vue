@@ -4,7 +4,7 @@
       type="textarea"
       v-model="form[model]"
       :placeholder="placeholder"
-      :style="{ width: width ? width + 'px' : formWidth + 'px' }"
+      :style="setStyle"
       :maxlength="maxlength"
       :minlength="minlength"
       :show-word-limit="showWordLimit"
@@ -63,7 +63,7 @@ export default {
       type: Number | String
     },
     width: {
-      type: Number
+      type: Number | String
     },
     formWidth: {
       type: Number
@@ -74,6 +74,18 @@ export default {
     disabled: Boolean,
     readonly: Boolean,
     autofocus: Boolean
+  },
+  computed: {
+    /** 区分类型 */
+    setStyle() {
+      return {
+        width: this.width
+          ? typeof this.width === "string"
+            ? this.width
+            : this.width + "px"
+          : this.formWidth + "px"
+      };
+    }
   }
 };
 </script>

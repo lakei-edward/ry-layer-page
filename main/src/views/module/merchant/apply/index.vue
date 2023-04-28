@@ -22,7 +22,7 @@ export default {
         width: 260
       },
       {
-        label: "手机号",
+        label: "手机号码",
         model: "phone",
         component: "FormInput",
         width: 260
@@ -61,102 +61,138 @@ export default {
         }
       ];
     };
-    const addForm = [
-      {
-        label: "公司名称",
-        model: "unit",
-        component: "FormInput",
-        hidden: true,
-        rules: rules("请输入公司名称"),
-        width: 260
-      },
-      {
-        label: "手机号",
-        model: "phone",
-        component: "FormInput",
-        rules: rules("请输入手机号"),
-        width: 260
-      },
-      {
-        label: "公司官网",
-        model: "website",
-        component: "FormInput",
-        rules: rules("请输入官网"),
-        width: 260
-      },
-      {
-        label: "城市",
-        model: "city",
-        component: "FormInput",
-        rules: rules("请输入城市"),
-        width: 260
-      },
-      {
-        label: "是否参加",
-        model: "isJoin",
-        component: "FormSelect",
-        dict: [{ label: "参加", value: "Y" }, { label: "不参加", value: "N" }],
-        rules: rules("请选择是否参加本次活动"),
-        width: 260
-      },
-      {
-        label: "活动建议",
-        model: "adviceInfo",
-        component: "FormTextarea",
-        rules: rules("请输入手机号"),
-        maxlength: 300,
-        showWordLimit: true,
-        rows: 5,
-        width: 650
-      },
-      {
-        label: "企业Logo",
-        model: "logoPath",
-        size: "small",
-        component: "FormUpdate",
-        rules: rules("请上传企业Logo"),
-        width: 380,
-        drag: true,
-        icon: "el-icon-receiving",
-        fileListLabel: "lsfj",
-        multiple: false,
-        listType: "picture",
-        image: {
-          show: true,
-          alt: "图片异常",
-          width: 200
+    const addForm = (areaCity = "areaCity") => {
+      return [
+        {
+          label: "公司名称",
+          model: "unit",
+          component: "FormInput",
+          rules: rules("请输入公司名称"),
+          width: 260
         },
-        pathLabel: "path",
-        limit: 1,
-        storage: "single",
-        buttonLabel: "上传图片",
-        upload: {
-          action: `${process.env.VUE_APP_BASE_API}/minio/upload`,
-          headers: { Authorization: `Bearer ${getToken()}` },
-          reg: /^.*\.(?:jpg|jpeg|png)$/i,
-          size: 5,
-          textLabel:
-            "请上传大小不超过 <span style='color:#ff0078'>5MB</span> 的文件",
-          sizeLabel: "上传文件大小不能超过5MB"
+
+        {
+          label: "公司官网",
+          model: "website",
+          component: "FormInput",
+          rules: rules("请输入官网"),
+          width: 260
+        },
+        {
+          label: "省市",
+          model: areaCity,
+          component: "FormArea",
+          options: "provinceAndCityData",
+          width: 260,
+          rules: rules("请输入省市")
+        },
+        {
+          label: "是否参加",
+          model: "isJoin",
+          component: "FormSelect",
+          dict: [
+            { label: "参加", value: "Y" },
+            { label: "不参加", value: "N" }
+          ],
+          rules: rules("请选择是否参加本次活动"),
+          width: 260
+        },
+        {
+          label: "手机号码",
+          model: "phone",
+          component: "FormInput",
+          rules: rules("请输入手机号码"),
+          width: 260
+        },
+        {
+          label: "验证码",
+          model: "code",
+          isPhoneCode: true,
+          code: {
+            assign: "phone", // 指派phone这个字段作为参数
+            url: "/msg/sendMsg",
+            second: 60 //默认60s
+          },
+          component: "FormInput",
+          rules: rules("请输入手机号码"),
+          width: 260
+        },
+        {
+          label: "活动建议",
+          model: "adviceInfo",
+          component: "FormTextarea",
+          rules: rules("请输入手机号码"),
+          maxlength: 300,
+          showWordLimit: true,
+          rows: 5,
+          width: 650
+        },
+        {
+          label: "企业Logo",
+          model: "logoPath",
+          size: "small",
+          component: "FormUpdate",
+          rules: rules("请上传企业Logo"),
+          width: 380,
+          drag: true,
+          icon: "el-icon-receiving",
+          fileListLabel: "lsfj",
+          multiple: false,
+          listType: "picture",
+          image: {
+            show: true,
+            alt: "图片异常",
+            width: 200
+          },
+          pathLabel: "path",
+          limit: 1,
+          storage: "single",
+          buttonLabel: "上传图片",
+          upload: {
+            action: `${process.env.VUE_APP_BASE_API}/minio/upload`,
+            headers: { Authorization: `Bearer ${getToken()}` },
+            reg: /^.*\.(?:jpg|jpeg|png|webp)$/i,
+            size: 5,
+            textLabel:
+              "请上传大小不超过 <span style='color:#ff0078'>5MB</span> 的图片",
+            sizeLabel: "上传图片大小不能超过5MB"
+          }
         }
-      }
-    ];
+      ];
+    };
     const operateLayer = {
+      phone: {
+        size: "mini",
+        type: "primary",
+        label: "手机报名",
+        icon: "el-icon-plus",
+        mode: {
+          type: "RouterPage",
+          detail: true,
+          router: {
+            path: "/phone",
+            query: {
+              name: "参数"
+            }
+          }
+        }
+      },
       add: {
         size: "mini",
         type: "primary",
-        label: "新增公司",
+        label: "录入",
         icon: "el-icon-plus",
         params: {
           website: "https://github.com/lakei-edward",
-          adviceInfo: "我的建议就是没建议..."
+          adviceInfo:
+            "Steering transform technology towards benefit life and away from extreme large-scale risks."
         },
         method: "post",
         url: `${BASE_URL}`,
         mode: {
           type: "Dialog",
-          width: "70%",
-          form: addForm
+          width: "50%",
+          form: addForm()
         }
       },
       submit: {
@@ -170,9 +206,9 @@ export default {
         url: `${BASE_URL}`,
         mode: {
           type: "Dialog",
-          width: "70%",
+          width: "50%",
           detail: true,
-          form: addForm
+          form: addForm()
         }
       },
       search: {
@@ -186,10 +222,10 @@ export default {
         url: `${BASE_URL}`,
         mode: {
           type: "Dialog",
-          width: "70%",
+          width: "50%",
           detail: true,
           readonly: true,
-          form: addForm
+          form: addForm("city")
         }
       },
       remove: {
@@ -218,7 +254,8 @@ export default {
         url: `${BASE_URL}/export`,
         mode: {
           type: "Export",
-          paramsLabel: "exportIds",
+          // paramsLabel: "exportIds",
+          multiParams: [{ field: "exportIds", label: "id", type: "array" }],
           exportName: "公司信息.xlsx"
         }
       },
@@ -233,9 +270,6 @@ export default {
         url: `${BASE_URL}/exportWord`,
         mode: {
           type: "Export",
-          // paramsLabel: "exportIds",
-          paramsType: "string",
-          // exportName: "公司信息.docx"
           exportName: row => {
             return `${row.unit}.docx`;
           }
@@ -284,13 +318,12 @@ export default {
 
           {
             prop: "phone",
-            label: "手机号"
+            label: "手机号码"
           },
           {
             prop: "city",
             label: "城市"
           },
-
           {
             prop: "createTime",
             label: "报名日期"

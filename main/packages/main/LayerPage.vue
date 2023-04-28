@@ -234,9 +234,9 @@
                     wordWrap: 'break-word'
                   }"
                 >
-                  <template v-if="item.component !== 'FormUpdate'">{{
-                    setDetailLabel(item)
-                  }}</template>
+                  <template v-if="item.component !== 'FormUpdate'"
+                    >{{ setDetailLabel(item) }}{{ item.unit }}</template
+                  >
                   <template v-else>
                     <div
                       v-for="file in operateLayer[ikey].params[
@@ -258,7 +258,7 @@
                       <el-link
                         v-else
                         type="primary"
-                        @click="$downFiles(file, item)"
+                        @click="$minioDownFiles(file, item)"
                         ><i
                           style="margin-right: 5px"
                           class="el-icon-paperclip"
@@ -343,8 +343,8 @@ import Tag from "../common/Tag.vue";
 import Avatar from "../common/Avatar.vue";
 import Attr from "../form/Attr.vue";
 import mixins from "../plugin/mixin";
+import { download } from "../plugin/download";
 import {
-  isUndef,
   isDef,
   isTypes,
   deepClone,
@@ -491,9 +491,10 @@ export default {
       );
     },
     // 默认弹框宽度
+    // todo 需要修改一下
     _defaultDialogWidth() {
       return this.operateLayer[this.ikey].mode.width
-        ? `${this.operateLayer[this.ikey].mode.width}px`
+        ? this.operateLayer[this.ikey].mode.width
         : "800px";
     },
     // 对象是否有值
@@ -505,12 +506,14 @@ export default {
     // 设置查看中展示字段内容
     setDetailLabel() {
       return function(v) {
+        // 如果传入的是字典，查看的时候默认取字典中的label展示
         if (v.dict) {
           let flag = v.dict.find(
             r => r.value === this.operateLayer[this.ikey].params[v.model]
           );
           if (flag) return flag[this.GET_KEY[0]];
         } else {
+          // 否则直接去当前model值
           return this.operateLayer[this.ikey].params[v.model];
         }
       };
@@ -539,8 +542,10 @@ export default {
     initDicts(dict) {
       // 查询字典赋值
       this.searchLayer.form.map(async item => {
-        if (judgeType(item.dict) === "string") {
+        // 当dict传的是字典的时候
+        if (judgeType(item.dict) === "String") {
           item.dict = item.dict && dict.type[item.dict];
+          // 当dict传的是通过接口返回数据的时候
         } else if (judgeType(item.dict) === "Promise") {
           item.dict = await item.dict;
         }
@@ -671,7 +676,7 @@ export default {
           break;
         // 《自定义页面》
         case "Export":
-          this.handleExport(item);
+          this.handleExport(item, row);
           break;
       }
     },
@@ -684,24 +689,27 @@ export default {
         // 当detail没传时，判断参数传递情况，1、detailId不传：则默认传递row，2、传递detailId：则获取row里面的对应的id传过去，可根据该id获取详情
         const _id = item.mode.detailId || null;
         _routerInfo.query = _routerInfo.query || {};
-        // 有时接口返回的数据太大了，不能够用路由参数的方式去传输，而且自定义路由页面本身就是一个单独的组件，可以在该组件内调取详情接口
-        // 路由传参方式，如果有detail，则获取信息接口数据，否则返回row数据
-        if (item.mode.detail) {
-          let value = row
-            ? await this.handleInfo(row)
-            : await this.handleInfo(this.sections[0]);
-          this.$set(_routerInfo.query, "params", JSON.stringify(value));
-        } else {
-          // 有的话，只传递id
-          if (_id) {
-            this.$set(_routerInfo.query, _id, this.sections[0][_id]);
+        // 先判断有没有选择行信息 没有的话则直接进入到路由不需要传递参数
+        if (this.sections && this.sections.length > 0) {
+          // 有时接口返回的数据太大了，不能够用路由参数的方式去传输，而且自定义路由页面本身就是一个单独的组件，可以在该组件内调取详情接口
+          // 路由传参方式，如果有detail，则获取信息接口数据，否则返回row数据
+          if (item.mode.detail) {
+            let value = row
+              ? await this.handleInfo(row)
+              : await this.handleInfo(this.sections[0]);
+            this.$set(_routerInfo.query, "params", JSON.stringify(value));
           } else {
-            // 无的话，传递row
-            this.$set(
-              _routerInfo.query,
-              "params",
-              JSON.stringify(this.sections[0])
-            );
+            // 有的话，只传递id
+            if (_id) {
+              this.$set(_routerInfo.query, _id, this.sections[0][_id]);
+            } else {
+              // 无的话，传递row
+              this.$set(
+                _routerInfo.query,
+                "params",
+                JSON.stringify(this.sections[0])
+              );
+            }
           }
         }
         this.$router.push(_routerInfo);
@@ -711,39 +719,48 @@ export default {
     },
 
     /** 导出按钮操作 */
-    handleExport(item) {
-      const label = item.mode.label || ID; // 数据名称
+    handleExport(item, row) {
+      // 这里判断是不是行内操作
+      let t_row = row ? [row] : this.sections;
+      const _label = item.mode.label || ID; // 数据名称
+      const _exportName = item.mode.exportName;
       const _multiParams = item.mode.multiParams || null; // 多个参数判断或单个参数复杂判断
+      const _searchParams = item.mode.searchParams || false; // 是否需要查询条件参数
       const _paramsLabel = item.mode.paramsLabel || ID; // 不需要多个参数直接传该属性
       let exportName;
-      if (typeof item.mode.exportName === "string") {
-        exportName = item.mode.exportName || "Excel.xlsx";
+      if (typeof _exportName === "string") {
+        exportName = _exportName || "Excel.xlsx";
       } else {
-        exportName =
-          item.mode.exportName && item.mode.exportName(this.sections[0]);
+        exportName = _exportName && item.mode.exportName(this.sections[0]);
       }
+      console.log(exportName);
       let params = {};
-      if (_multiParams) {
-        _multiParams.forEach(item => {
-          /** 判断是否需要传递 */
-          if (!item.hidden) {
-            params[item.field] = t_row[0][item.label];
-          }
-          /** 判断字段是否是数组 并且如果行内操作，则不能传递数组*/
-          if (item.type === "array" && !row) {
-            params[item.field] = [];
-            this.sections.forEach(v => {
-              params[item.field].push(v[item.label]);
-            });
-          }
-        });
-      } else {
-        params[_paramsLabel] = t_row[0][label];
+      // 判断有没有选择表格数据
+      if (t_row && t_row.length > 0) {
+        if (_multiParams) {
+          _multiParams.forEach(item => {
+            /** 判断是否需要传递 */
+            if (!item.hidden) {
+              params[item.field] = t_row[0][item.label];
+            }
+            /** 判断字段是否是数组 并且如果行内操作，则不能传递数组*/
+            if (item.type === "array" && !row) {
+              params[item.field] = [];
+              this.sections.forEach(v => {
+                params[item.field].push(v[item.label]);
+              });
+            }
+          });
+        } else {
+          params[_paramsLabel] = t_row[0][_label];
+        }
       }
+      // 这里判断需不需要导出的时候加入查询条件
+      const search_params = _searchParams ? this.formList : {};
       // Post传参，@RequestBody注解接受参数
-      exportFiles(
+      download(
         item.url,
-        { ...params, ...item.params },
+        { ...params, ...item.params, ...search_params },
         exportName,
         this.$options.methods.request
       );
