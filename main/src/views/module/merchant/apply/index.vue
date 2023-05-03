@@ -315,7 +315,6 @@ export default {
             prop: "unit",
             label: "公司名称"
           },
-
           {
             prop: "phone",
             label: "手机号码"

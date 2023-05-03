@@ -59,6 +59,9 @@
     "vue-cropper": "0.5.5",
     "vue-router": "3.4.9",
     "vuedraggable": "2.24.3",
+    "date-fns": "^2.29.3",
+    "lodash": "^4.17.21",
+    "vue-meta": "2.4.0",
     "vuex": "3.6.0"
   },
   "devDependencies": {
