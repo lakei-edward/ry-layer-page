@@ -66,7 +66,7 @@ export default {
   },
   data() {
     return {
-      title: '装备展览',
+      title: '商家后台管理',
       logo: logoImg
     };
   },

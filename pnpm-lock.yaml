@@ -1,21 +1,13 @@
 lockfileVersion: 5.4
 
 specifiers:
-  date-fns: ^2.29.3
-  lodash: ^4.17.21
-  vue-meta: 2.4.0
   vue-template-compiler: ^2.7.14
   vuepress: ^1.9.7
   vuepress-plugin-zooming: ^1.1.7
 
-dependencies:
-  date-fns: 2.29.3
-  lodash: 4.17.21
-  vue-meta: 2.4.0
-
 devDependencies:
   vue-template-compiler: 2.7.14
-  vuepress: registry.npmmirror.com/vuepress/1.9.7_lodash@4.17.21
+  vuepress: registry.npmmirror.com/vuepress/1.9.7
   vuepress-plugin-zooming: registry.npmmirror.com/vuepress-plugin-zooming/1.1.8
 
 packages:
@@ -67,19 +59,9 @@ packages:
     dev: true
     optional: true
 
-  /date-fns/2.29.3:
-    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
-    engines: {node: '>=0.11'}
-    dev: false
-
   /de-indent/1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
     dev: true
-
-  /deepmerge/4.3.1:
-    resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
-    engines: {node: '>=0.10.0'}
-    dev: false
 
   /esbuild-android-arm64/0.14.7:
     resolution: {integrity: sha512-9/Q1NC4JErvsXzJKti0NHt+vzKjZOgPIjX/e6kkuCzgfT/GcO3FVBcGIv4HeJG7oMznE6KyKhvLrFgt7CdU2/w==}
@@ -227,7 +209,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
@@ -245,6 +227,7 @@ packages:
 
   /graceful-fs/4.2.10:
     resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -255,6 +238,7 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: true
 
   /nan/2.17.0:
     resolution: {integrity: sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==}
@@ -269,12 +253,6 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
-
-  /vue-meta/2.4.0:
-    resolution: {integrity: sha512-XEeZUmlVeODclAjCNpWDnjgw+t3WA6gdzs6ENoIAgwO1J1d5p1tezDhtteLUFwcaQaTtayRrsx7GL6oXp/m2Jw==}
-    dependencies:
-      deepmerge: 4.3.1
-    dev: false
 
   /vue-template-compiler/2.7.14:
     resolution: {integrity: sha512-zyA5Y3ArvVG0NacJDkkzJuPQDF8RFeRlzV2vLeSnhSpieO6LK2OVbdLPi5MPPs09Ii+gMO8nY4S3iKQxBxDmWQ==}
@@ -2274,13 +2252,12 @@ packages:
       source-map: registry.npmmirror.com/source-map/0.6.1
     dev: true
 
-  registry.npmmirror.com/@vue/component-compiler-utils/3.3.0_lodash@4.17.21:
+  registry.npmmirror.com/@vue/component-compiler-utils/3.3.0:
     resolution: {integrity: sha512-97sfH2mYNU+2PzGrmK2haqffDpVASuib9/w2/noxiFi31Z54hW+q3izKQXXQZSNhtiUpAI36uSuYepeBe4wpHQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vue/component-compiler-utils/-/component-compiler-utils-3.3.0.tgz}
-    id: registry.npmmirror.com/@vue/component-compiler-utils/3.3.0
     name: '@vue/component-compiler-utils'
     version: 3.3.0
     dependencies:
-      consolidate: registry.npmmirror.com/consolidate/0.15.1_lodash@4.17.21
+      consolidate: registry.npmmirror.com/consolidate/0.15.1
       hash-sum: registry.npmmirror.com/hash-sum/1.0.2
       lru-cache: registry.npmmirror.com/lru-cache/4.1.5
       merge-source-map: registry.npmmirror.com/merge-source-map/1.1.0
@@ -2346,9 +2323,8 @@ packages:
       - whiskers
     dev: true
 
-  registry.npmmirror.com/@vuepress/core/1.9.7_lodash@4.17.21:
+  registry.npmmirror.com/@vuepress/core/1.9.7:
     resolution: {integrity: sha512-u5eb1mfNLV8uG2UuxlvpB/FkrABxeMHqymTsixOnsOg2REziv9puEIbqaZ5BjLPvbCDvSj6rn+DwjENmBU+frQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vuepress/core/-/core-1.9.7.tgz}
-    id: registry.npmmirror.com/@vuepress/core/1.9.7
     name: '@vuepress/core'
     version: 1.9.7
     engines: {node: '>=8.6'}
@@ -2383,7 +2359,7 @@ packages:
       toml: registry.npmmirror.com/toml/3.0.0
       url-loader: registry.npmmirror.com/url-loader/1.1.2_webpack@4.46.0
       vue: registry.npmmirror.com/vue/2.7.14
-      vue-loader: registry.npmmirror.com/vue-loader/15.10.1_bbtincek6mz4zfpl65nkvdxehy
+      vue-loader: registry.npmmirror.com/vue-loader/15.10.1_lbhzzmlqoxkdndxnphn2sqq4kq
       vue-router: registry.npmmirror.com/vue-router/3.6.5_vue@2.7.14
       vue-server-renderer: registry.npmmirror.com/vue-server-renderer/2.7.14
       vue-template-compiler: 2.7.14
@@ -4100,9 +4076,8 @@ packages:
     version: 1.2.0
     dev: true
 
-  registry.npmmirror.com/consolidate/0.15.1_lodash@4.17.21:
+  registry.npmmirror.com/consolidate/0.15.1:
     resolution: {integrity: sha512-DW46nrsMJgy9kqAbPt5rKaCr7uFtpo4mSUvLHIUbJEjm0vo+aY5QLwBUq3FK4tRnJr/X0Psc0C4jf/h+HtXSMw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/consolidate/-/consolidate-0.15.1.tgz}
-    id: registry.npmmirror.com/consolidate/0.15.1
     name: consolidate
     version: 0.15.1
     engines: {node: '>= 0.10.0'}
@@ -4269,7 +4244,6 @@ packages:
         optional: true
     dependencies:
       bluebird: registry.npmmirror.com/bluebird/3.7.2
-      lodash: 4.17.21
     dev: true
 
   registry.npmmirror.com/constants-browserify/1.0.0:
@@ -11157,7 +11131,7 @@ packages:
     version: 2.3.4
     dev: true
 
-  registry.npmmirror.com/vue-loader/15.10.1_bbtincek6mz4zfpl65nkvdxehy:
+  registry.npmmirror.com/vue-loader/15.10.1_lbhzzmlqoxkdndxnphn2sqq4kq:
     resolution: {integrity: sha512-SaPHK1A01VrNthlix6h1hq4uJu7S/z0kdLUb6klubo738NeQoLbS6V9/d8Pv19tU0XdQKju3D1HSKuI8wJ5wMA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue-loader/-/vue-loader-15.10.1.tgz}
     id: registry.npmmirror.com/vue-loader/15.10.1
     name: vue-loader
@@ -11176,7 +11150,7 @@ packages:
       vue-template-compiler:
         optional: true
     dependencies:
-      '@vue/component-compiler-utils': registry.npmmirror.com/@vue/component-compiler-utils/3.3.0_lodash@4.17.21
+      '@vue/component-compiler-utils': registry.npmmirror.com/@vue/component-compiler-utils/3.3.0
       cache-loader: registry.npmmirror.com/cache-loader/3.0.1_webpack@4.46.0
       css-loader: registry.npmmirror.com/css-loader/2.1.1_webpack@4.46.0
       hash-sum: registry.npmmirror.com/hash-sum/1.0.2
@@ -11337,16 +11311,15 @@ packages:
       zooming: registry.npmmirror.com/zooming/2.1.1
     dev: true
 
-  registry.npmmirror.com/vuepress/1.9.7_lodash@4.17.21:
+  registry.npmmirror.com/vuepress/1.9.7:
     resolution: {integrity: sha512-aSXpoJBGhgjaWUsT1Zs/ZO8JdDWWsxZRlVme/E7QYpn+ZB9iunSgPMozJQNFaHzcRq4kPx5A4k9UhzLRcvtdMg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vuepress/-/vuepress-1.9.7.tgz}
-    id: registry.npmmirror.com/vuepress/1.9.7
     name: vuepress
     version: 1.9.7
     engines: {node: '>=8.6'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      '@vuepress/core': registry.npmmirror.com/@vuepress/core/1.9.7_lodash@4.17.21
+      '@vuepress/core': registry.npmmirror.com/@vuepress/core/1.9.7
       '@vuepress/theme-default': registry.npmmirror.com/@vuepress/theme-default/1.9.7
       '@vuepress/types': registry.npmmirror.com/@vuepress/types/1.9.7
       cac: registry.npmmirror.com/cac/6.7.14

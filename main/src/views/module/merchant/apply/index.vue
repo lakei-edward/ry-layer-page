@@ -28,9 +28,10 @@ export default {
         width: 260
       },
       {
-        label: "城市",
-        model: "city",
-        component: "FormInput",
+        label: "省市",
+        model: "areaCity",
+        component: "FormArea",
+        options: "provinceAndCityData",
         width: 260
       },
       {
@@ -61,7 +62,7 @@ export default {
         }
       ];
     };
-    const addForm = (areaCity = "areaCity") => {
+    const addForm = (areaCity = "areaCity", hidden = false) => {
       return [
         {
           label: "公司名称",
@@ -109,19 +110,20 @@ export default {
           model: "code",
           isPhoneCode: true,
           code: {
-            assign: "phone", // 指派phone这个字段作为参数
-            url: "/msg/sendMsg",
-            second: 60 //默认60s
+            assign: "phone", // 指派phone作为字段名传输，表单中也取phone这个字段作为值
+            url: "/msg/sendMsg", // 统一为get请求
+            second: 60 // 默认60s
           },
+          hidden,
           component: "FormInput",
-          rules: rules("请输入手机号码"),
+          rules: rules("请输入验证码"),
           width: 260
         },
         {
           label: "活动建议",
           model: "adviceInfo",
           component: "FormTextarea",
-          rules: rules("请输入手机号码"),
+          rules: rules("请输入活动建议"),
           maxlength: 300,
           showWordLimit: true,
           rows: 5,
@@ -161,22 +163,6 @@ export default {
       ];
     };
     const operateLayer = {
-      phone: {
-        size: "mini",
-        type: "primary",
-        label: "手机报名",
-        icon: "el-icon-plus",
-        mode: {
-          type: "RouterPage",
-          detail: true,
-          router: {
-            path: "/phone",
-            query: {
-              name: "参数"
-            }
-          }
-        }
-      },
       add: {
         size: "mini",
         type: "primary",
@@ -225,7 +211,7 @@ export default {
           width: "50%",
           detail: true,
           readonly: true,
-          form: addForm("city")
+          form: addForm("city", true)
         }
       },
       remove: {

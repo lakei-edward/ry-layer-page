@@ -200,7 +200,7 @@
           :center="operateLayer[ikey].mode.center"
           :destroy-on-close="operateLayer[ikey].mode.destroyOnClose"
           :visible.sync="dialogAddVisible"
-          @close="clearForm"
+          @close="closeDialogForm"
         >
           <el-form
             ref="forms"
@@ -560,9 +560,9 @@ export default {
       });
     },
 
-    // 关闭弹窗清除信息
-    clearForm() {
-      this.closeForm();
+    // 关闭弹窗清除信息 点击除弹框其它地方生效
+    closeDialogForm() {
+      this.clearDialogForm();
       if (this.isCatch) {
         this.isCatch = true;
         const callback = this.operateLayer[this.ikey].mode.catch;
@@ -572,11 +572,12 @@ export default {
 
     // 取消/关闭dialog
     closeDialog() {
-      this.dialogAddVisible = false;
+      this.clearDialogForm();
     },
 
     // 清除弹框内容
-    closeForm() {
+    clearDialogForm() {
+      // 关闭弹框
       this.dialogAddVisible = false;
       // 确认按钮节流
       this.submitLoad = false;
@@ -591,8 +592,10 @@ export default {
         });
       }
       // 移除整个表单的校验结果
-      this.$refs.forms.clearValidate();
-      this.$refs.forms.resetFields();
+      if (this.$refs.forms) {
+        this.$refs.forms.clearValidate();
+        this.$refs.forms.resetFields();
+      }
       // 自己定义的字段保存起来 重复赋值
       this.operateLayer[this.ikey].params = this.ryParamsClone;
       // 查看弹框不需要清除
@@ -733,7 +736,6 @@ export default {
       } else {
         exportName = _exportName && item.mode.exportName(this.sections[0]);
       }
-      console.log(exportName);
       let params = {};
       // 判断有没有选择表格数据
       if (t_row && t_row.length > 0) {
@@ -849,17 +851,6 @@ export default {
       this.$refs["forms"].validate(valid => {
         if (valid) {
           this.submitLoad = true;
-          /* 处理多选框 拼接成字符串 */
-          const _multiples = this.operateLayer[this.ikey].multiples;
-          if (_multiples && _multiples.length > 0) {
-            for (const i in this.operateLayer[this.ikey].params) {
-              if (_multiples.includes(i)) {
-                this.operateLayer[this.ikey].params[i] = this.operateLayer[
-                  this.ikey
-                ].params[i].join(",");
-              }
-            }
-          }
           /* 调取数据 */
           this.handleRequest(this.operateLayer[this.ikey]);
         }
@@ -961,26 +952,30 @@ export default {
 
     /* 调取数据 */
     async handleRequest(item, params = {}, value = false) {
-      if (this.request) {
-        const flag = Object.keys(params).length > 0; // 判断params有没有参数
-        const res = await this.request({
-          method: item.method,
-          url: item.url,
-          data: flag ? "" : item.params,
-          params: flag ? params : ""
-        });
-        if (res.code === 200) {
-          if (value && res.data) {
-            return res.data;
-          }
-          this.msgSuccess(`${item.label}成功！`);
-          // 关闭弹框
-          this.dialogAddVisible = false;
-          // 确认按钮节流
-          this.submitLoad = false;
-          // 重新获取数据
-          this.queryList();
+      if (!this.request) {
+        throw Error("request is null");
+      }
+      const flag = Object.keys(params).length > 0; // 判断params有没有参数
+      const res = await this.request({
+        method: item.method,
+        url: item.url,
+        data: flag ? "" : item.params,
+        params: flag ? params : ""
+      }).catch(err => {
+        // 确认按钮节流
+        this.submitLoad = false;
+      });
+      if (res.code === 200) {
+        if (value && res.data) {
+          return res.data;
         }
+        // 确认按钮节流
+        this.submitLoad = false;
+        this.msgSuccess(`${item.label}成功！`);
+        // // 清除弹框中表单数据
+        this.clearDialogForm();
+        // 重新获取数据
+        this.queryList();
       }
     },
 

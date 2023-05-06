@@ -1,7 +1,7 @@
 <template>
   <el-cascader
-    :options="setOptions"
     v-model="form[model]"
+    :options="setOptions"
     :size="size"
     :filterable="true"
     :clearable="clearable"
@@ -21,7 +21,6 @@ import {
   regionDataPlus,
   CodeToText
 } from "element-china-area-data";
-import { TYPE_ARRAY, TYPE_STRING } from "../plugin/default";
 export default {
   name: "FormSelect",
   data() {
@@ -103,7 +102,6 @@ export default {
   methods: {
     /** 切换事件 */
     handleChange() {
-      console.log(CodeToText);
       /** 处理字段值 */
       this.change && this.change();
     }

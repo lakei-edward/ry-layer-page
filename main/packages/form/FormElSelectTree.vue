@@ -280,7 +280,6 @@ export default {
     },
     /* 点击节点 */
     onNodeClick(node, data) {
-      console.log(node, data);
       if (this.searchVal == true) {
         this.searchValue = null;
       }
@@ -317,7 +316,6 @@ export default {
         //
         // // 绑定值
         this.modelValue = juniorNodes.map(node => node[this.dynaDefProps.id]);
-        console.log("onCheck", this.modelValue);
         // 对外暴露绑定函数
         this.$emit("check", node, data);
       } else {

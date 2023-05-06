@@ -291,11 +291,6 @@ export default {
     this.getList();
   },
   methods: {
-    // 字典加载完成的回调
-    onDictReady(dict) {
-      // 初始化字典项
-      console.log(dict)
-    },
     /** 查询部门列表 */
     getList() {
       this.loading = true;

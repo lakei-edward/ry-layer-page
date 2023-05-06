@@ -165,6 +165,7 @@ export default {
         this.fre--;
         // 当倒数为0的时候重置操作
         if (this.fre === 0) {
+          clearInterval(this.timer);
           this.timer = null;
           this.fre = this.code.second;
           this.isSend = false;
