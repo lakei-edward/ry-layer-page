@@ -1,10 +1,10 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import Vue from "vue";
+import Router from "vue-router";
 
 Vue.use(Router);
 
 /* Layout */
-import Layout from '@/layout';
+import Layout from "@/layout";
 
 /**
  * Note: 路由配置项
@@ -29,34 +29,34 @@ import Layout from '@/layout';
 // 公共路由
 export const constantRoutes = [
   {
-    path: '/redirect',
+    path: "/redirect",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: '/redirect/:path(.*)',
-        component: (resolve) => require(['@/views/redirect'], resolve)
+        path: "/redirect/:path(.*)",
+        component: resolve => require(["@/views/redirect"], resolve)
       }
     ]
   },
   {
-    path: '/login',
-    component: (resolve) => require(['@/views/login'], resolve),
+    path: "/login",
+    component: resolve => require(["@/views/login"], resolve),
     hidden: true
   },
   {
-    path: '/register',
-    component: (resolve) => require(['@/views/register'], resolve),
+    path: "/register",
+    component: resolve => require(["@/views/register"], resolve),
     hidden: true
   },
   {
-    path: '/404',
-    component: (resolve) => require(['@/views/error/404'], resolve),
+    path: "/404",
+    component: resolve => require(["@/views/error/404"], resolve),
     hidden: true
   },
   {
-    path: '/401',
-    component: (resolve) => require(['@/views/error/401'], resolve),
+    path: "/401",
+    component: resolve => require(["@/views/error/401"], resolve),
     hidden: true
   },
   // {
@@ -73,89 +73,96 @@ export const constantRoutes = [
   //   ]
   // },
   {
-    path: '/user',
+    path: "/user",
     component: Layout,
     hidden: true,
-    redirect: 'noredirect',
+    redirect: "noredirect",
     children: [
       {
-        path: 'profile',
-        component: (resolve) => require(['@/views/system/user/profile/index'], resolve),
-        name: 'Profile',
-        meta: { title: '个人中心', icon: 'user' }
+        path: "profile",
+        component: resolve =>
+          require(["@/views/system/user/profile/index"], resolve),
+        name: "Profile",
+        meta: { title: "个人中心", icon: "user" }
       }
     ]
   },
   {
-    path: '/system/user-auth',
+    path: "*",
+    component: Layout
+  },
+  {
+    path: "/system/user-auth",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'role/:userId(\\d+)',
-        component: (resolve) => require(['@/views/system/user/authRole'], resolve),
-        name: 'AuthRole',
-        meta: { title: '分配角色', activeMenu: '/system/user' }
+        path: "role/:userId(\\d+)",
+        component: resolve =>
+          require(["@/views/system/user/authRole"], resolve),
+        name: "AuthRole",
+        meta: { title: "分配角色", activeMenu: "/system/user" }
       }
     ]
   },
   {
-    path: '/system/role-auth',
+    path: "/system/role-auth",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'user/:roleId(\\d+)',
-        component: (resolve) => require(['@/views/system/role/authUser'], resolve),
-        name: 'AuthUser',
-        meta: { title: '分配用户', activeMenu: '/system/role' }
+        path: "user/:roleId(\\d+)",
+        component: resolve =>
+          require(["@/views/system/role/authUser"], resolve),
+        name: "AuthUser",
+        meta: { title: "分配用户", activeMenu: "/system/role" }
       }
     ]
   },
   {
-    path: '/system/dict-data',
+    path: "/system/dict-data",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'index/:dictId(\\d+)',
-        component: (resolve) => require(['@/views/system/dict/data'], resolve),
-        name: 'Data',
-        meta: { title: '字典数据', activeMenu: '/system/dict' }
+        path: "index/:dictId(\\d+)",
+        component: resolve => require(["@/views/system/dict/data"], resolve),
+        name: "Data",
+        meta: { title: "字典数据", activeMenu: "/system/dict" }
       }
     ]
   },
   {
-    path: '/monitor/job-log',
+    path: "/monitor/job-log",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'index',
-        component: (resolve) => require(['@/views/monitor/job/log'], resolve),
-        name: 'JobLog',
-        meta: { title: '调度日志', activeMenu: '/monitor/job' }
+        path: "index",
+        component: resolve => require(["@/views/monitor/job/log"], resolve),
+        name: "JobLog",
+        meta: { title: "调度日志", activeMenu: "/monitor/job" }
       }
     ]
   },
   {
-    path: '/tool/gen-edit',
+    path: "/tool/gen-edit",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'index',
-        component: (resolve) => require(['@/views/tool/gen/editTable'], resolve),
-        name: 'GenEdit',
-        meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
+        path: "index",
+        component: resolve => require(["@/views/tool/gen/editTable"], resolve),
+        name: "GenEdit",
+        meta: { title: "修改生成配置", activeMenu: "/tool/gen" }
       }
     ]
   }
 ];
 
 export default new Router({
-  mode: 'history', // 去掉url中的#
-  base:"/ry-test-system/",
-  scrollBehavior: () => ({ y: 0 }),
+  mode: "history", // 去掉url中的#
+  // base:"/ry-test-system/",
+  // scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 });

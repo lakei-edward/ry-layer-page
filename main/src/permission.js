@@ -10,7 +10,14 @@ NProgress.configure({ showSpinner: false });
 
 const whiteList = ["/login", "/auth-redirect", "/bind", "/register"];
 
+const routersChild = ["/vue2-app", "/vue3-app"];
+const rwaAppendChild = HTMLHeadElement.prototype.appendChild;
+const rwaAddEventListener = window.addEventListener;
 router.beforeEach((to, from, next) => {
+  if (!routersChild.includes(to.path)) {
+    HTMLHeadElement.prototype.appendChild = rwaAppendChild;
+    window.addEventListener = rwaAddEventListener;
+  }
   NProgress.start();
   if (getToken()) {
     to.meta.title && store.dispatch("settings/setTitle", to.meta.title);

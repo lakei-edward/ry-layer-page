@@ -19,6 +19,7 @@ import { download } from "@/utils/request";
 import request from "@/utils/request";
 import axios from "axios";
 import _ from "lodash"; // lodash
+import { registerMicroApps, start } from "qiankun";
 
 import "./assets/icons"; // icon
 import "./permission"; // permission control
@@ -65,7 +66,7 @@ Vue.prototype.$format = format;
 Vue.prototype.$axios = axios;
 Vue.prototype.$bus = new Vue();
 Vue.prototype._ = _;
-Vue.prototype.msgSuccess = function (msg) {
+Vue.prototype.msgSuccess = function(msg) {
   this.$message({ showClose: true, message: msg, type: "success" });
 };
 
@@ -76,8 +77,6 @@ Vue.component("RightToolbar", RightToolbar);
 Vue.component("Editor", Editor);
 Vue.component("FileUpload", FileUpload);
 Vue.component("ImageUpload", ImageUpload);
-
-
 
 Vue.use(directive);
 Vue.use(mixin);
@@ -97,6 +96,23 @@ Vue.use(Element, {
 });
 
 Vue.config.productionTip = false;
+
+registerMicroApps([
+  {
+    name: "sub-vue",
+    entry: "//localhost:8080",
+    activeRule: "/vue2-app",
+    container: "#container"
+  },
+  {
+    name: "vue3-app",
+    entry: "//localhost:8082",
+    activeRule: "/vue3-app",
+    container: "#container"
+  }
+]);
+// 启动 qiankun
+start();
 
 new Vue({
   el: "#app",
