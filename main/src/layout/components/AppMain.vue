@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main">
+  <section class="app-main" >
     <transition name="fade-transform" mode="out-in">
       <keep-alive v-if="isKeepAlive">
         <router-view :key="key" />

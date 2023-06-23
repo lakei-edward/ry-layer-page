@@ -11,18 +11,19 @@
     />
     <sidebar class="sidebar-container" />
     <div
-      id="container"
       :class="{ hasTagsView: needTagsView }"
+      id="container"
       class="main-container"
     >
-      <div :class="{ 'fixed-header': fixedHeader }">
+    <div>123</div>
+      <!-- <div :class="{ 'fixed-header': fixedHeader }">
         <navbar />
         <tags-view v-if="needTagsView" />
       </div>
       <app-main />
       <right-panel>
         <settings />
-      </right-panel>
+      </right-panel> -->
     </div>
   </div>
 </template>

@@ -74,18 +74,18 @@ export const constantRoutes = [
   // },
   {
     path: "/user",
-    component: Layout,
-    hidden: true,
-    redirect: "noredirect",
-    children: [
-      {
-        path: "profile",
-        component: resolve =>
-          require(["@/views/system/user/profile/index"], resolve),
-        name: "Profile",
-        meta: { title: "个人中心", icon: "user" }
-      }
-    ]
+    component: Layout
+    // hidden: true,
+    // redirect: "noredirect",
+    // children: [
+    //   {
+    //     path: "profile",
+    //     component: resolve =>
+    //       require(["@/views/system/user/profile/index"], resolve),
+    //     name: "Profile",
+    //     meta: { title: "个人中心", icon: "user" }
+    //   }
+    // ]
   },
   {
     path: "*",
@@ -94,7 +94,7 @@ export const constantRoutes = [
   {
     path: "/system/user-auth",
     component: Layout,
-    hidden: true,
+    // hidden: true,
     children: [
       {
         path: "role/:userId(\\d+)",
@@ -104,6 +104,10 @@ export const constantRoutes = [
         meta: { title: "分配角色", activeMenu: "/system/user" }
       }
     ]
+  },
+  {
+    path: "/vue2-app",
+    component: Layout
   },
   {
     path: "/system/role-auth",
@@ -162,7 +166,7 @@ export const constantRoutes = [
 
 export default new Router({
   mode: "history", // 去掉url中的#
-  // base:"/ry-test-system/",
-  // scrollBehavior: () => ({ y: 0 }),
+  base: "/ry-test-system/",
+  scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 });
