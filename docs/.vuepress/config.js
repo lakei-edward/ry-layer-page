@@ -1,5 +1,5 @@
 module.exports = {
-  base: "/ry-layer-page/", //部署之后访问得路径
+  base: "/", //部署之后访问得路径
   head: [
     [
       "link", // 设置 favicon.ico，注意图片放在 public 文件夹下
