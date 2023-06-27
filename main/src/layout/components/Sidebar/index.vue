@@ -1,19 +1,45 @@
 <template>
   <div
-    :class="{'has-logo':showLogo}"
-    :style="{ backgroundColor: settings.sideTheme === 'theme-dark' ?
-      variables.menuBackground : settings.sideTheme === 'theme-light' ? variables.menuLightBackground : settings.sideTheme === 'theme-blue'?
-        variables.menuBlueBackground : variables.logoLightBlueTitleBackground}"
+    :class="{ 'has-logo': showLogo }"
+    :style="{
+      backgroundColor:
+        settings.sideTheme === 'theme-dark'
+          ? variables.menuBackground
+          : settings.sideTheme === 'theme-light'
+          ? variables.menuLightBackground
+          : settings.sideTheme === 'theme-blue'
+          ? variables.menuBlueBackground
+          : variables.logoLightBlueTitleBackground
+    }"
   >
-    <logo
-      v-if="showLogo"
-      :collapse="isCollapse"
-    />
-    <el-scrollbar
-      :class="settings.sideTheme"
-      wrap-class="scrollbar-wrapper"
-    >
+    <logo v-if="showLogo" :collapse="isCollapse" />
+    <el-scrollbar :class="settings.sideTheme" wrap-class="scrollbar-wrapper">
       <el-menu
+        default-active="2"
+        class="el-menu-vertical-demo"
+        @open="handleOpen"
+        @close="handleClose"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+        router
+      >
+        <el-menu-item index="/vue2-app">
+          <i class="el-icon-menu"></i>
+          <span slot="title">导航1</span>
+        </el-menu-item>
+        <el-menu-item index="/user">
+          <i class="el-icon-document"></i>
+          <span slot="title">
+            导航二
+          </span>
+        </el-menu-item>
+        <el-menu-item index="4">
+          <i class="el-icon-setting"></i>
+          <span slot="title">导航四</span>
+        </el-menu-item>
+      </el-menu>
+      <!-- <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
         :background-color="settings.sideTheme === 'theme-dark' ?
@@ -33,7 +59,7 @@
           :item="route"
           :base-path="route.path"
         />
-      </el-menu>
+      </el-menu> -->
     </el-scrollbar>
   </div>
 </template>

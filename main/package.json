@@ -87,10 +87,6 @@
     "webpack-cli": "3.3.10",
     "webpack-dev-server": "3.9.0"
   },
-  "engines": {
-    "node": ">=8.9",
-    "npm": ">= 3.0.0"
-  },
   "browserslist": [
     "ie > 5"
   ]
