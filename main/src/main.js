@@ -19,7 +19,7 @@ import { download } from "@/utils/request";
 import request from "@/utils/request";
 import axios from "axios";
 import _ from "lodash"; // lodash
-import { registerMicroApps, start } from "qiankun";
+// import { registerMicroApps, start } from "qiankun";
 
 import "./assets/icons"; // icon
 import "./permission"; // permission control
@@ -97,28 +97,28 @@ Vue.use(Element, {
 
 Vue.config.productionTip = false;
 
-registerMicroApps([
-  // {
-  //   name: "vueApp",
-  //   entry: "//localhost",
-  //   // container: "#container",
-  //   activeRule: "/ry-test-system"
-  // },
-  {
-    name: "sub-vue",
-    entry: "//localhost:8080",
-    activeRule: "/ry-test-system/vue2-app",
-    container: "#container"
-  }
-  // {
-  //   name: "vue3-app",
-  //   entry: "//localhost:8082",
-  //   activeRule: "/vue3-app",
-  //   container: "#container"
-  // }
-]);
-// 启动 qiankun
-start();
+// registerMicroApps([
+//   // {
+//   //   name: "vueApp",
+//   //   entry: "//localhost",
+//   //   // container: "#container",
+//   //   activeRule: "/ry-test-system"
+//   // },
+//   {
+//     name: "sub-vue",
+//     entry: "//localhost:8080",
+//     activeRule: "/ry-test-system/vue2-app",
+//     container: "#container"
+//   }
+//   // {
+//   //   name: "vue3-app",
+//   //   entry: "//localhost:8082",
+//   //   activeRule: "/vue3-app",
+//   //   container: "#container"
+//   // }
+// ]);
+// // 启动 qiankun
+// start();
 
 new Vue({
   el: "#app",

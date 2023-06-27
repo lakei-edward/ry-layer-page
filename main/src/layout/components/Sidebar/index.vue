@@ -14,7 +14,7 @@
   >
     <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar :class="settings.sideTheme" wrap-class="scrollbar-wrapper">
-      <el-menu
+      <!-- <el-menu
         default-active="2"
         class="el-menu-vertical-demo"
         @open="handleOpen"
@@ -38,18 +38,35 @@
           <i class="el-icon-setting"></i>
           <span slot="title">导航四</span>
         </el-menu-item>
-      </el-menu>
-      <!-- <el-menu
+      </el-menu> -->
+      <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
-        :background-color="settings.sideTheme === 'theme-dark' ?
-          variables.menuBackground : settings.sideTheme === 'theme-light' ?
-            variables.menuLightBackground:settings.sideTheme === 'theme-blue' ? variables.menuBlueBackground : variables.menuLightBlueBackground "
-        :text-color="settings.sideTheme === 'theme-dark' ?
-          variables.menuColor : settings.sideTheme === 'theme-light' ?
-            variables.menuLightColor:settings.sideTheme === 'theme-blue' ? variables.menuBlueColor:variables.menuLightBlueColor"
+        :background-color="
+          settings.sideTheme === 'theme-dark'
+            ? variables.menuBackground
+            : settings.sideTheme === 'theme-light'
+            ? variables.menuLightBackground
+            : settings.sideTheme === 'theme-blue'
+            ? variables.menuBlueBackground
+            : variables.menuLightBlueBackground
+        "
+        :text-color="
+          settings.sideTheme === 'theme-dark'
+            ? variables.menuColor
+            : settings.sideTheme === 'theme-light'
+            ? variables.menuLightColor
+            : settings.sideTheme === 'theme-blue'
+            ? variables.menuBlueColor
+            : variables.menuLightBlueColor
+        "
         :unique-opened="true"
-        :active-text-color="settings.sideTheme === 'theme-blue' || settings.sideTheme === 'theme-light-blue' ?variables.menuBlueColorActive:settings.theme"
+        :active-text-color="
+          settings.sideTheme === 'theme-blue' ||
+          settings.sideTheme === 'theme-light-blue'
+            ? variables.menuBlueColorActive
+            : settings.theme
+        "
         :collapse-transition="false"
         mode="vertical"
       >
@@ -59,7 +76,7 @@
           :item="route"
           :base-path="route.path"
         />
-      </el-menu> -->
+      </el-menu>
     </el-scrollbar>
   </div>
 </template>
