@@ -4,7 +4,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      carMk: null
+    };
   },
   props: [],
   mounted() {
@@ -28,14 +30,35 @@ export default {
     });
     // 将控件添加到地图上
     map.addControl(cityControl);
-    // 点击事件
-    // map.addEventListener("click", function(e) {
-    //   alert("点击位置经纬度：" + e.latlng.lng + "," + e.latlng.lat);
-    // });
 
+    var pStart = new BMapGL.Point(117.19635, 36.24093);
+    var pEnd = new BMapGL.Point(117.2035, 36.24764);
+    var bounds = new BMapGL.Bounds(
+      new BMapGL.Point(pStart.lng, pEnd.lat),
+      new BMapGL.Point(pEnd.lng, pStart.lat)
+    );
+    var imgOverlay = new BMapGL.GroundOverlay(bounds, {
+      type: "image",
+      url: "/car.png",
+      opacity: 1
+    });
+    map.addOverlay(imgOverlay);
+
+    var trackLine = {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          geometry: {
+            type: "LineString",
+            coordinates: []
+          }
+        }
+      ]
+    };
     var lineLayer = null;
     // 添加图层
-    function addLineLayer() {
+    const addLineLayer = () => {
       fetch(
         "https://mapopen-pub-jsapigl.bj.bcebos.com/svgmodel/lineLayerData.json"
       )
@@ -43,59 +66,120 @@ export default {
           return res.json();
         })
         .then(testLineData => {
+          trackLine.features[0] = testLineData.features[3];
           if (!lineLayer) {
             lineLayer = new BMapGL.LineLayer({
               enablePicked: true,
               autoSelect: true,
               pickWidth: 30,
               pickHeight: 30,
-              selectedColor: "yellow", // 选中项颜色
+              selectedColor: "#3faf7c", // 选中项颜色
               style: {
-                // borderMask: false,
-                borderColor: "rgba(27, 142, 236, .6)",
+                borderColor: "#fff",
+                borderWeight: 1,
+                strokeWeight: 5,
+                strokeColor: "#3faf7c",
+                strokeTextureUrl: "/img2.png",
+                sequence: true,
+                marginLength: 32,
+                borderColor: "green",
+                borderMask: false,
                 borderWeight: 2,
-                strokeWeight: 3,
-                strokeStyle: "dashed",
-                strokeColor: [
-                  "case",
-                  ["boolean", ["feature-state", "picked"], false],
-                  "#6704ff",
-                  [
-                    "match",
-                    ["get", "name"],
-                    "demo1",
-                    "#ce4848",
-                    "demo2",
-                    "#6704ff",
-                    "demo3",
-                    "blue",
-                    "#6704ff"
-                  ]
-                ]
+                strokeWeight: 6,
+                strokeLineJoin: "miter",
+                strokeLineCap: "round",
+                strokeTextureWidth: 32,
+                strokeTextureHeight: 64
               }
             });
           }
-          lineLayer.addEventListener("click", function(e) {
-            if (e.value.dataIndex !== -1 && e.value.dataItem) {
-              console.log("click", e.value.dataItem);
-              // 使用样式配置，实现单选效果
-              // this.updateState(e.value.dataIndex, { picked: true })
-            }
-          });
-          console.log(testLineData)
-          lineLayer.setData(testLineData);
+          console.log(trackLine)
+          lineLayer.setData(trackLine);
           map.addNormalLayer(lineLayer);
+          const coordinates = trackLine.features[0].geometry.coordinates;
+          this.createIcon(map, coordinates);
         });
-    }
+    };
     addLineLayer();
   },
-  methods: {}
+  methods: {
+    createIcon(map, coordinates) {
+      // 绘制开始结束icon
+      this.drawIcon(map, coordinates[0], "/start.png");
+      this.drawIcon(map, coordinates[coordinates.length - 1], "/end.png");
+      var temporary = []; //定义中间新取出的值放到一个新的数组里面
+      var i = 0;
+      var interval = setInterval(() => {
+        if (i >= coordinates.length) {
+          clearInterval(interval);
+          return;
+        }
+        i = i + 1;
+        temporary.push(coordinates[i]);
+        this.drowLine(map, temporary); //画线调用
+      }, 100);
+    },
+    drawIcon(map, pos, image) {
+      // 创建小车图标
+      var myIcon = new BMapGL.Icon(image, new BMapGL.Size(52, 26));
+      // 创建Marker标注，使用小车图标
+      var pt = new BMapGL.Point(...pos);
+      var marker = new BMapGL.Marker(pt, {
+        icon: myIcon
+      });
+      // 将标注添加到地图
+      map.addOverlay(marker);
+    },
+
+    drowLine(map, temporary) {
+      if (temporary && temporary.length > 1) {
+        // 判断数值为两个点时开始进行绘制
+        var polyline22 = new BMapGL.Polyline(
+          [
+            new BMapGL.Point(
+              temporary[temporary.length - 2][0],
+              temporary[temporary.length - 2][1]
+            ),
+            new BMapGL.Point(
+              temporary[temporary.length - 1][0],
+              temporary[temporary.length - 1][1]
+            )
+          ],
+          { strokeColor: "red", strokeWeight: 7, strokeOpacity: 1 }
+        ); //创建折线
+        map.addOverlay(polyline22);
+        this.addMarkerEnd(
+          new BMapGL.Point(
+            temporary[temporary.length - 1][0],
+            temporary[temporary.length - 1][1]
+          ),
+          "终点",
+          map,
+          temporary[temporary.length]
+        ); //添加图标
+      }
+    },
+
+    addMarkerEnd(point, name, map, trackUnit) {
+      var myIcon2 = new BMapGL.Icon("/move.png", new BMapGL.Size(22, 26)); //初始化终点坐标图标
+      if (name == "终点") {
+        if (this.carMk) {
+          //先判断第一次进来的时候这个值有没有定义，有的话就清除掉上一次的。然后在进行画图标。第一次进来时候没有定义也就不走这块，直接进行画图标
+          map.removeOverlay(this.carMk);
+        }
+        this.carMk = new BMapGL.Marker(point, { icon: myIcon2 }); // 创建标注
+        // this.carMk.setRotation(trackUnit.route); //trackUnit.route
+        map.addOverlay(this.carMk); // 将标注添加到地图中
+        this.carMk.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+      }
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
 #bmap {
-  width: 100%;
-  height: 100%;
+  width: 1200px;
+  height: 800px;
   background: #44444456;
 }
 </style>
