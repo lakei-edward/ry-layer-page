@@ -442,7 +442,7 @@ export default {
 | :----- | :------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :----------------- | :----- |
 | type   | 点击按钮后，需要触发的操作类型                                                                                                               | string  | 见 mode 的六种类型 | —      |
 | name   | 自定义弹框时，name 必传;自定义组件都要有 name 作为该组件的 ref 值                                                                            | string  | —                  | —      |
-| detail | 默认传递表格 row 信息；当 type 为 RouterPage 并且 detail 为 true 时，则路由模式中的 query 接受详情信息，但是过大的详情信息不建议走路由传参！ | boolean | —                  | false  |
+| detail | 默认传递表格 row 信息；当 type 为 RouterPage 并且 detail 为 true 时，通过sessionStorage进行获取详情数据,值为 `ry-detail` | boolean | —                  | false  |
 | router | 路由跳转的一些配置                                                                                                                           | object  | —                  | —      |
 
 #### 自定义路由页面的使用
@@ -459,7 +459,7 @@ export default {
 <script>
 export default {
   mounted() {
-    console.log(this.$route.query.params); //当前选中行的详情信息
+    console.log(JSON.parse(sessionStorage.getItem("ry-detail"))); //当前选中行的详情信息
   },
   methods: {
     submit() {
