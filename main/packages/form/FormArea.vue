@@ -20,9 +20,9 @@ import {
   provinceAndCityDataPlus,
   regionDataPlus,
   CodeToText
-} from "element-china-area-data";
+} from 'element-china-area-data'
 export default {
-  name: "FormSelect",
+  name: 'FormSelect',
   data() {
     return {
       /** 数据 */
@@ -32,7 +32,7 @@ export default {
         provinceAndCityDataPlus, //省市二级联动（带“全部”选项）
         regionDataPlus //省市区三级联动（带“全部”选项）
       }
-    };
+    }
   },
   props: {
     form: {
@@ -41,7 +41,7 @@ export default {
     },
     model: {
       type: String,
-      default: ""
+      default: ''
     },
     size: {
       type: String
@@ -53,7 +53,7 @@ export default {
     /** 选项分隔符 */
     separator: {
       type: String,
-      default: " / "
+      default: ' / '
     },
     /** 表单整体宽度 */
     formWidth: {
@@ -66,7 +66,7 @@ export default {
     /** 数据选项 */
     options: {
       type: String,
-      default: "regionData"
+      default: 'regionData'
     },
     /** 配置输出字段 默认value */
     optionProps: {
@@ -85,26 +85,26 @@ export default {
     setStyle() {
       return {
         width: this.width
-          ? typeof this.width === "string"
+          ? typeof this.width === 'string'
             ? this.width
-            : this.width + "px"
-          : this.formWidth + "px"
-      };
+            : this.width + 'px'
+          : this.formWidth + 'px'
+      }
     },
     /** 设置Options */
     setOptions() {
-      return this.optionsData[this.options];
+      return this.optionsData[this.options]
     }
   },
   beforeDestroy() {
-    this.area = [];
+    this.area = []
   },
   methods: {
     /** 切换事件 */
     handleChange() {
       /** 处理字段值 */
-      this.change && this.change();
+      this.change && this.change()
     }
   }
-};
+}
 </script>

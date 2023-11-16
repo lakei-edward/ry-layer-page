@@ -17,40 +17,40 @@
   />
 </template>
 <script>
-import Custom from "./Custom";
+import Custom from './Custom'
 export default {
   data() {
     return {
       searchLayer: {
-        labelAfter: ":",
-        labelWidth: "100px",
-        size: "mini",
+        labelAfter: ':',
+        labelWidth: '100px',
+        size: 'mini',
         formWidth: 317,
-        searchName: "查询",
-        resetName: "重置",
+        searchName: '查询',
+        resetName: '重置',
         form: [
           {
-            name: "Custom",
-            component: Custom, //自定义组件
+            name: 'Custom',
+            component: Custom //自定义组件
           },
           {
-            label: "科室负责人",
-            model: "deptLeader",
-            regExp: "english",
-            component: "FormInput", //内置组件
+            label: '科室负责人',
+            model: 'deptLeader',
+            regExp: 'english',
+            component: 'FormInput' //内置组件
           },
           {
-            label: "预警时间",
-            type: "daterange",
-            startTimeLabel: "startTimeYJ",
-            endTimeLabel: "endTimeYJ",
-            component: "FormDateRange", //内置组件
-          },
-        ],
-      },
-    };
-  },
-};
+            label: '预警时间',
+            type: 'daterange',
+            startTimeLabel: 'startTimeYJ',
+            endTimeLabel: 'endTimeYJ',
+            component: 'FormDateRange' //内置组件
+          }
+        ]
+      }
+    }
+  }
+}
 </script>
 ```
 
@@ -68,26 +68,26 @@ export default {
   />
 </template>
 <script>
-import Custom from "./Custom";
+import Custom from './Custom'
 export default {
   data() {
     return {
       // 搜索层
       searchLayer: {
-        labelWidth: "120px",
-        size: "small",
-        operateSize: "mini",
-        searchName: "查询",
-        resetName: "重置",
+        labelWidth: '120px',
+        size: 'small',
+        operateSize: 'mini',
+        searchName: '查询',
+        resetName: '重置',
         params: {
           khjdYear: `${new Date().getFullYear()}`, // 传入默认的时间
-          type: this.getType(), // 区分类型
+          type: this.getType() // 区分类型
         },
-        form,
-      },
-    };
-  },
-};
+        form
+      }
+    }
+  }
+}
 </script>
 ```
 

@@ -1,16 +1,10 @@
 <template>
   <div class="app-container home">
     <el-row :gutter="20">
-      <el-col
-        :sm="24"
-        :lg="24"
-      >
-        <blockquote
-          class="text-warning"
-          style="font-size: 14px"
-        >
+      <el-col :sm="24" :lg="24">
+        <blockquote class="text-warning" style="font-size: 14px">
           领取阿里云通用云产品1888优惠券
-          <br>
+          <br />
           <el-link
             href="https://www.aliyun.com/minisite/goods?userCode=brki8iof"
             type="primary"
@@ -18,9 +12,9 @@
           >
             https://www.aliyun.com/minisite/goods?userCode=brki8iof
           </el-link>
-          <br>
+          <br />
           领取腾讯云通用云产品2860优惠券
-          <br>
+          <br />
           <el-link
             href="https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console"
             type="primary"
@@ -28,37 +22,23 @@
           >
             https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console
           </el-link>
-          <br>
+          <br />
           阿里云服务器折扣区
-          <el-link
-            href="http://www.fablesoft.cn"
-            type="primary"
-            target="_blank"
-          >
+          <el-link href="http://www.fablesoft.cn" type="primary" target="_blank">
             >☛☛点我进入☚☚
           </el-link>
           &nbsp;&nbsp;&nbsp; 腾讯云服务器秒杀区
-          <el-link
-            href="http://www.fablesoft.cn"
-            type="primary"
-            target="_blank"
-          >
-            >☛☛点我进入☚☚
-          </el-link><br>
-          <h4 class="text-danger">
-            云产品通用红包，可叠加官网常规优惠使用。(仅限新用户)
-          </h4>
+          <el-link href="http://www.fablesoft.cn" type="primary" target="_blank">
+            >☛☛点我进入☚☚ </el-link
+          ><br />
+          <h4 class="text-danger">云产品通用红包，可叠加官网常规优惠使用。(仅限新用户)</h4>
         </blockquote>
 
-        <hr>
+        <hr />
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col
-        :sm="24"
-        :lg="12"
-        style="padding-left: 20px"
-      >
+      <el-col :sm="24" :lg="12" style="padding-left: 20px">
         <h2>后台管理框架</h2>
         <p>
           一直想做一款后台管理系统，看了很多优秀的开源项目但是发现没有合适自己的。于是利用空闲休息时间开始自己写一套后台系统。如此有了后台管理系统。，她可以用于所有的Web应用程序，如网站管理后台，网站会员中心，CMS，CRM，OA等等，当然，您也可以对她进行深度定制，以做出更强系统。所有前端后台代码封装过后十分精简易上手，出错概率低。同时支持移动客户端访问。系统会陆续更新一些实用功能。
@@ -67,9 +47,7 @@
           <b>当前版本:</b> <span>v{{ version }}</span>
         </p>
         <p>
-          <el-tag type="danger">
-            &yen;免费开源
-          </el-tag>
+          <el-tag type="danger"> &yen;免费开源 </el-tag>
         </p>
         <p>
           <el-button
@@ -100,11 +78,7 @@
         </p>
       </el-col>
 
-      <el-col
-        :sm="24"
-        :lg="12"
-        style="padding-left: 50px"
-      >
+      <el-col :sm="24" :lg="12" style="padding-left: 50px">
         <el-row>
           <el-col :span="12">
             <h2>技术选型</h2>
@@ -140,17 +114,9 @@
     </el-row>
     <el-divider />
     <el-row :gutter="20">
-      <el-col
-        :xs="24"
-        :sm="24"
-        :md="12"
-        :lg="8"
-      >
+      <el-col :xs="24" :sm="24" :md="12" :lg="8">
         <el-card class="update-log">
-          <div
-            slot="header"
-            class="clearfix"
-          >
+          <div slot="header" class="clearfix">
             <span>联系信息</span>
           </div>
           <div class="body">
@@ -163,40 +129,21 @@
               </el-link>
             </p>
             <p>
-              <i class="el-icon-user-solid" /> QQ群：<s>满937441</s>
-              <s>满887144332</s> <s>满180251782</s> <s>满104180207</s>
-              <s>满186866453</s> <s>满201396349</s> <s>满101456076</s>
-              <a
-                href="https://jq.qq.com/?_wv=1027&k=KmQbXyJ6"
-                target="_blank"
-              >
-                101539465</a>
+              <i class="el-icon-user-solid" /> QQ群：<s>满937441</s> <s>满887144332</s>
+              <s>满180251782</s> <s>满104180207</s> <s>满186866453</s> <s>满201396349</s>
+              <s>满101456076</s>
+              <a href="https://jq.qq.com/?_wv=1027&k=KmQbXyJ6" target="_blank"> 101539465</a>
             </p>
+            <p><i class="el-icon-chat-dot-round" /> 微信：<a href="javascript:;">/ *</a></p>
             <p>
-              <i class="el-icon-chat-dot-round" /> 微信：<a
-                href="javascript:;"
-              >/ *</a>
-            </p>
-            <p>
-              <i class="el-icon-money" /> 支付宝：<a
-                href="javascript:;"
-                class="支付宝信息"
-              >/ *</a>
+              <i class="el-icon-money" /> 支付宝：<a href="javascript:;" class="支付宝信息">/ *</a>
             </p>
           </div>
         </el-card>
       </el-col>
-      <el-col
-        :xs="24"
-        :sm="24"
-        :md="12"
-        :lg="8"
-      >
+      <el-col :xs="24" :sm="24" :md="12" :lg="8">
         <el-card class="update-log">
-          <div
-            slot="header"
-            class="clearfix"
-          >
+          <div slot="header" class="clearfix">
             <span>更新日志</span>
           </div>
           <el-collapse accordion>
@@ -307,12 +254,8 @@
                 <li>BLOB下载时清除URL对象引用</li>
                 <li>代码生成导入表按创建时间排序</li>
                 <li>修复代码生成页面数据编辑保存之后总是跳转第一页的问题</li>
-                <li>
-                  修复带safari浏览器无法格式化utc日期格式yyyy-MM-dd'T'HH:mm:ss.SSS问题
-                </li>
-                <li>
-                  多图上传组件移除多余的api地址&验证失败导致图片删除问题&无法删除相应图片修复
-                </li>
+                <li>修复带safari浏览器无法格式化utc日期格式yyyy-MM-dd'T'HH:mm:ss.SSS问题</li>
+                <li>多图上传组件移除多余的api地址&验证失败导致图片删除问题&无法删除相应图片修复</li>
                 <li>其他细节优化</li>
               </ol>
             </el-collapse-item>
@@ -357,9 +300,7 @@
             </el-collapse-item>
             <el-collapse-item title="v3.5.0 - 2021-05-25">
               <ol>
-                <li>
-                  新增菜单导航显示风格TopNav（false为左侧导航菜单，true为顶部导航菜单）
-                </li>
+                <li>新增菜单导航显示风格TopNav（false为左侧导航菜单，true为顶部导航菜单）</li>
                 <li>布局设置支持保存&重置配置</li>
                 <li>修复树表数据显示不全&加载慢问题</li>
                 <li>新增IE浏览器版本过低提示页面</li>
@@ -378,9 +319,7 @@
                 <li>升级druid到最新版本v1.2.6</li>
                 <li>升级mybatis到最新版3.5.6 阻止远程代码执行漏洞</li>
                 <li>升级oshi到最新版本v5.6.0</li>
-                <li>
-                  velocity剔除commons-collections版本，防止3.2.1版本的反序列化漏洞
-                </li>
+                <li>velocity剔除commons-collections版本，防止3.2.1版本的反序列化漏洞</li>
                 <li>数据监控页默认账户密码防止越权访问</li>
                 <li>修复firefox下表单构建拖拽会新打卡一个选项卡</li>
                 <li>修正后端导入表权限标识</li>
@@ -595,9 +534,7 @@
                 <li>调整表头固定列默认样式</li>
                 <li>代码生成模板调整，字段为String并且必填则加空串条件</li>
                 <li>代码生成字典Integer/Long使用parseInt</li>
-                <li>
-                  修复dict_sort不可update为0的问题&查询返回增加dict_sort升序排序
-                </li>
+                <li>修复dict_sort不可update为0的问题&查询返回增加dict_sort升序排序</li>
                 <li>修正岗位导出权限注解</li>
                 <li>禁止加密密文返回前端</li>
                 <li>修复代码生成页面中的查询条件创建时间未生效的问题</li>
@@ -751,17 +688,9 @@
           </el-collapse>
         </el-card>
       </el-col>
-      <el-col
-        :xs="24"
-        :sm="24"
-        :md="12"
-        :lg="8"
-      >
+      <el-col :xs="24" :sm="24" :md="12" :lg="8">
         <el-card class="update-log">
-          <div
-            slot="header"
-            class="clearfix"
-          >
+          <div slot="header" class="clearfix">
             <span>捐赠支持</span>
           </div>
           <div class="body">
@@ -769,10 +698,10 @@
               src="https://oscimg.oschina.net/oscnet/up-d6695f82666e5018f715c41cb7ee60d3b73.png"
               alt="donate"
               width="100%"
+            />
+            <span style="display: inline-block; height: 30px; line-height: 30px"
+              >你可以请作者喝杯咖啡表示鼓励</span
             >
-            <span
-              style="display: inline-block; height: 30px; line-height: 30px"
-            >你可以请作者喝杯咖啡表示鼓励</span>
           </div>
         </el-card>
       </el-col>
@@ -782,19 +711,19 @@
 
 <script>
 export default {
-  name: "Index",
+  name: 'Index',
   data() {
     return {
       // 版本号
-      version: "3.8.0"
-    };
+      version: '3.8.0'
+    }
   },
   methods: {
     goTarget(href) {
-      window.open(href, "_blank");
+      window.open(href, '_blank')
     }
   }
-};
+}
 </script>
 
 <style scoped lang="scss">
@@ -820,7 +749,7 @@ export default {
     margin: 0;
   }
 
-  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'open sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 13px;
   color: #676a6c;
   overflow-x: hidden;

@@ -22,7 +22,7 @@
 </template>
 <script>
 export default {
-  name: "FormSelect",
+  name: 'FormSelect',
   props: {
     form: {
       type: Object,
@@ -30,18 +30,18 @@ export default {
     },
     model: {
       type: String,
-      default: ""
+      default: ''
     },
     placeholder: {
       type: String,
-      default: "请选择"
+      default: '请选择'
     },
     size: {
       type: String
     },
     keyModel: {
       type: String,
-      default: "value"
+      default: 'value'
     },
     formWidth: {
       type: Number
@@ -74,35 +74,35 @@ export default {
     setStyle() {
       return {
         width: this.width
-          ? typeof this.width === "string"
+          ? typeof this.width === 'string'
             ? this.width
-            : this.width + "px"
-          : this.formWidth + "px"
-      };
+            : this.width + 'px'
+          : this.formWidth + 'px'
+      }
     },
     /** 根据main.js中配置的dictField来取 */
     GET_KEY() {
-      return Object.values(this.$options.filed);
+      return Object.values(this.$options.filed)
     },
     /** 设置value返回什么值 */
     setValue() {
-      return function(option) {
+      return function (option) {
         if (this.change) {
           if (this.optionValue) {
-            return option[this.GET_KEY[1]];
+            return option[this.GET_KEY[1]]
           } else {
-            return option;
+            return option
           }
         } else {
-          return option[this.GET_KEY[1]];
+          return option[this.GET_KEY[1]]
         }
-      };
+      }
     }
   },
   methods: {
     handleChange(val) {
-      this.change && this.change(val);
+      this.change && this.change(val)
     }
   }
-};
+}
 </script>

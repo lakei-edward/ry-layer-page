@@ -77,14 +77,14 @@
   />
 </template>
 <script>
-import FormSelect from "./FormSelect.vue";
-import FormInput from "./FormInput.vue";
-import FormDateRange from "./FormDateRange.vue";
-import FormTreeSelect from "./FormTreeSelect.vue";
-import FormDate from "./FormDate.vue";
-import FormTextarea from "./FormTextarea.vue";
-import FormUpdate from "./FormUpdate.vue";
-import FormArea from "./FormArea.vue";
+import FormSelect from './FormSelect.vue'
+import FormInput from './FormInput.vue'
+import FormDateRange from './FormDateRange.vue'
+import FormTreeSelect from './FormTreeSelect.vue'
+import FormDate from './FormDate.vue'
+import FormTextarea from './FormTextarea.vue'
+import FormUpdate from './FormUpdate.vue'
+import FormArea from './FormArea.vue'
 export default {
   components: {
     FormSelect,
@@ -100,16 +100,16 @@ export default {
     attrs: {
       type: Object,
       default() {
-        return {};
+        return {}
       }
     },
     formParams: {
       type: Object,
       default() {
-        return {};
+        return {}
       }
     },
     formWidth: String
   }
-};
+}
 </script>

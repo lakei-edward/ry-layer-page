@@ -7,11 +7,7 @@
         class="hamburger-container"
         @toggleClick="toggleSideBar"
       />
-      <breadcrumb
-        v-if="!topNav"
-        id="breadcrumb-container"
-        class="breadcrumb-container"
-      />
+      <breadcrumb v-if="!topNav" id="breadcrumb-container" class="breadcrumb-container" />
       <top-nav v-if="topNav" id="topmenu-container" class="topmenu-container" />
     </div>
     <div class="right-menu">
@@ -26,14 +22,10 @@
           <span class="avatar">
             <img :src="$store.getters.avatar" ref="avatar" alt="" />
           </span>
-          <span class="name">{{ "admin" }}</span>
+          <span class="name">{{ 'admin' }}</span>
           <i class="el-icon-arrow-down" :style="{ marginLeft: '6px' }"></i>
         </div>
-        <el-dropdown-menu
-          slot="dropdown"
-          class="user-dropdown"
-          :style="{ width: '128px' }"
-        >
+        <el-dropdown-menu slot="dropdown" class="user-dropdown" :style="{ width: '128px' }">
           <router-link to="/user/profile">
             <el-dropdown-item>个人中心</el-dropdown-item>
           </router-link>
@@ -68,10 +60,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Breadcrumb from "@/components/Breadcrumb";
-import TopNav from "@/components/TopNav";
-import Hamburger from "@/components/Hamburger";
+import { mapGetters } from 'vuex'
+import Breadcrumb from '@/components/Breadcrumb'
+import TopNav from '@/components/TopNav'
+import Hamburger from '@/components/Hamburger'
 export default {
   components: {
     Breadcrumb,
@@ -79,56 +71,56 @@ export default {
     Hamburger
   },
   computed: {
-    ...mapGetters(["sidebar", "avatar", "device"]),
+    ...mapGetters(['sidebar', 'avatar', 'device']),
     setting: {
       get() {
-        return this.$store.state.settings.showSettings;
+        return this.$store.state.settings.showSettings
       },
       set(val) {
-        this.$store.dispatch("settings/changeSetting", {
-          key: "showSettings",
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'showSettings',
           value: val
-        });
+        })
       }
     },
     topNav: {
       get() {
-        return this.$store.state.settings.topNav;
+        return this.$store.state.settings.topNav
       }
     }
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch("app/toggleSideBar");
+      this.$store.dispatch('app/toggleSideBar')
     },
 
     /** 返回上一级 */
     handleReturnBack() {
-      this.$router.back(-1);
+      this.$router.back(-1)
     },
 
     handleCommand(val) {
-      if (val === "logout") {
-        this.logout();
+      if (val === 'logout') {
+        this.logout()
       }
     },
 
     /** 退出 */
     async logout() {
-      this.$confirm("确定注销并退出系统吗？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定注销并退出系统吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          this.$store.dispatch("LogOut").then(() => {
-            location.href = "/index";
-          });
+          this.$store.dispatch('LogOut').then(() => {
+            location.href = '/index'
+          })
         })
-        .catch(() => {});
+        .catch(() => {})
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

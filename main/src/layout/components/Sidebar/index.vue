@@ -6,10 +6,10 @@
         settings.sideTheme === 'theme-dark'
           ? variables.menuBackground
           : settings.sideTheme === 'theme-light'
-          ? variables.menuLightBackground
-          : settings.sideTheme === 'theme-blue'
-          ? variables.menuBlueBackground
-          : variables.logoLightBlueTitleBackground
+            ? variables.menuLightBackground
+            : settings.sideTheme === 'theme-blue'
+              ? variables.menuBlueBackground
+              : variables.logoLightBlueTitleBackground
     }"
   >
     <logo v-if="showLogo" :collapse="isCollapse" />
@@ -46,24 +46,23 @@
           settings.sideTheme === 'theme-dark'
             ? variables.menuBackground
             : settings.sideTheme === 'theme-light'
-            ? variables.menuLightBackground
-            : settings.sideTheme === 'theme-blue'
-            ? variables.menuBlueBackground
-            : variables.menuLightBlueBackground
+              ? variables.menuLightBackground
+              : settings.sideTheme === 'theme-blue'
+                ? variables.menuBlueBackground
+                : variables.menuLightBlueBackground
         "
         :text-color="
           settings.sideTheme === 'theme-dark'
             ? variables.menuColor
             : settings.sideTheme === 'theme-light'
-            ? variables.menuLightColor
-            : settings.sideTheme === 'theme-blue'
-            ? variables.menuBlueColor
-            : variables.menuLightBlueColor
+              ? variables.menuLightColor
+              : settings.sideTheme === 'theme-blue'
+                ? variables.menuBlueColor
+                : variables.menuLightBlueColor
         "
         :unique-opened="true"
         :active-text-color="
-          settings.sideTheme === 'theme-blue' ||
-          settings.sideTheme === 'theme-light-blue'
+          settings.sideTheme === 'theme-blue' || settings.sideTheme === 'theme-light-blue'
             ? variables.menuBlueColorActive
             : settings.theme
         "
@@ -82,34 +81,34 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
-import Logo from "./Logo";
-import SidebarItem from "./SidebarItem";
-import variables from "@/assets/styles/variables.scss";
+import { mapGetters, mapState } from 'vuex'
+import Logo from './Logo'
+import SidebarItem from './SidebarItem'
+import variables from '@/assets/styles/variables.scss'
 
 export default {
   components: { SidebarItem, Logo },
   computed: {
-    ...mapState(["settings"]),
-    ...mapGetters(["sidebarRouters", "sidebar"]),
+    ...mapState(['settings']),
+    ...mapGetters(['sidebarRouters', 'sidebar']),
     activeMenu() {
-      const route = this.$route;
-      const { meta, path } = route;
+      const route = this.$route
+      const { meta, path } = route
       // if set path, the sidebar will highlight the path you set
       if (meta.activeMenu) {
-        return meta.activeMenu;
+        return meta.activeMenu
       }
-      return path;
+      return path
     },
     showLogo() {
-      return this.$store.state.settings.sidebarLogo;
+      return this.$store.state.settings.sidebarLogo
     },
     variables() {
-      return variables;
+      return variables
     },
     isCollapse() {
-      return !this.sidebar.opened;
+      return !this.sidebar.opened
     }
   }
-};
+}
 </script>

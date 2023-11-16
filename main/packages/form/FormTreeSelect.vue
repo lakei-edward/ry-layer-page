@@ -21,14 +21,14 @@
   </div>
 </template>
 <script>
-import Treeselectlist from "@riophae/vue-treeselect";
-import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import Treeselectlist from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
-  name: "FormTreeSelect",
+  name: 'FormTreeSelect',
   data() {
     return {
       deptList: []
-    };
+    }
   },
   props: {
     form: {
@@ -44,11 +44,11 @@ export default {
     },
     placeholder: {
       type: String,
-      default: "请选择"
+      default: '请选择'
     },
     noResultsText: {
       type: String,
-      default: "没有找到该单位"
+      default: '没有找到该单位'
     },
     normalizer: {
       type: Function
@@ -82,30 +82,30 @@ export default {
     flat: Boolean // 是否启用平面模式。
   },
   components: { Treeselectlist },
-  inject: ["request"],
+  inject: ['request'],
   mounted() {
     /** 查询部门下拉树结构 */
-    this.getTreeselect();
+    this.getTreeselect()
   },
   methods: {
     /** 查询部门下拉树结构 */
     async getTreeselect() {
       if (!this.treeUrl) {
-        return;
+        return
       }
       if (this.request) {
         const res = await this.request({
           url: this.treeUrl,
-          methods: "get",
+          methods: 'get',
           params: this.params
-        });
+        })
         if (!this.callback) {
-          this.deptList = res.data;
+          this.deptList = res.data
         } else {
-          this.deptList = this.callback(res.data);
+          this.deptList = this.callback(res.data)
         }
       }
     }
   }
-};
+}
 </script>

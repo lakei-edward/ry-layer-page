@@ -15,12 +15,12 @@ $ pnpm install ry-layer-page -S
 参数http为若依框架中调取请求方法
 
 ```js
-import request from "@/utils/request";
-import ryLayerPage  from 'ry-layer-page';
+import request from '@/utils/request'
+import ryLayerPage from 'ry-layer-page'
 
 Vue.use(ryLayerPage, {
-  http: request,
-});
+  http: request
+})
 ```
 
 #### 🎨 选用dict字典
@@ -30,21 +30,21 @@ Vue.use(ryLayerPage, {
 如果当前项目中没有配置$options.dicts方式引入字典，可进行选配安装dict，参数dict为若依框架中调取字典的接口
 
 ```js
-import { getDicts } from "@/api/system/dict/data";
-import request from "@/utils/request";
-import ryLayerPage from "ry-layer-page";
+import { getDicts } from '@/api/system/dict/data'
+import request from '@/utils/request'
+import ryLayerPage from 'ry-layer-page'
 
 Vue.use(ryLayerPage, {
   http: request,
-  dict: getDicts,
-});
+  dict: getDicts
+})
 ```
 
 dict使用示例
 
 ```js
 export default {
-  dicts: ["sys_normal_disable", "sys_show_hide"],
+  dicts: ['sys_normal_disable', 'sys_show_hide'],
   data() {
     return {}
   }

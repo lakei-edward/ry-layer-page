@@ -1,14 +1,7 @@
 <template>
   <div class="register">
-    <el-form
-      ref="registerForm"
-      :model="registerForm"
-      :rules="registerRules"
-      class="register-form"
-    >
-      <h3 class="title">
-        后台管理系统
-      </h3>
+    <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="register-form">
+      <h3 class="title">后台管理系统</h3>
       <el-form-item prop="username">
         <el-input
           v-model="registerForm.username"
@@ -16,11 +9,7 @@
           auto-complete="off"
           placeholder="账号"
         >
-          <svg-icon
-            slot="prefix"
-            icon-class="user"
-            class="el-input__icon input-icon"
-          />
+          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
@@ -31,11 +20,7 @@
           placeholder="密码"
           @keyup.enter.native="handleRegister"
         >
-          <svg-icon
-            slot="prefix"
-            icon-class="password"
-            class="el-input__icon input-icon"
-          />
+          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
       <el-form-item prop="confirmPassword">
@@ -46,17 +31,10 @@
           placeholder="确认密码"
           @keyup.enter.native="handleRegister"
         >
-          <svg-icon
-            slot="prefix"
-            icon-class="password"
-            class="el-input__icon input-icon"
-          />
+          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-      <el-form-item
-        v-if="captchaOnOff"
-        prop="code"
-      >
+      <el-form-item v-if="captchaOnOff" prop="code">
         <el-input
           v-model="registerForm.code"
           auto-complete="off"
@@ -64,38 +42,25 @@
           style="width: 63%"
           @keyup.enter.native="handleRegister"
         >
-          <svg-icon
-            slot="prefix"
-            icon-class="validCode"
-            class="el-input__icon input-icon"
-          />
+          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
         </el-input>
         <div class="register-code">
-          <img
-            :src="codeUrl"
-            class="register-code-img"
-            @click="getCode"
-          >
+          <img :src="codeUrl" class="register-code-img" @click="getCode" />
         </div>
       </el-form-item>
-      <el-form-item style="width:100%;">
+      <el-form-item style="width: 100%">
         <el-button
           :loading="loading"
           size="medium"
           type="primary"
-          style="width:100%;"
+          style="width: 100%"
           @click.native.prevent="handleRegister"
         >
           <span v-if="!loading">注 册</span>
           <span v-else>注 册 中...</span>
         </el-button>
-        <div style="float: right;">
-          <router-link
-            class="link-type"
-            :to="'/login'"
-          >
-            使用已有账户登录
-          </router-link>
+        <div style="float: right">
+          <router-link class="link-type" :to="'/login'"> 使用已有账户登录 </router-link>
         </div>
       </el-form-item>
     </el-form>
@@ -107,82 +72,90 @@
 </template>
 
 <script>
-import { getCodeImg, register } from "@/api/login";
+import { getCodeImg, register } from '@/api/login'
 
 export default {
-  name: "Register",
+  name: 'Register',
   data() {
     const equalToPassword = (rule, value, callback) => {
       if (this.registerForm.password !== value) {
-        callback(new Error("两次输入的密码不一致"));
+        callback(new Error('两次输入的密码不一致'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
-      codeUrl: "",
+      codeUrl: '',
       registerForm: {
-        username: "",
-        password: "",
-        confirmPassword: "",
-        code: "",
-        uuid: ""
+        username: '',
+        password: '',
+        confirmPassword: '',
+        code: '',
+        uuid: ''
       },
       registerRules: {
         username: [
-          { required: true, trigger: "blur", message: "请输入您的账号" },
+          { required: true, trigger: 'blur', message: '请输入您的账号' },
           { min: 2, max: 20, message: '用户账号长度必须介于 2 和 20 之间', trigger: 'blur' }
         ],
         password: [
-          { required: true, trigger: "blur", message: "请输入您的密码" },
+          { required: true, trigger: 'blur', message: '请输入您的密码' },
           { min: 5, max: 20, message: '用户密码长度必须介于 5 和 20 之间', trigger: 'blur' }
         ],
         confirmPassword: [
-          { required: true, trigger: "blur", message: "请再次输入您的密码" },
-          { required: true, validator: equalToPassword, trigger: "blur" }
+          { required: true, trigger: 'blur', message: '请再次输入您的密码' },
+          { required: true, validator: equalToPassword, trigger: 'blur' }
         ],
-        code: [{ required: true, trigger: "change", message: "请输入验证码" }]
+        code: [{ required: true, trigger: 'change', message: '请输入验证码' }]
       },
       loading: false,
       captchaOnOff: true
-    };
+    }
   },
   created() {
-    this.getCode();
+    this.getCode()
   },
   methods: {
     getCode() {
       getCodeImg().then(res => {
-        this.captchaOnOff = res.captchaOnOff === undefined ? true : res.captchaOnOff;
+        this.captchaOnOff = res.captchaOnOff === undefined ? true : res.captchaOnOff
         if (this.captchaOnOff) {
-          this.codeUrl = `data:image/gif;base64,${res.img}`;
-          this.registerForm.uuid = res.uuid;
+          this.codeUrl = `data:image/gif;base64,${res.img}`
+          this.registerForm.uuid = res.uuid
         }
-      });
+      })
     },
     handleRegister() {
       this.$refs.registerForm.validate(valid => {
         if (valid) {
-          this.loading = true;
-          register(this.registerForm).then(res => {
-            const username = this.registerForm.username;
-            this.$alert(`<font color='red'>恭喜你，您的账号 ${username} 注册成功！</font>`, '系统提示', {
-              dangerouslyUseHTMLString: true,
-              type: 'success'
-            }).then(() => {
-              this.$router.push("/login");
-            }).catch(() => {});
-          }).catch(() => {
-            this.loading = false;
-            if (this.captchaOnOff) {
-              this.getCode();
-            }
-          });
+          this.loading = true
+          register(this.registerForm)
+            .then(res => {
+              const username = this.registerForm.username
+              this.$alert(
+                `<font color='red'>恭喜你，您的账号 ${username} 注册成功！</font>`,
+                '系统提示',
+                {
+                  dangerouslyUseHTMLString: true,
+                  type: 'success'
+                }
+              )
+                .then(() => {
+                  this.$router.push('/login')
+                })
+                .catch(() => {})
+            })
+            .catch(() => {
+              this.loading = false
+              if (this.captchaOnOff) {
+                this.getCode()
+              }
+            })
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
@@ -191,7 +164,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-image: url("../assets/images/login-background.jpg");
+  background-image: url('../assets/images/login-background.jpg');
   background-size: cover;
 }
 .title {

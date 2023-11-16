@@ -13,9 +13,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build:prod": "vue-cli-service build",
-    "lib": "npm run clean && vue-cli-service build --target lib --dest lib --entry ./src/index.js && npm run clean:file",
-    "clean": "rimraf lib",
-    "clean:file": "cd lib/ && rimraf *.html"
+    "lib": "npm run clean && vue-cli-service build --target lib --dest lib --entry ./src/index.js",
+    "clean": "rimraf lib"
   },
   "husky": {
     "hooks": {

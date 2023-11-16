@@ -1,21 +1,13 @@
 <template>
-  <el-breadcrumb
-    class="app-breadcrumb"
-    separator="/"
-  >
+  <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
-      <el-breadcrumb-item
-        v-for="(item,index) in levelList"
-        :key="item.path"
-      >
+      <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
         <span
           v-if="item.redirect === 'noRedirect' || index == levelList.length - 1"
           class="no-redirect"
-        >{{ item.meta.title }}</span>
-        <a
-          v-else
-          @click.prevent="handleLink(item)"
-        >{{ item.meta.title }}</a>
+          >{{ item.meta.title }}</span
+        >
+        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -26,49 +18,51 @@ export default {
   data() {
     return {
       levelList: null
-    };
+    }
   },
   watch: {
     $route(route) {
       // if you go to the redirect page, do not update the breadcrumbs
       if (route.path.startsWith('/redirect/')) {
-        return;
+        return
       }
-      this.getBreadcrumb();
+      this.getBreadcrumb()
     }
   },
   created() {
-    this.getBreadcrumb();
+    this.getBreadcrumb()
   },
   methods: {
     getBreadcrumb() {
       // only show routes with meta.title
-      let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
-      const first = matched[0];
+      let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
+      const first = matched[0]
 
       // if (!this.isDashboard(first)) {
       //   matched = [{ path: '/index', meta: { title: '首页' }}].concat(matched);
       // }
 
-      this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false);
+      this.levelList = matched.filter(
+        item => item.meta && item.meta.title && item.meta.breadcrumb !== false
+      )
     },
     isDashboard(route) {
-      const name = route && route.name;
+      const name = route && route.name
       if (!name) {
-        return false;
+        return false
       }
-      return name.trim() === 'Index';
+      return name.trim() === 'Index'
     },
     handleLink(item) {
-      const { redirect, path } = item;
+      const { redirect, path } = item
       if (redirect) {
-        this.$router.push(redirect);
-        return;
+        this.$router.push(redirect)
+        return
       }
-      this.$router.push(path);
+      this.$router.push(path)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -77,11 +71,11 @@ export default {
   font-size: 14px;
   line-height: 50px;
   margin-left: 8px;
-  a{
-    color:rgba(0,0,0,0.45);
+  a {
+    color: rgba(0, 0, 0, 0.45);
   }
   .no-redirect {
-    color: rgba(0,0,0,0.65);
+    color: rgba(0, 0, 0, 0.65);
     cursor: text;
   }
 }

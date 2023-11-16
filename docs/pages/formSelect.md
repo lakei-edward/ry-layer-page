@@ -7,36 +7,36 @@
 ```vue
 <script>
 export default {
-  dicts: ["sys_normal_class", "sys_show_hide"],
+  dicts: ['sys_normal_class', 'sys_show_hide'],
   data() {
     return {
       searchLayer: {
         form: [
           {
-            label: "科室类别",
-            model: "deptClass",
-            component: "FormSelect",
-            dict: "sys_normal_class",
+            label: '科室类别',
+            model: 'deptClass',
+            component: 'FormSelect',
+            dict: 'sys_normal_class',
             rules: [
               {
                 required: true,
-                message: "请输入科室名称",
-                trigger: "change",
-              },
-            ],
-          },
-        ],
-      },
-    };
+                message: '请输入科室名称',
+                trigger: 'change'
+              }
+            ]
+          }
+        ]
+      }
+    }
   },
   methods: {
     // 字典加载完成的回调
     onDictReady(dict) {
       // 初始化字典项
-      this.$refs.layerPage.initDicts(dict);
-    },
-  },
-};
+      this.$refs.layerPage.initDicts(dict)
+    }
+  }
+}
 </script>
 ```
 
@@ -82,7 +82,24 @@ export default {
 </script>
 ```
 
-## 支持自定义数据
+#### 事件的数据绑定
+
+使用 change 事件时生效，当绑定 change 事件，则默认返回对象，当该值为 true 时，则只返回 value
+
+```js
+{
+  label: "隐患类型",
+  model: type ? "typeHiddenDanger" : "typeHiddenDangerName",
+  component: "FormSelect",
+  dict: `${routerType}_yhlx`,
+  width: 260,
+  rules: isRule ? chooseRule("隐患类型") : [],
+  optionValue: true,
+  change: this.chooseChildren,
+},
+```
+
+## 支持自定义字典数据
 
 此时的 dict 传的不再是一个字典字符串了，而是自己自定义的数据，不过 key 和 value 要和全局的对应上！
 
@@ -98,7 +115,7 @@ export default {
 }
 ```
 
-### 接口返回的数据
+#### 自定义接口返回的数据
 
 此处还可以传一个函数，最终返回一个 list 类型数据，这个 list 数据的 key 和 value 要和全局的对应上！
 
@@ -123,6 +140,36 @@ async fetchSelectData() {
   return this.khnrList;
 },
 ```
+
+## 父子联动
+
+- 父子联动只能作用于字典选择框中，并且父的 `value` 是子的 `type`！
+- 此时只需要在父对象中指定 `child` 为子的 `model` 即可！
+
+```js
+{
+  label: "隐患类型",
+  model: "typeHiddenDanger",
+  component: "FormSelect",
+  dict: `${routerType}_yhlx`,
+  child: "hiddenProblems",
+  width: 260,
+  rules: isRule ? chooseRule("隐患类型") : [],
+  optionValue: true,
+},
+{
+  label: "隐患问题",
+  model: "hiddenProblems",
+  component: "FormSelect",
+  dict: [],
+  width: 260,
+  rules: isRule ? chooseRule("隐患问题") : [],
+},
+```
+
+::: tip 提示
+搜索层 `searchLayer` 和操作层 `operateLayer`，都适用 !
+:::
 
 ## 属性
 

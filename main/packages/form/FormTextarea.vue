@@ -22,9 +22,9 @@
 </template>
 <script>
 export default {
-  name: "FormTextarea",
+  name: 'FormTextarea',
   data() {
-    return {};
+    return {}
   },
   props: {
     form: {
@@ -33,14 +33,14 @@ export default {
     },
     model: {
       type: String,
-      default: ""
+      default: ''
     },
     rows: {
       type: Number
     },
     placeholder: {
       type: String,
-      default: "请输入"
+      default: '请输入'
     },
     size: {
       type: String
@@ -80,12 +80,12 @@ export default {
     setStyle() {
       return {
         width: this.width
-          ? typeof this.width === "string"
+          ? typeof this.width === 'string'
             ? this.width
-            : this.width + "px"
-          : this.formWidth + "px"
-      };
+            : this.width + 'px'
+          : this.formWidth + 'px'
+      }
     }
   }
-};
+}
 </script>

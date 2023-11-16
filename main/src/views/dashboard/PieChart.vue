@@ -1,14 +1,11 @@
 <template>
-  <div
-    :class="className"
-    :style="{height:height,width:width}"
-  />
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
-import echarts from 'echarts';
-require('echarts/theme/macarons'); // echarts theme
-import resize from './mixins/resize';
+import echarts from 'echarts'
+require('echarts/theme/macarons') // echarts theme
+import resize from './mixins/resize'
 
 export default {
   mixins: [resize],
@@ -29,23 +26,23 @@ export default {
   data() {
     return {
       chart: null
-    };
+    }
   },
   mounted() {
     this.$nextTick(() => {
-      this.initChart();
-    });
+      this.initChart()
+    })
   },
   beforeDestroy() {
     if (!this.chart) {
-      return;
+      return
     }
-    this.chart.dispose();
-    this.chart = null;
+    this.chart.dispose()
+    this.chart = null
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons');
+      this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
         tooltip: {
@@ -75,8 +72,8 @@ export default {
             animationDuration: 2600
           }
         ]
-      });
+      })
     }
   }
-};
+}
 </script>

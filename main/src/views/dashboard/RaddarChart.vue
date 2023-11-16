@@ -1,16 +1,13 @@
 <template>
-  <div
-    :class="className"
-    :style="{height:height,width:width}"
-  />
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
-import echarts from 'echarts';
-require('echarts/theme/macarons'); // echarts theme
-import resize from './mixins/resize';
+import echarts from 'echarts'
+require('echarts/theme/macarons') // echarts theme
+import resize from './mixins/resize'
 
-const animationDuration = 3000;
+const animationDuration = 3000
 
 export default {
   mixins: [resize],
@@ -31,28 +28,29 @@ export default {
   data() {
     return {
       chart: null
-    };
+    }
   },
   mounted() {
     this.$nextTick(() => {
-      this.initChart();
-    });
+      this.initChart()
+    })
   },
   beforeDestroy() {
     if (!this.chart) {
-      return;
+      return
     }
-    this.chart.dispose();
-    this.chart = null;
+    this.chart.dispose()
+    this.chart = null
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons');
+      this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
             type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
           }
         },
@@ -84,36 +82,38 @@ export default {
           bottom: '10',
           data: ['Allocated Budget', 'Expected Spending', 'Actual Spending']
         },
-        series: [{
-          type: 'radar',
-          symbolSize: 0,
-          areaStyle: {
-            normal: {
-              shadowBlur: 13,
-              shadowColor: 'rgba(0,0,0,.2)',
-              shadowOffsetX: 0,
-              shadowOffsetY: 10,
-              opacity: 1
-            }
-          },
-          data: [
-            {
-              value: [5000, 7000, 12000, 11000, 15000, 14000],
-              name: 'Allocated Budget'
+        series: [
+          {
+            type: 'radar',
+            symbolSize: 0,
+            areaStyle: {
+              normal: {
+                shadowBlur: 13,
+                shadowColor: 'rgba(0,0,0,.2)',
+                shadowOffsetX: 0,
+                shadowOffsetY: 10,
+                opacity: 1
+              }
             },
-            {
-              value: [4000, 9000, 15000, 15000, 13000, 11000],
-              name: 'Expected Spending'
-            },
-            {
-              value: [5500, 11000, 12000, 15000, 12000, 12000],
-              name: 'Actual Spending'
-            }
-          ],
-          animationDuration
-        }]
-      });
+            data: [
+              {
+                value: [5000, 7000, 12000, 11000, 15000, 14000],
+                name: 'Allocated Budget'
+              },
+              {
+                value: [4000, 9000, 15000, 15000, 13000, 11000],
+                name: 'Expected Spending'
+              },
+              {
+                value: [5500, 11000, 12000, 15000, 12000, 12000],
+                name: 'Actual Spending'
+              }
+            ],
+            animationDuration
+          }
+        ]
+      })
     }
   }
-};
+}
 </script>

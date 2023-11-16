@@ -15,32 +15,33 @@
 <script>
 export default {
   data() {
-    const routeName = this.$route.name.toLowerCase();
+    const routeName = this.$route.name.toLowerCase()
     return {
       operateLayer: {
         search: {
-          label: "查看",
-          params: {ry:"layer"},
-          method: "get",
-          disabled: "single",
-          url: "/his/office",
+          label: '查看',
+          params: { ry: 'layer' },
+          method: 'get',
+          disabled: 'single',
+          url: '/his/office',
           hasPermi: `${routeName}:add`,
           mode: {
-            type: "Dialog",
+            type: 'Dialog',
             detail: true, // 需要使用详情
-            label: "deptId",// id别称
+            label: 'deptId', // id别称
             rules: false, // 不需要校验
-            form,
-          },
-        },
-      },
-    };
-  },
-};
+            form
+          }
+        }
+      }
+    }
+  }
+}
 </script>
 ```
 
 ## 后台
+
 - 采用路径拼接，通过@PathVariable获取传参
 
 ## 查看详情弹框的两种展现形式
@@ -67,28 +68,28 @@ export default {
 <script>
 export default {
   data() {
-    const routeName = this.$route.name.toLowerCase();
+    const routeName = this.$route.name.toLowerCase()
     return {
       operateLayer: {
         search: {
-          label: "查看",
-          params: {ry:"layer"},
-          method: "get",
-          disabled: "single",
-          url: "/his/office",
+          label: '查看',
+          params: { ry: 'layer' },
+          method: 'get',
+          disabled: 'single',
+          url: '/his/office',
           hasPermi: `${routeName}:add`,
           mode: {
-            type: "Dialog",
+            type: 'Dialog',
             detail: true, // 需要使用详情
-            label: "deptId",// id别称
+            label: 'deptId', // id别称
             rules: false, // 不需要校验
-            readonly: true,// 纯文本查看
-            form,
-          },
-        },
-      },
-    };
-  },
-};
+            readonly: true, // 纯文本查看
+            form
+          }
+        }
+      }
+    }
+  }
+}
 </script>
 ```

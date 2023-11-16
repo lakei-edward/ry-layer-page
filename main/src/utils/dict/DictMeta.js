@@ -1,5 +1,5 @@
-import { mergeRecursive } from "@/utils/shuke";
-import DictOptions from './DictOptions';
+import { mergeRecursive } from '@/utils/shuke'
+import DictOptions from './DictOptions'
 
 /**
  * @classdesc 字典元数据
@@ -10,29 +10,27 @@ import DictOptions from './DictOptions';
  */
 export default class DictMeta {
   constructor(options) {
-    this.type = options.type;
-    this.request = options.request,
-    this.responseConverter = options.responseConverter;
-    this.labelField = options.labelField;
-    this.valueField = options.valueField;
-    this.lazy = options.lazy === true;
+    this.type = options.type
+    ;(this.request = options.request), (this.responseConverter = options.responseConverter)
+    this.labelField = options.labelField
+    this.valueField = options.valueField
+    this.lazy = options.lazy === true
   }
 }
-
 
 /**
  * 解析字典元数据
  * @param {Object} options
  * @returns {DictMeta}
  */
-DictMeta.parse = function(options) {
-  let opts = null;
+DictMeta.parse = function (options) {
+  let opts = null
   if (typeof options === 'string') {
-    opts = DictOptions.metas[options] || {};
-    opts.type = options;
+    opts = DictOptions.metas[options] || {}
+    opts.type = options
   } else if (typeof options === 'object') {
-    opts = options;
+    opts = options
   }
-  opts = mergeRecursive(DictOptions.metas['*'], opts);
-  return new DictMeta(opts);
-};
+  opts = mergeRecursive(DictOptions.metas['*'], opts)
+  return new DictMeta(opts)
+}

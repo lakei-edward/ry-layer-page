@@ -1,45 +1,45 @@
 // base color
-$blue:#324157;
-$light-blue:#3A71A8;
-$red:#C03639;
-$pink: #E65D6E;
-$green: #30B08F;
-$tiffany: #4AB7BD;
-$yellow:#FEC171;
-$panGreen: #30B08F;
+$blue: #324157;
+$light-blue: #3a71a8;
+$red: #c03639;
+$pink: #e65d6e;
+$green: #30b08f;
+$tiffany: #4ab7bd;
+$yellow: #fec171;
+$panGreen: #30b08f;
 
 // 默认菜单主题风格
-$base-menu-color:#bfcbd9;
-$base-menu-color-active:#f4f4f5;
-$base-menu-background:#001e3a;
+$base-menu-color: #bfcbd9;
+$base-menu-color-active: #f4f4f5;
+$base-menu-background: #001e3a;
 $base-logo-title-color: #ffffff;
 // light菜单主题风格
-$base-menu-light-color:rgba(0,0,0,.70);
-$base-menu-light-background:#ffffff;
+$base-menu-light-color: rgba(0, 0, 0, 0.7);
+$base-menu-light-background: #ffffff;
 $base-logo-light-title-color: #001529;
 
-$base-sub-menu-background:#1f2d3d;
-$base-sub-menu-hover:#001528;
+$base-sub-menu-background: #1f2d3d;
+$base-sub-menu-hover: #001528;
 // blue菜单主题风格
-$base-menu-blue-color:#ffffff;
-$base-menu-blue-color-active:#ffffff;
-$base-menu-blue-active:#0d74ce;
-$base-menu-blue-background:#0469c3;
+$base-menu-blue-color: #ffffff;
+$base-menu-blue-color-active: #ffffff;
+$base-menu-blue-active: #0d74ce;
+$base-menu-blue-background: #0469c3;
 $base-logo-blue-title-color: #ffffff;
-$base-sub-menu-blue-background:#005fb3;
-$base-sub-menu-blue-active:#0d74ce;
-$base-sub-menu-blue-hover:#0d74ce;
+$base-sub-menu-blue-background: #005fb3;
+$base-sub-menu-blue-active: #0d74ce;
+$base-sub-menu-blue-hover: #0d74ce;
 
 // light-blue菜单主题风格
-$base-menu-light-blue-color:#ffffff;
-$base-menu-light-blue-color-active:#ffffff;
-$base-menu-light-blue-active:#078bfc;
-$base-menu-light-blue-logo-background:#1677d6;
-$base-menu-light-blue-background:#0d7ada;
+$base-menu-light-blue-color: #ffffff;
+$base-menu-light-blue-color-active: #ffffff;
+$base-menu-light-blue-active: #078bfc;
+$base-menu-light-blue-logo-background: #1677d6;
+$base-menu-light-blue-background: #0d7ada;
 $base-logo-light-blue-title-color: #ffffff;
-$base-sub-menu-light-blue-background:#1a68d6;
-$base-sub-menu-light-blue-active:#078bfc;
-$base-sub-menu-light-blue-hover:#078bfc;
+$base-sub-menu-light-blue-background: #1a68d6;
+$base-sub-menu-light-blue-active: #078bfc;
+$base-sub-menu-light-blue-hover: #078bfc;
 // 自定义暗色菜单风格
 /**
 $base-menu-color:hsla(0,0%,100%,.65);
@@ -63,14 +63,14 @@ $base-sidebar-width: 200px;
   menuColor: $base-menu-color;
   menuLightColor: $base-menu-light-color;
   menuBlueColor: $base-menu-blue-color;
-  menuLightBlueColor:$base-menu-light-blue-color;
+  menuLightBlueColor: $base-menu-light-blue-color;
 
   menuColorActive: $base-menu-color-active;
   menuBlueColorActive: $base-menu-blue-color-active;
   menuLightBlueColorActive: $base-menu-light-blue-color-active;
 
-  menuBlueActive:$base-menu-blue-active;
-  menuLightBlueActive:$base-menu-light-blue-active;
+  menuBlueActive: $base-menu-blue-active;
+  menuLightBlueActive: $base-menu-light-blue-active;
 
   menuBackground: $base-menu-background;
   menuLightBackground: $base-menu-light-background;
@@ -85,13 +85,13 @@ $base-sidebar-width: 200px;
   subMenuBlueHover: $base-sub-menu-blue-hover;
   subMenuLightBlueHover: $base-sub-menu-light-blue-hover;
 
-  subMenuBuleActive:$base-sub-menu-blue-active;
-  subMenuLightBuleActive:$base-sub-menu-light-blue-active;
+  subMenuBuleActive: $base-sub-menu-blue-active;
+  subMenuLightBuleActive: $base-sub-menu-light-blue-active;
 
   sideBarWidth: $base-sidebar-width;
   logoTitleColor: $base-logo-title-color;
   logoLightTitleColor: $base-logo-light-title-color;
   logoBlueTitleColor: $base-logo-blue-title-color;
   logoLightBlueTitleColor: $base-logo-light-blue-title-color;
-  logoLightBlueTitleBackground:$base-menu-light-blue-logo-background;
+  logoLightBlueTitleBackground: $base-menu-light-blue-logo-background;
 }

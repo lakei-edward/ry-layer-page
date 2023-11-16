@@ -21,11 +21,11 @@
 </template>
 <script>
 export default {
-  name: "FormDateRange",
+  name: 'FormDateRange',
   data() {
     return {
       dateTime: []
-    };
+    }
   },
   props: {
     form: {
@@ -45,34 +45,34 @@ export default {
     },
     format: {
       type: String,
-      default: "yyyy-MM-dd"
+      default: 'yyyy-MM-dd'
     },
     valueFormat: {
       type: String,
-      default: "yyyy-MM-dd"
+      default: 'yyyy-MM-dd'
     },
     prefixIcon: {
       type: String
     },
     placeholder: {
       type: String,
-      default: "请选择"
+      default: '请选择'
     },
     startTimeLabel: {
       type: String,
-      default: "startTime"
+      default: 'startTime'
     },
     endTimeLabel: {
       type: String,
-      default: "endTime"
+      default: 'endTime'
     },
     startPlaceholder: {
       type: String,
-      default: "开始时间"
+      default: '开始时间'
     },
     endPlaceholder: {
       type: String,
-      default: "结束时间"
+      default: '结束时间'
     },
     width: {
       type: Number
@@ -86,15 +86,15 @@ export default {
     appendToBody: Boolean
   },
   beforeDestroy() {
-    this.dateTime = [];
+    this.dateTime = []
   },
   methods: {
     changeDate(val) {
       if (val && val.length > 0) {
-        this.form[this.startTimeLabel] = val[0];
-        this.form[this.endTimeLabel] = val[1];
+        this.form[this.startTimeLabel] = val[0]
+        this.form[this.endTimeLabel] = val[1]
       }
     }
   }
-};
+}
 </script>

@@ -17,10 +17,7 @@
           <template v-if="!operateLayer.mode.readonly">
             <Attr :formParams="operateLayer.params" :attrs="item"></Attr>
           </template>
-          <div
-            v-else
-            :style="{ width: $setInfoWidth(item), wordWrap: 'break-word' }"
-          >
+          <div v-else :style="{ width: $setInfoWidth(item), wordWrap: 'break-word' }">
             <template>{{ operateLayer.params[item.model] }}</template>
             <template v-if="item.component === 'FormUpdate'">
               <div
@@ -58,11 +55,11 @@
 /**
  * 传入单个operateLayer，直接使用操作层的表单，不需要与整体的三层捆绑
  */
-import Attr from "../form/Attr.vue";
-import { handleDicts } from "../plugin/util.js";
-import mixins from "../plugin/mixin";
+import Attr from '../form/Attr.vue'
+import { handleDicts } from '../plugin/util.js'
+import mixins from '../plugin/mixin'
 export default {
-  name: "OperateForm",
+  name: 'OperateForm',
   /** 单表单组件 */
   components: {
     Attr
@@ -73,7 +70,7 @@ export default {
     operateLayer: {
       type: Object,
       default() {
-        return {};
+        return {}
       }
     }
   },
@@ -82,14 +79,14 @@ export default {
   provide() {
     return {
       request: this.$options.methods.request
-    };
+    }
   },
   methods: {
     /** 初始化字典项 */
     initDicts(dict) {
       // 弹框中的字典赋值
-      handleDicts(this.operateLayer, dict, false);
+      handleDicts(this.operateLayer, dict, false)
     }
   }
-};
+}
 </script>

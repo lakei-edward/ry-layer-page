@@ -4,12 +4,12 @@
 用于对表格数据以什么样的形式进行展示
 :::
 
-### 使用示例
+## 使用示例
 
-如果我们不想把操作按钮放在操作层，而是放在表格操作列中，可以设置`operateLayer`中的`show`为`table`；当我们使用`callback`的时候，可以根据返回的信息，自定义表格内显示的内容；
+当我们使用`callback`的时候，可以根据返回的信息，自定义表格内显示的内容；
 使用类似于`cellStyle`回调函数属性时，可以在`methods`中写好方法，在展示层内调用。
 
-```vue {5}
+```vue
 <template>
   <ry-layer-page
     :search-layer="searchLayer"
@@ -20,70 +20,109 @@
 <script>
 export default {
   data() {
-    const BASE_URL = "/his/office";
+    const BASE_URL = '/his/office'
     return {
-      // 操作层
-      operateLayer: {
-        customDialog: {
-          params: {},
-          label: "自定义弹框",
-          show: "table", //展示到表格操作列中
-          mode: {},
-        },
-      },
       // 展示层
       displayLayer: {
         url: `${BASE_URL}/list`,
         rowclick: false,
         cellStyle: this.cellStyle,
-        headerCellStyle: { textAlign: "center" },
+        headerCellStyle: { textAlign: 'center' },
         data: [
           {
-            prop: "deptName",
-            label: "科室名称",
-            callback: (item) => {
-              const office = ["急诊科", "内科", "外科", "眼科", "麻醉科"];
-              return office[item.deptName];
-            },
+            prop: 'deptName',
+            label: '科室名称',
+            callback: item => {
+              const office = ['急诊科', '内科', '外科', '眼科', '麻醉科']
+              return office[item.deptName]
+            }
           },
           {
-            prop: "deptLeader",
-            label: "科室负责人",
+            prop: 'deptLeader',
+            label: '科室负责人'
           },
           {
-            prop: "deptPhone",
-            label: "科室电话",
+            prop: 'deptPhone',
+            label: '科室电话'
           },
           {
-            prop: "deptCode",
-            label: "科室类别",
-            callback: (item) => {
-              const code = ["急诊", "门诊"];
-              return code[item.deptCode];
-            },
+            prop: 'deptCode',
+            label: '科室类别',
+            callback: item => {
+              const code = ['急诊', '门诊']
+              return code[item.deptCode]
+            }
           },
           {
-            prop: "operate", // 当该列为操作列时，该属性为“operate”必传
-            label: "操作",
+            prop: 'operate', // 当该列为操作列时，该属性为“operate”必传
+            label: '操作',
             operate: true, // 当operateLayer中show字段为true时，自动把该操作放入表格列中
-            width: "500",
-          },
-        ],
-      },
-    };
+            width: '500'
+          }
+        ]
+      }
+    }
   },
   methods: {
     cellStyle(row) {
       if (row.rowIndex === 1) {
-        return { color: "#ff0053", border: "3px solid #567824" };
+        return { color: '#ff0053', border: '3px solid #567824' }
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 ```
 
-### 解构判断
+## 按钮在表格操作列展示
+
+如果我们不想把操作按钮放在操作层，而是放在表格操作列中，可以设置`operateLayer`中的`show`为`table`；
+
+```vue
+<template>
+  <ry-layer-page
+    :search-layer="searchLayer"
+    :operate-layer="operateLayer"
+    :display-layer="displayLayer"
+  />
+</template>
+<script>
+export default {
+  data() {
+    const BASE_URL = '/his/office'
+    return {
+      // 操作层
+      operateLayer: {
+        customDialog: {
+          params: {},
+          label: '自定义弹框',
+          show: 'table', //展示到表格操作列中
+          mode: {}
+        }
+      },
+      // 展示层
+      displayLayer: {
+        url: `${BASE_URL}/list`,
+        data: [
+          {
+            prop: 'deptPhone',
+            label: '科室电话'
+          },
+          {
+            prop: 'operate', // 当该列为操作列时，该属性为“operate”必传
+            label: '操作',
+            operate: true, // 当operateLayer中show字段为true时，自动把该操作放入表格列中
+            width: '500'
+          }
+        ]
+      }
+    }
+  }
+}
+</script>
+```
+
+## 解构判断
 
 复用组件时，需要根据不同业务展示不同列，可以直接通过数组的解构来判断！
 
@@ -119,7 +158,7 @@ displayLayer: {
 }
 ```
 
-### 展示 el-tag
+## 展示 el-tag
 
 在表格内展示`el-tag`组件类型样式
 
@@ -134,30 +173,30 @@ displayLayer: {
 <script>
 export default {
   data() {
-    const BASE_URL = "/his/office";
+    const BASE_URL = '/his/office'
     return {
       // 展示层
       displayLayer: {
         url: `${BASE_URL}/list`,
         data: [
           {
-            prop: "status",
-            label: "提交状态",
+            prop: 'status',
+            label: '提交状态',
             component: {
-              element: "Tag",
+              element: 'Tag',
               attr: {
-                type: "success",
-              },
+                type: 'success'
+              }
             },
-            callback: (row) => {
-              return row.status === "Y" ? "已提交" : "未提交";
-            },
-          },
-        ],
-      },
-    };
-  },
-};
+            callback: row => {
+              return row.status === 'Y' ? '已提交' : '未提交'
+            }
+          }
+        ]
+      }
+    }
+  }
+}
 </script>
 ```
 

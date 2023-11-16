@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main" >
+  <section class="app-main">
     <transition name="fade-transform" mode="out-in">
       <keep-alive v-if="isKeepAlive">
         <router-view :key="key" />
@@ -12,23 +12,23 @@
 </template>
 
 <script>
-import { isKeepAlive } from "@/settings.js";
+import { isKeepAlive } from '@/settings.js'
 export default {
-  name: "AppMain",
+  name: 'AppMain',
   data() {
     return {
       isKeepAlive
-    };
+    }
   },
   computed: {
     cachedViews() {
-      return this.$store.state.tagsView.cachedViews;
+      return this.$store.state.tagsView.cachedViews
     },
     key() {
-      return this.$route.path;
+      return this.$route.path
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

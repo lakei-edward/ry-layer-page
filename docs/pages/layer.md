@@ -47,15 +47,16 @@ export default {
 
 ### 属性
 
-| 属性     | 说明        | 类型  | 可选值 | 默认值
-| :------- | :----------- | :------ | :------------------------------------------ | :----- |
-|ref	|组件Ref|	string |	— | — |
-|search-layer	|页面顶部的查询条件|	object |	—	|— |
-|operate-layer|	页面需要的操作按钮项|	object |	—	|— |
-|display-layer|	页面的表格数据|	object |	—	|— |
-|loading|	是否需要加载表格图标|	boolean |	—	|true |
-|right-toolbar|		是否需要展示收缩查询条件、刷新等Toolbar|	boolean |	—	|true |
-|clearSelection	|弹框关闭，是否自动清除表格的选中状态|	boolean |	—	|true |
+| 属性           | 说明                                    | 类型    | 可选值 | 默认值 |
+| :------------- | :-------------------------------------- | :------ | :----- | :----- |
+| ref            | 组件Ref                                 | string  | —      | —      |
+| search-layer   | 页面顶部的查询条件                      | object  | —      | —      |
+| operate-layer  | 页面需要的操作按钮项                    | object  | —      | —      |
+| display-layer  | 页面的表格数据                          | object  | —      | —      |
+| loading        | 是否需要加载表格图标                    | boolean | —      | true   |
+| right-toolbar  | 是否需要展示收缩查询条件、刷新等Toolbar | boolean | —      | true   |
+| clearSelection | 弹框关闭，是否自动清除表格的选中状态    | boolean | —      | true   |
+
 <style>
 table th:first-of-type {
     width: 20%;

@@ -1,5 +1,5 @@
-import { mergeRecursive } from "@/utils/shuke";
-import dictConverter from './DictConverter';
+import { mergeRecursive } from '@/utils/shuke'
+import dictConverter from './DictConverter'
 
 export const options = {
   metas: {
@@ -7,9 +7,9 @@ export const options = {
       /**
        * 字典请求，方法签名为function(dictMeta: DictMeta): Promise
        */
-      request: (dictMeta) => {
-        console.log(`load dict ${dictMeta.type}`);
-        return Promise.resolve([]);
+      request: dictMeta => {
+        console.log(`load dict ${dictMeta.type}`)
+        return Promise.resolve([])
       },
       /**
        * 字典响应数据转换器，方法签名为function(response: Object, dictMeta: DictMeta): DictData
@@ -27,7 +27,7 @@ export const options = {
    * 默认值字段
    */
   DEFAULT_VALUE_FIELDS: ['value', 'id', 'uid', 'key']
-};
+}
 
 /**
  * 映射字典
@@ -36,16 +36,16 @@ export const options = {
  * @returns {DictData}
  */
 function responseConverter(response, dictMeta) {
-  const dicts = response.content instanceof Array ? response.content : response;
+  const dicts = response.content instanceof Array ? response.content : response
   if (dicts === undefined) {
-    console.warn(`no dict data of "${dictMeta.type}" found in the response`);
-    return [];
+    console.warn(`no dict data of "${dictMeta.type}" found in the response`)
+    return []
   }
-  return dicts.map(d => dictConverter(d, dictMeta));
+  return dicts.map(d => dictConverter(d, dictMeta))
 }
 
 export function mergeOptions(src) {
-  mergeRecursive(options, src);
+  mergeRecursive(options, src)
 }
 
-export default options;
+export default options

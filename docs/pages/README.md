@@ -1,7 +1,9 @@
 # 简介
+
 [ry-layer-page](https://github.com/lakei-edward/ry-layer-page)是一个把每个页面中的相似功能抽取出来，制定一种规则，统一管理，减少开发中bug的产生，降低项目的整体代码量；该工具具有一定的灵活性，可以满足部分使用场景。为节省时间、减少维护成本、降低代码量、提高工作效率而生
 
 ### 特性
+
 - 支持`npm`和`pnpm`下载安装使用
 - 在项目中支持选用字典，快速便捷的获取字典数据
 - 通过`js`控制页面和交互，简单项目可以摆脱写`html`内容了
@@ -18,4 +20,5 @@
 :::
 
 ### 代码托管
+
 [GitHub](https://github.com/lakei-edward/ry-layer-page)

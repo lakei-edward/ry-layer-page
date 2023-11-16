@@ -17,17 +17,17 @@ $--button-font-weight: 400;
 $--border-color-light: #dfe4ed;
 $--border-color-lighter: #e6ebf5;
 //表格
-$--table-border:1px solid #ececec;
+$--table-border: 1px solid #ececec;
 //表格、tree鼠标悬浮背景色
-$--background-color-base:#f0faff;
+$--background-color-base: #f0faff;
 
 //input,select,radio
-$--color-text-regular:rgba(0,0,0,0.65);
+$--color-text-regular: rgba(0, 0, 0, 0.65);
 
 /* icon font path, required */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
 
-@import "~element-ui/packages/theme-chalk/src/index";
+@import '~element-ui/packages/theme-chalk/src/index';
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass

@@ -1,10 +1,16 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
 devDependencies:
+  husky:
+    specifier: ^8.0.3
+    version: 8.0.3
+  prettier:
+    specifier: ^3.1.0
+    version: 3.1.0
   vue-template-compiler:
     specifier: ^2.7.14
     version: 2.7.14
@@ -28,6 +34,7 @@ packages:
   /chokidar@2.1.8:
     resolution: {integrity: sha512-ZmZUazfOzf0Nve7duiCKD23PFSCs4JPoYyccjUFF3aQkQadqBhfzhjkwBH2mNOG9cTBwhamM37EIsIkZw3nRgg==}
     deprecated: Chokidar 2 does not receive security updates since 2019. Upgrade to chokidar 3 with 15x fewer dependencies
+    requiresBuild: true
     dependencies:
       anymatch: registry.npmmirror.com/anymatch@2.0.0(supports-color@6.1.0)
       async-each: registry.npmmirror.com/async-each@1.0.3
@@ -241,6 +248,12 @@ packages:
     hasBin: true
     dev: true
 
+  /husky@8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
+
   /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
     dev: true
@@ -258,6 +271,12 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /prettier@3.1.0:
+    resolution: {integrity: sha512-TQLvXjq5IAibjh8EpBIkNKxO749UEWABoiIZehEPiY4GNpVdhaFKqSTu+QrlU6D2dPAfubRmtJTi4K4YkQ5eXw==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
 
   /vue-template-compiler@2.7.14:
     resolution: {integrity: sha512-zyA5Y3ArvVG0NacJDkkzJuPQDF8RFeRlzV2vLeSnhSpieO6LK2OVbdLPi5MPPs09Ii+gMO8nY4S3iKQxBxDmWQ==}
@@ -3274,6 +3293,7 @@ packages:
     name: binary-extensions
     version: 2.2.0
     engines: {node: '>=8'}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5851,6 +5871,7 @@ packages:
     name: glob-parent
     version: 5.1.2
     engines: {node: '>= 6'}
+    requiresBuild: true
     dependencies:
       is-glob: registry.npmmirror.com/is-glob@4.0.3
     dev: true
@@ -6631,6 +6652,7 @@ packages:
     name: is-binary-path
     version: 2.1.0
     engines: {node: '>=8'}
+    requiresBuild: true
     dependencies:
       binary-extensions: registry.npmmirror.com/binary-extensions@2.2.0
     dev: true
@@ -9196,6 +9218,7 @@ packages:
     name: readdirp
     version: 3.6.0
     engines: {node: '>=8.10.0'}
+    requiresBuild: true
     dependencies:
       picomatch: registry.npmmirror.com/picomatch@2.3.1
     dev: true

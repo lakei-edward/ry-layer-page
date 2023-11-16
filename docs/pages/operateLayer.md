@@ -5,7 +5,9 @@
 :::
 
 ## 说明
+
 增、删、改、查中key是相对固定的，也就是说要保持一一对应，最好不要试图改变它们；其他的可以自定义key。
+
 - add-增
 - remove-删
 - edit-改
@@ -24,15 +26,15 @@ export default {
   data() {
     return {
       operateLayer: {
-        add: { label: "新增" },
-        edit: { label: "编辑" },
-        remove: { label: "删除" },
-        search: { label: "查看" },
-        warn: { label: "预警" },
-      },
-    };
-  },
-};
+        add: { label: '新增' },
+        edit: { label: '编辑' },
+        remove: { label: '删除' },
+        search: { label: '查看' },
+        warn: { label: '预警' }
+      }
+    }
+  }
+}
 </script>
 ```
 
@@ -60,39 +62,39 @@ export default {
 <script>
 export default {
   data() {
-    const routeName = this.$route.name.toLowerCase();
-    const BASE_URL = "/his/office";
+    const routeName = this.$route.name.toLowerCase()
+    const BASE_URL = '/his/office'
     return {
       operateLayer: {
         add: {
-          size: "mini",
-          type: "primary",
-          label: "新增",
+          size: 'mini',
+          type: 'primary',
+          label: '新增',
           plain: true,
           circle: true,
           url: `${BASE_URL}`,
-          method: "post",
+          method: 'post',
           params: {},
           hasPermi: `${routeName}:add`,
-          mode: {},
+          mode: {}
         },
         edit: {
-          size: "mini",
-          type: "primary",
-          label: "修改",
-          disabled: "single",
-          method: "put",
+          size: 'mini',
+          type: 'primary',
+          label: '修改',
+          disabled: 'single',
+          method: 'put',
           url: `${BASE_URL}`,
           params: {
-            show: true, //可设置默认参数
+            show: true //可设置默认参数
           },
           hasPermi: `${routeName}:edit`,
-          mode: {},
-        },
-      },
-    };
-  },
-};
+          mode: {}
+        }
+      }
+    }
+  }
+}
 </script>
 ```
 
@@ -101,40 +103,40 @@ export default {
 :::
 
 ### 属性
-| 属性     | 说明        | 类型  | 可选值 | 默认值
-| :------- | :----------- | :------ | :------------------------------------------ | :----- |
-|show|是否显示,以及按钮的位置，默认在表格上，可配置在表格内；|string |table|—|
-|size|尺寸|string|—|—|
-|type|类型|string|success / info / warning / error|—|
-|icon|图标类名|string|—|—|
-|plain|是否朴素按钮|boolean|—|false|
-|round|是否圆角按钮|boolean|—|false|
-|circle|是否圆形按钮|boolean|—|false|
-|disabled|单选/多选/自定义|string /function(row)|single/multipe|—|
-|disabledType|当disabled为函数时，用该属性来判断是单选还是多选|string|single/multipe|single|
-|label|标题|string|—|—|
-|hasPermi|权限|string|—|—|
-|url|操作按钮最后需要调的接口|string|—|—|
-|method|接口类型|string|—|—|
-|params|接口的参数|object|—|—|
-|multiPath|查看详情时，path传参多个字段，不仅仅传id了，multiPath: `["id", "tjzt"]`多个参数，并且这些参数要在row中或获取详情的对象中出现！|array|—|—|
-|mode|按钮的操作方式|object|—|—|
 
+| 属性         | 说明                                                                                                                           | 类型                  | 可选值                           | 默认值 |
+| :----------- | :----------------------------------------------------------------------------------------------------------------------------- | :-------------------- | :------------------------------- | :----- |
+| show         | 是否显示,以及按钮的位置，默认在表格上，可配置在表格内；                                                                        | string                | table                            | —      |
+| size         | 尺寸                                                                                                                           | string                | —                                | —      |
+| type         | 类型                                                                                                                           | string                | success / info / warning / error | —      |
+| icon         | 图标类名                                                                                                                       | string                | —                                | —      |
+| plain        | 是否朴素按钮                                                                                                                   | boolean               | —                                | false  |
+| round        | 是否圆角按钮                                                                                                                   | boolean               | —                                | false  |
+| circle       | 是否圆形按钮                                                                                                                   | boolean               | —                                | false  |
+| disabled     | 单选/多选/自定义                                                                                                               | string /function(row) | single/multipe                   | —      |
+| disabledType | 当disabled为函数时，用该属性来判断是单选还是多选                                                                               | string                | single/multipe                   | single |
+| label        | 标题                                                                                                                           | string                | —                                | —      |
+| hasPermi     | 权限                                                                                                                           | string                | —                                | —      |
+| url          | 操作按钮最后需要调的接口                                                                                                       | string                | —                                | —      |
+| method       | 接口类型                                                                                                                       | string                | —                                | —      |
+| params       | 接口的参数                                                                                                                     | object                | —                                | —      |
+| multiPath    | 查看详情时，path传参多个字段，不仅仅传id了，multiPath: `["id", "tjzt"]`多个参数，并且这些参数要在row中或获取详情的对象中出现！ | array                 | —                                | —      |
+| mode         | 按钮的操作方式                                                                                                                 | object                | —                                | —      |
 
 ## 操作方式
 
 当我们点击按钮的时候，我们怎么知道每个按钮是干嘛的呢，新增功能具体新增哪些内容，删除功能怎么确认删除？此时就要用到`mode` 这个参数了
 
-### mode的六种类型
+### mode的七种类型
 
-| 类型     |  功能       | 说明  |
-| :------- | :----------- | :------ |
-|Dialog|弹框，用于比较简单的弹框场景|弹框|
-|warning、info、success、error|确认弹框，用于删除操作等|确认消息弹框|
-|CustomDialog|向当前页面中插入一个有dialog的组件，dialog组件中内容完全自定义，用于比较复杂的弹框场景|自定义弹框|
-|CustomPage|点击按钮后，跳转到一个新的组件页面，可在该组件内完成某些操作后返回主页面，用于比较复杂的场景|自定义页面|
-|RouterPage|点击按钮后，跳转到一个路由页面，可在该路由页面内完成某些操作后返回主页面，用于比较复杂的场景|自定义路由页面|
-|Export|可根据表格的选中状态导出文件和一键全部导出|导出列表文件|
+| 类型                          | 功能                                                                                         | 说明           |
+| :---------------------------- | :------------------------------------------------------------------------------------------- | :------------- |
+| Dialog                        | 弹框，用于比较简单的弹框场景                                                                 | 弹框           |
+| warning、info、success、error | 确认弹框，用于删除操作等                                                                     | 确认消息弹框   |
+| CustomDialog                  | 向当前页面中插入一个有dialog的组件，dialog组件中内容完全自定义，用于比较复杂的弹框场景       | 自定义弹框     |
+| CustomPage                    | 点击按钮后，跳转到一个新的组件页面，可在该组件内完成某些操作后返回主页面，用于比较复杂的场景 | 自定义页面     |
+| RouterPage                    | 点击按钮后，跳转到一个路由页面，可在该路由页面内完成某些操作后返回主页面，用于比较复杂的场景 | 自定义路由页面 |
+| Export                        | 可根据表格的选中状态导出文件和一键全部导出                                                   | 导出列表文件   |
 
 让我们来逐一了解下每种不同操作类型的使用情况；
 

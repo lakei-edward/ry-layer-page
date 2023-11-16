@@ -147,7 +147,9 @@
                   ></component>
                 </template>
                 <template v-else>
-                  <template v-if="$isFunction(item.callback)">{{ item.callback(scope.row) }}</template>
+                  <template v-if="$isFunction(item.callback)">{{
+                    item.callback(scope.row)
+                  }}</template>
                   <template v-else>{{ scope.row[item.prop] }}</template>
                 </template>
               </template>
@@ -185,7 +187,12 @@
           :visible.sync="dialogAddVisible"
           @close="closeDialogForm"
         >
-          <el-form ref="forms" :inline="true" :model="operateLayer[ikey].params" label-width="120px">
+          <el-form
+            ref="forms"
+            :inline="true"
+            :model="operateLayer[ikey].params"
+            label-width="120px"
+          >
             <template v-for="item in operateLayer[ikey].mode.form">
               <el-form-item
                 v-if="$judgeTypeCom(item.component, item.hidden)"
@@ -196,7 +203,11 @@
               >
                 <!-- 新增和修改 -->
                 <template v-if="!operateLayer[ikey].mode.readonly">
-                  <Attr :formParams="operateLayer[ikey].params" :attrs="item" :formWidth="searchLayer.formWidth"></Attr>
+                  <Attr
+                    :formParams="operateLayer[ikey].params"
+                    :attrs="item"
+                    :formWidth="searchLayer.formWidth"
+                  ></Attr>
                 </template>
                 <!-- 纯文本查看 -->
                 <div
@@ -211,7 +222,9 @@
                   >
                   <template v-else>
                     <div
-                      v-for="file in operateLayer[ikey].params[item.fileListLabel ? item.fileListLabel : 'fileList']"
+                      v-for="file in operateLayer[ikey].params[
+                        item.fileListLabel ? item.fileListLabel : 'fileList'
+                      ]"
                       :key="file.fileId"
                     >
                       <img
@@ -224,7 +237,8 @@
                         }"
                       />
                       <el-link v-else type="primary" @click="$minioDownFiles(file, item)"
-                        ><i style="margin-right: 5px" class="el-icon-paperclip"></i>{{ file.name }}</el-link
+                        ><i style="margin-right: 5px" class="el-icon-paperclip"></i
+                        >{{ file.name }}</el-link
                       >
                     </div>
                   </template>
@@ -409,7 +423,7 @@ export default {
   computed: {
     // 动态设置禁用选项
     _setDisabled() {
-      return function(v, row) {
+      return function (v, row) {
         if (v.disabled && v.disabled instanceof Function) {
           // 如果显示在表格内，则传递row信息过去，不受单选和多选的控制了
           if (v.show) {
@@ -444,17 +458,19 @@ export default {
     // 默认弹框宽度
     // todo 需要修改一下
     _defaultDialogWidth() {
-      return this.operateLayer[this.ikey].mode.width ? this.operateLayer[this.ikey].mode.width : '800px'
+      return this.operateLayer[this.ikey].mode.width
+        ? this.operateLayer[this.ikey].mode.width
+        : '800px'
     },
     // 对象是否有值
     _isHaveObject() {
-      return function(v) {
+      return function (v) {
         return Object.keys(v).length > 0
       }
     },
     // 设置查看中展示字段内容
     setDetailLabel() {
-      return function(v) {
+      return function (v) {
         // 如果传入的是字典，查看的时候默认取字典中的label展示
         if (v.dict) {
           let flag = v.dict.find(r => r.value === this.operateLayer[this.ikey].params[v.model])
@@ -698,7 +714,12 @@ export default {
       // 这里判断需不需要导出的时候加入查询条件
       const search_params = _searchParams ? this.formList : {}
       // Post传参，@RequestBody注解接受参数
-      download(item.url, { ...params, ...item.params, ...search_params }, exportName, this.$options.methods.request)
+      download(
+        item.url,
+        { ...params, ...item.params, ...search_params },
+        exportName,
+        this.$options.methods.request
+      )
     },
 
     /**

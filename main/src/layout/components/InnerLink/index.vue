@@ -1,20 +1,20 @@
 <script>
 export default {
   data() {
-    return {};
+    return {}
   },
   render() {
     const {
       $route: {
         meta: { link }
       }
-    } = this;
-    if ({ link }.link === "") {
-      return "404";
+    } = this
+    if ({ link }.link === '') {
+      return '404'
     }
-    let url = { link }.link;
-    const height = `${document.documentElement.clientHeight - 94.5}px`;
-    const style = { height: height };
+    let url = { link }.link
+    const height = `${document.documentElement.clientHeight - 94.5}px`
+    const style = { height: height }
 
     return (
       <div style={style}>
@@ -25,7 +25,7 @@ export default {
           scrolling="auto"
         ></iframe>
       </div>
-    );
+    )
   }
-};
+}
 </script>

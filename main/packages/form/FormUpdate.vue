@@ -26,9 +26,7 @@
           :size="size"
           :disabled="disabled"
         >
-          <template
-            v-if="buttonLabel === 'string' && buttonLabel.length === 0"
-          ></template>
+          <template v-if="buttonLabel === 'string' && buttonLabel.length === 0"></template>
           <template v-else>
             {{ buttonLabel }}
           </template>
@@ -37,7 +35,7 @@
           <span
             v-html="
               upload.textLabel ||
-                '请上传 大小不超过 10MB 格式为 doc/docx/xls/xlsx/txt/pdf/jpg/png 的文件'
+              '请上传 大小不超过 10MB 格式为 doc/docx/xls/xlsx/txt/pdf/jpg/png 的文件'
             "
           ></span>
         </div>
@@ -50,7 +48,7 @@
             <span
               v-html="
                 upload.textLabel ||
-                  '请上传 大小不超过 10MB 格式为 doc/docx/xls/xlsx/txt/pdf/jpg/png 的文件'
+                '请上传 大小不超过 10MB 格式为 doc/docx/xls/xlsx/txt/pdf/jpg/png 的文件'
               "
             ></span>
           </div>
@@ -61,11 +59,11 @@
 </template>
 <script>
 export default {
-  name: "FormUpdate",
+  name: 'FormUpdate',
   data() {
     return {
       fileIdList: []
-    };
+    }
   },
   props: {
     form: {
@@ -81,30 +79,30 @@ export default {
     },
     fileListLabel: {
       type: String,
-      default: "fileList"
+      default: 'fileList'
     },
     type: {
       type: String,
-      default: "primary"
+      default: 'primary'
     },
     size: {
       type: String,
-      default: "small"
+      default: 'small'
     },
     buttonLabel: {
       type: String,
-      default: "点击上传"
+      default: '点击上传'
     },
     storage: {
       type: String,
-      default: "multiple"
+      default: 'multiple'
     },
     formWidth: {
       type: Number
     },
     listType: {
       type: String,
-      default: "text"
+      default: 'text'
     },
     width: Number,
     limit: Number,
@@ -120,45 +118,43 @@ export default {
     /** 处理上传方式 */
     handleMultiple() {
       // 存储文件方式，如果存储方式为单文件，则不允许多选文件上传，否则允许多选或单选上传
-      return this.isSingle ? false : this.multiple;
+      return this.isSingle ? false : this.multiple
     },
     /** 是单存储 */
     isSingle() {
-      return this.storage === "single";
+      return this.storage === 'single'
     }
   },
   watch: {
     form(v) {
       if (v[this.fileListLabel]) {
         v[this.fileListLabel].forEach(item => {
-          this.fileIdList.push(item.fileId);
-        });
-        this.form[this.model] = this.fileIdList.join(",");
+          this.fileIdList.push(item.fileId)
+        })
+        this.form[this.model] = this.fileIdList.join(',')
       }
     }
   },
   beforeDestroy() {
-    this.fileIdList = [];
+    this.fileIdList = []
   },
   methods: {
     // 导入文件之前
     beforeFileUpload(file) {
       // 默认设置
-      const reg = this.upload.reg; //
-      const _size = this.upload.size || 10;
+      const reg = this.upload.reg //
+      const _size = this.upload.size || 10
       if (reg && !reg.test(file.name)) {
         // 校验不通过
-        this.$alert("暂不支持该格式！", "提示", {
-          type: "warning"
-        });
-        return false;
+        this.$alert('暂不支持该格式！', '提示', {
+          type: 'warning'
+        })
+        return false
       } else if (file.size / 1024 / 1024 > _size) {
-        this.$message.error(
-          this.upload.sizeLabel || `上传文件大小不能超过10MB`
-        );
-        return false;
+        this.$message.error(this.upload.sizeLabel || `上传文件大小不能超过10MB`)
+        return false
       } else {
-        return true;
+        return true
       }
     },
 
@@ -166,35 +162,35 @@ export default {
     uploadSuccess(file) {
       if (file.code === 200) {
         if (this.isSingle) {
-          this.form[this.model] = file.data.fileId;
+          this.form[this.model] = file.data.fileId
         } else {
-          this.fileIdList.push(file.data.fileId);
-          this.form[this.model] = this.fileIdList.join(",");
+          this.fileIdList.push(file.data.fileId)
+          this.form[this.model] = this.fileIdList.join(',')
         }
       } else {
-        this.$message.error("上传失败");
+        this.$message.error('上传失败')
       }
     },
 
     // 上传失败
     uploadError() {
-      this.$message.error("上传失败");
+      this.$message.error('上传失败')
     },
 
     //  移除文件
     handleRemoveFile(file) {
       if (file) {
         if (this.isSingle) {
-          this.form[this.model] = "";
+          this.form[this.model] = ''
         } else {
-          const id = file.response ? file.response.data.fileId[0] : file.fileId;
-          this.fileIdList.splice(this.fileIdList.indexOf(id), 1);
-          this.form[this.model] = this.fileIdList.join(",");
+          const id = file.response ? file.response.data.fileId[0] : file.fileId
+          this.fileIdList.splice(this.fileIdList.indexOf(id), 1)
+          this.form[this.model] = this.fileIdList.join(',')
         }
       }
     }
   }
-};
+}
 </script>
 <style scoped>
 .textLabel {

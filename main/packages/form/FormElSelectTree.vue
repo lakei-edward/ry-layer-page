@@ -38,15 +38,8 @@
         @remove-tag="removeHandle"
         :current-node-key="currentNodeKey"
       >
-        <div
-          :class="nodeFilter(node)"
-          style="display:flex;flex:1"
-          slot-scope="{ node, data }"
-        >
-          <div
-            ref=""
-            style="width:100%;overflow: hidden;text-overflow: ellipsis;"
-          >
+        <div :class="nodeFilter(node)" style="display: flex; flex: 1" slot-scope="{ node, data }">
+          <div ref="" style="width: 100%; overflow: hidden; text-overflow: ellipsis">
             <el-tooltip
               v-if="getTootipState(node)"
               class="item"
@@ -87,12 +80,12 @@
 </template>
 
 <script>
-var obj;
+var obj
 export default {
-  name: "SelectTree",
+  name: 'SelectTree',
   model: {
-    prop: "value",
-    event: "input"
+    prop: 'value',
+    event: 'input'
   },
   props: {
     data: Array,
@@ -106,7 +99,7 @@ export default {
     },
     size: {
       type: String,
-      default: "small"
+      default: 'small'
     },
     myrule: {
       type: Boolean,
@@ -114,7 +107,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: "请选择"
+      default: '请选择'
     },
     multiple: {
       type: Boolean,
@@ -149,43 +142,43 @@ export default {
   data() {
     return {
       currentNodeKey: null,
-      nodeFilter: function(data) {
-        var ds = data.data && data.data.disabled ? " disabled" : "";
-        var s = "kt-select-tree_label" + ds;
-        return s;
+      nodeFilter: function (data) {
+        var ds = data.data && data.data.disabled ? ' disabled' : ''
+        var s = 'kt-select-tree_label' + ds
+        return s
       },
       treeData2: [
         {
           id: 1,
-          label: "一级 2",
+          label: '一级 2',
           children: [
             {
               id: 3,
-              label: "二级 2-1",
+              label: '二级 2-1',
               children: [
                 {
                   id: 4,
-                  label: "三级 3-1-1"
+                  label: '三级 3-1-1'
                 },
                 {
                   id: 5,
-                  label: "三级 3-1-2",
+                  label: '三级 3-1-2',
                   disabled: true
                 }
               ]
             },
             {
               id: 2,
-              label: "二级 2-2",
+              label: '二级 2-2',
               disabled: true,
               children: [
                 {
                   id: 6,
-                  label: "三级 3-2-1"
+                  label: '三级 3-2-1'
                 },
                 {
                   id: 7,
-                  label: "三级 3-2-2",
+                  label: '三级 3-2-2',
                   disabled: true
                 }
               ]
@@ -201,10 +194,10 @@ export default {
       // 搜索框的值
       searchValue: void 0,
       // 树节点宽度
-      treeWidth: "auto",
+      treeWidth: 'auto',
       // 扁平化数据
       options: []
-    };
+    }
   },
   computed: {
     // 树节点配置选项
@@ -212,21 +205,21 @@ export default {
       return Object.assign(
         {},
         {
-          parentId: "parentId",
-          id: "id",
-          label: "label",
-          children: "children",
-          filter: "filter",
-          disabled: "disabled"
+          parentId: 'parentId',
+          id: 'id',
+          label: 'label',
+          children: 'children',
+          filter: 'filter',
+          disabled: 'disabled'
         },
         this.defaultProps
-      );
+      )
     },
     // 树节点数据
     treeData() {
       if (this.data && this.data.length > 0) {
         // 备份降维模型
-        this.options = this.flattenTree(this.data);
+        this.options = this.flattenTree(this.data)
         // ⭐⭐⭐ 初始化绑定节点 ⭐⭐⭐
         this.$nextTick(() => {
           // ⭐⭐⭐ value -> modelValue
@@ -234,90 +227,86 @@ export default {
             if (Array.isArray(this.value) && this.value.length > 0) {
               this.labelValue = this.options
                 .filter(node => this.value.includes(node[this.dynaDefProps.id]))
-                .map(node => node[this.dynaDefProps.label]);
-              this.$refs.tree.setCheckedKeys(this.value);
-              this.modelValue = this.value;
+                .map(node => node[this.dynaDefProps.label])
+              this.$refs.tree.setCheckedKeys(this.value)
+              this.modelValue = this.value
             }
           } else {
             if (this.value) {
               this.labelValue = this.options
                 .filter(node => node[this.dynaDefProps.id] == this.value)
-                .map(node => node[this.dynaDefProps.label])[0];
-              this.$refs.tree.setCurrentKey(this.value);
-              this.modelValue = this.value;
+                .map(node => node[this.dynaDefProps.label])[0]
+              this.$refs.tree.setCurrentKey(this.value)
+              this.modelValue = this.value
             }
           }
-        });
+        })
         // 初始化树模型
-        return this.data;
+        return this.data
       }
     }
   },
   methods: {
     removeHandle(v) {
       // this.$emit("check", node, data);
-      this.$emit("remove-handle", v);
+      this.$emit('remove-handle', v)
     },
     getTootipState(node) {
-      var text = node.label;
+      var text = node.label
       // ((5-1)*18)+24
-      const width = this.getTextWidth(text);
+      const width = this.getTextWidth(text)
       if (width + 18 * node.level + 24 > this.selectWidth) {
-        return true;
+        return true
       } else {
-        return false;
+        return false
       }
     },
-    getTextWidth(str = "") {
-      const dom = document.createElement("span");
-      dom.style.display = "inline-block";
-      dom.textContent = str;
-      document.body.appendChild(dom);
-      const width = dom.clientWidth;
+    getTextWidth(str = '') {
+      const dom = document.createElement('span')
+      dom.style.display = 'inline-block'
+      dom.textContent = str
+      document.body.appendChild(dom)
+      const width = dom.clientWidth
 
-      document.body.removeChild(dom);
-      return width;
+      document.body.removeChild(dom)
+      return width
     },
     /* 点击节点 */
     onNodeClick(node, data) {
       if (this.searchVal == true) {
-        this.searchValue = null;
+        this.searchValue = null
       }
 
       if (!this.multiple) {
         // 绑定值
         if (node.disabled) {
-          return;
+          return
         }
-        this.modelValue = node[this.dynaDefProps.id];
+        this.modelValue = node[this.dynaDefProps.id]
         // 对外暴露绑定函数
 
-        this.$emit("node-click", node, data);
-        this.$emit("input", this.modelValue);
+        this.$emit('node-click', node, data)
+        this.$emit('input', this.modelValue)
 
         // 隐藏菜单
-        this.onCloseTree();
+        this.onCloseTree()
       }
     },
     /* 点击节点复选框 */
     onCheck(node, data) {
       //
       if (this.multiple) {
-        let juniorNodes = "";
+        let juniorNodes = ''
         if (this.myrule == true) {
-          juniorNodes = data.checkedNodes.filter(
-            node => !node[this.dynaDefProps]
-          );
+          juniorNodes = data.checkedNodes.filter(node => !node[this.dynaDefProps])
         } else {
-          juniorNodes = data.checkedNodes.filter(
-            node => !node[this.dynaDefProps.children]
-          );
+          juniorNodes = data.checkedNodes.filter(node => !node[this.dynaDefProps.children])
         }
         //
         // // 绑定值
-        this.modelValue = juniorNodes.map(node => node[this.dynaDefProps.id]);
+        this.modelValue = juniorNodes.map(node => node[this.dynaDefProps.id])
         // 对外暴露绑定函数
-        this.$emit("check", node, data);
+        this.$emit('check', node, data)
       } else {
         // let juniorNodes = data.checkedNodes.filter(
         //     node => !node[this.dynaDefProps.children]
@@ -326,65 +315,65 @@ export default {
         // this.modelValue = juniorNodes.map(
         //     node => node[this.dynaDefProps.id]
         // );
-        this.$emit("check", node, data);
+        this.$emit('check', node, data)
       }
     },
     /* 节点过滤函数 */
     onTreeFilter(value, data) {
-      if (!value) return true;
+      if (!value) return true
       return data[this.dynaDefProps.filter]
         ? data[this.dynaDefProps.label].indexOf(value) !== -1 ||
             data[this.dynaDefProps.filter].indexOf(value.toUpperCase()) !== -1
-        : data[this.dynaDefProps.label].indexOf(value) !== -1;
+        : data[this.dynaDefProps.label].indexOf(value) !== -1
     },
     /* 延迟过滤节点 */
     debounceQuery(val) {
       setTimeout(() => {
-        this.$refs.tree.filter(val);
-      }, 800);
+        this.$refs.tree.filter(val)
+      }, 800)
     },
     /* popover菜单关闭 */
     onCloseTree() {
-      this.$refs.popover.showPopper = false;
+      this.$refs.popover.showPopper = false
     },
     /* 下拉选value变化 */
     onChange(val) {
       if (this.multiple) {
-        this.labelValue = val;
+        this.labelValue = val
         this.modelValue = this.options
           .filter(node => val.includes(node[this.dynaDefProps.label]))
-          .map(node => node[this.dynaDefProps.id]);
+          .map(node => node[this.dynaDefProps.id])
         this.$nextTick(() => {
-          this.$refs.tree.setCheckedKeys(this.modelValue);
-        });
+          this.$refs.tree.setCheckedKeys(this.modelValue)
+        })
       } else {
-        this.modelValue = val;
+        this.modelValue = val
       }
-      this.$emit("input", this.modelValue);
+      this.$emit('input', this.modelValue)
     },
     /* 单选模式下清空 */
     onClear() {
       if (this.multiple) {
         //多选
-        this.modelValue = [];
+        this.modelValue = []
       } else {
         //单选
-        this.modelValue = void 0;
+        this.modelValue = void 0
       }
     },
     /* 数组降维 */
     flattenTree(arr = []) {
-      let result = [];
-      let copy = Object.assign([], arr);
+      let result = []
+      let copy = Object.assign([], arr)
       const fun = arr => {
         arr.forEach(node => {
-          result.push(node);
-          if (this.isArray(node)) fun(node[this.dynaDefProps.children]);
+          result.push(node)
+          if (this.isArray(node)) fun(node[this.dynaDefProps.children])
           // delete node[this.dynaDefProps.children];
-        });
-      };
-      fun(copy);
-      return result;
+        })
+      }
+      fun(copy)
+      return result
     },
     /* 判断数组 */
     isArray(data) {
@@ -392,19 +381,19 @@ export default {
         data[this.dynaDefProps.children] &&
         Array.isArray(data[this.dynaDefProps.children]) &&
         data[this.dynaDefProps.children].length > 0
-      );
+      )
     }
   },
   mounted() {
-    this.selectWidth = this.$refs.select.$el.clientWidth;
+    this.selectWidth = this.$refs.select.$el.clientWidth
     // 获取输入框宽度同步至树状菜单宽度
     this.$nextTick(() => {
-      this.treeWidth = `${this.width || this.selectWidth - 10}px`;
-    });
+      this.treeWidth = `${this.width || this.selectWidth - 10}px`
+    })
   },
   watch: {
     searchValue(val) {
-      this.debounceQuery(val);
+      this.debounceQuery(val)
     },
     modelValue(val) {
       //
@@ -414,21 +403,21 @@ export default {
         if (this.multiple)
           this.labelValue = this.options
             .filter(node => val.includes(node[this.dynaDefProps.id]))
-            .map(node => node[this.dynaDefProps.label]);
+            .map(node => node[this.dynaDefProps.label])
         else
-          this.labelValue = this.options.filter(
-            node => node[this.dynaDefProps.id] == val
-          )[0][this.dynaDefProps.label];
+          this.labelValue = this.options.filter(node => node[this.dynaDefProps.id] == val)[0][
+            this.dynaDefProps.label
+          ]
       }
       // ⭐⭐⭐ modelValue -> value
-      this.$emit("getValue", val);
+      this.$emit('getValue', val)
     },
     // ⭐⭐⭐ value -> labelValue
     value(val) {
-      if (!val) this.labelValue = void 0;
+      if (!val) this.labelValue = void 0
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

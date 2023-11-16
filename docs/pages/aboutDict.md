@@ -8,13 +8,8 @@
 <template>
   <div>
     <el-form-item label="状态" prop="status">
-      <el-select
-        v-model="queryParams.status"
-        placeholder="菜单状态"
-        clearable
-        size="small"
-      >
-        <el-option
+      <el-select v-model="queryParams.status" placeholder="菜单状态" clearable size="small">
+               <el-option
           v-for="dict in visibleOptions"
           :key="dict.dictValue"
           :label="dict.dictLabel"
@@ -29,15 +24,15 @@ export default {
   data() {
     return {
       // 显示状态数据字典
-      visibleOptions: [],
-    };
+      visibleOptions: []
+    }
   },
   created() {
-    this.getDicts("sys_normal_disable").then((response) => {
-      this.visibleOptions = response.data;
-    });
-  },
-};
+    this.getDicts('sys_normal_disable').then(response => {
+      this.visibleOptions = response.data
+    })
+  }
+}
 </script>
 ```
 
@@ -49,12 +44,7 @@ export default {
 <template>
   <div>
     <el-form-item label="状态" prop="status">
-      <el-select
-        v-model="queryParams.status"
-        placeholder="菜单状态"
-        clearable
-        size="small"
-      >
+      <el-select v-model="queryParams.status" placeholder="菜单状态" clearable size="small">
         <el-option
           v-for="dict in dict.type.sys_normal_disable"
           :key="dict.dictValue"
@@ -67,29 +57,25 @@ export default {
 </template>
 <script>
 export default {
-  dicts: ["sys_normal_disable"],
+  dicts: ['sys_normal_disable'],
   data() {
-    return {};
-  },
-};
+    return {}
+  }
+}
 </script>
 ```
 
-## dictLabel和dictValue
+## 自定义字典项
+
+### dictLabel 和 dictValue
 
 默认的展示文本和值是`dictLabel`和`dictValue`
-
 
 ```vue {13,14}
 <template>
   <div>
     <el-form-item label="状态" prop="status">
-      <el-select
-        v-model="queryParams.status"
-        placeholder="菜单状态"
-        clearable
-        size="small"
-      >
+      <el-select v-model="queryParams.status" placeholder="菜单状态" clearable size="small">
         <el-option
           v-for="dict in dict.type.sys_normal_disable"
           :key="dict.dictValue"
@@ -102,28 +88,30 @@ export default {
 </template>
 ```
 
-#### 自定义这两个字段
-
 如果后端返回给我们的接口中这两个字段变了怎么办呢，我们可以自定义这两个字段，和接口数据中的字段保持一致。
 
 在使用该插件的时候，支持传入自定义的字典展示形式，可以自定义和接口中的字段保持一致。
 
-- `dictLabel` 和 `dictValue`是接口中的字段名称，要和字典接口返回数据的字段对应上；这里是可配置的，万一返回的字段变了，可以改变这两项保持对应！
 - `label` 和 `value` 是写在代码中的别名名称，也就是选择器中的`label`和`value`
+- `dictLabel` 和 `dictValue`是接口中的字段名称，要和字典接口返回数据的字段对应上；这里是可配置的，万一返回的字段变了，可以改变这两项保持对应！一般来说接口的字段不会改变。
+
+::: tip 提示
+`dictField` 对象中，要保证顺序不要错乱，名称为第一项，值在第二项
+:::
 
 ```js {9,10}
-import { getDicts } from "@/api/system/dict/data";
-import request from "@/utils/request";
+import { getDicts } from '@/api/system/dict/data'
+import request from '@/utils/request'
 import ryLayerPage from 'ry-layer-page'
 
 Vue.use(ryLayerPage, {
   http: request,
   dict: getDicts,
   dictField: {
-    dictLabel: "label",
-    dictValue: "value",
-  },
-});
+    dictLabel: 'label',
+    dictValue: 'value'
+  }
+})
 ```
 
 ```html
@@ -145,7 +133,7 @@ Vue.use(ryLayerPage, {
 
 ## 插件中使用字典的情况
 
-👆以上字典示例都是在普通页面中的使用
+👆 以上字典示例都是在普通页面中的使用
 
 #### 在分层页面中使用的说明
 

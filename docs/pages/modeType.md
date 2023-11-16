@@ -1,4 +1,4 @@
-# 六种类型
+# 七种类型
 
 ## Dialog
 
@@ -10,70 +10,70 @@
 <script>
 export default {
   data() {
-    const routeName = this.$route.name.toLowerCase();
-    const BASE_URL = "/his/office";
+    const routeName = this.$route.name.toLowerCase()
+    const BASE_URL = '/his/office'
     const form = [
       {
-        label: "科室名称",
-        model: "deptName",
-        component: "FormSelect",
-        dict: "sys_normal_disable",
+        label: '科室名称',
+        model: 'deptName',
+        component: 'FormSelect',
+        dict: 'sys_normal_disable',
         rules: [
           {
             required: true,
-            message: "请输入科室名称",
-            trigger: "change",
-          },
-        ],
+            message: '请输入科室名称',
+            trigger: 'change'
+          }
+        ]
       },
       {
-        label: "科室电话",
-        model: "deptPhone",
-        component: "FormInput",
+        label: '科室电话',
+        model: 'deptPhone',
+        component: 'FormInput',
         rules: [
           {
             pattern: /^[1]([3-9])[0-9]{9}$/,
             required: true,
-            message: "请输入正确的科室电话",
-            trigger: "blur",
-          },
-        ],
-      },
-    ];
+            message: '请输入正确的科室电话',
+            trigger: 'blur'
+          }
+        ]
+      }
+    ]
     return {
       operateLayer: {
         add: {
-          label: "新增",
+          label: '新增',
           params: {},
-          method: "post",
+          method: 'post',
           url: `${BASE_URL}`,
           hasPermi: `${routeName}:add`,
           mode: {
-            type: "Dialog",
-            top: "25vh",
-            form,
-          },
+            type: 'Dialog',
+            top: '25vh',
+            form
+          }
         },
         edit: {
-          type: "primary",
-          label: "修改",
+          type: 'primary',
+          label: '修改',
           params: {
-            name: "Jerry",
+            name: 'Jerry'
           },
-          disabled: "single",
+          disabled: 'single',
           url: `${BASE_URL}`,
-          method: "put",
+          method: 'put',
           hasPermi: `${routeName}:edit`,
           mode: {
-            type: "Dialog",
+            type: 'Dialog',
             detail: true, // 需要使用详情
-            form,
-          },
-        },
-      },
-    };
-  },
-};
+            form
+          }
+        }
+      }
+    }
+  }
+}
 </script>
 ```
 
@@ -83,7 +83,7 @@ export default {
 
 | 属性               | 说明                                                                                                                                         | 类型                                 | 可选值             | 默认值 |
 | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------- | :----------------- | :----- |
-| type               | 点击按钮后，需要触发的操作类型                                                                                                               | string                               | 见 mode 的六种类型 | —      |
+| type               | 点击按钮后，需要触发的操作类型                                                                                                               | string                               | 见 mode 的七种类型 | —      |
 | form               | 移步阅读 单表单组件章节                                                                                                                      | array                                | —                  | —      |
 | button             | 自定义弹框中按钮的文字以及显隐，不加此项，默认按钮为'取消'，'确定'                                                                           | array                                | —                  | —      |
 | detail             | 默认传递表格 row 信息；当 type 为 RouterPage 并且 detail 为 true 时，则路由模式中的 query 接受详情信息，但是过大的详情信息不建议走路由传参！ | boolean                              | —                  | false  |
@@ -115,52 +115,52 @@ export default {
 <script>
 export default {
   data() {
-    const routeName = this.$route.name.toLowerCase();
-    const BASE_URL = "/his/office";
+    const routeName = this.$route.name.toLowerCase()
+    const BASE_URL = '/his/office'
     return {
       operateLayer: {
         remove: {
-          type: "primary",
-          label: "删除",
-          disabled: "multipe",
+          type: 'primary',
+          label: '删除',
+          disabled: 'multipe',
           url: `${BASE_URL}`,
-          method: "delete",
+          method: 'delete',
           hasPermi: `${routeName}:remove`,
           mode: {
-            subscribe: "是否确认删除这些数据?",
-            type: "warning",
-            title: "提示",
-            label: "deptId", // path接口传参为：http://xxxx/deptId
-          },
+            subscribe: '是否确认删除这些数据?',
+            type: 'warning',
+            title: '提示',
+            label: 'deptId' // path接口传参为：http://xxxx/deptId
+          }
         },
         warn: {
-          type: "danger",
-          disabled: "single",
-          label: "警告",
+          type: 'danger',
+          disabled: 'single',
+          label: '警告',
           url: `${BASE_URL}/warn`,
-          method: "get",
+          method: 'get',
           hasPermi: `${routeName}:warn`,
           mode: {
-            type: "error",
-            subscribe: (item) => {
-              return `${item.deptLeader}已被严重警告`;
+            type: 'error',
+            subscribe: item => {
+              return `${item.deptLeader}已被严重警告`
             },
-            title: "警告",
+            title: '警告',
             requestParams: true, // params传参：{ids：deptId}
-            label: "deptId",
-            paramsLabel: "ids",
+            label: 'deptId',
+            paramsLabel: 'ids',
             catch: () => {
               this.$message({
-                type: "info",
-                message: "已取消警告",
-              });
-            },
-          },
-        },
-      },
-    };
-  },
-};
+                type: 'info',
+                message: '已取消警告'
+              })
+            }
+          }
+        }
+      }
+    }
+  }
+}
 </script>
 ```
 
@@ -208,7 +208,7 @@ submit: {
 
 | 属性              | 说明                                                           | 类型                    | 可选值             | 默认值                                          |
 | :---------------- | :------------------------------------------------------------- | :---------------------- | :----------------- | :---------------------------------------------- |
-| type              | 点击按钮后，需要触发的操作类型                                 | string                  | 见 mode 的六种类型 | —                                               |
+| type              | 点击按钮后，需要触发的操作类型                                 | string                  | 见 mode 的七种类型 | —                                               |
 | subscribe         | MessageBox 消息正文内容                                        | string / function(info) | —                  | —                                               |
 | title             | MessageBox 标题                                                | string                  | —                  | 提示                                            |
 | showCancelButton  | 是否显示取消按钮                                               | boolean                 | —                  | false（以 confirm 和 prompt 方式调用时为 true） |
@@ -231,26 +231,26 @@ submit: {
 
 ```vue {12}
 <script>
-import CustomDialog from "./CustomDialog";
+import CustomDialog from './CustomDialog'
 export default {
   data() {
     return {
       operateLayer: {
         CustomDialog: {
-          label: "自定义弹框",
-          params: { name: "resrse" },
-          show: "table",
+          label: '自定义弹框',
+          params: { name: 'resrse' },
+          show: 'table',
           mode: {
-            type: "CustomDialog",
-            name: "customDialog",
+            type: 'CustomDialog',
+            name: 'customDialog',
             detail: true,
-            component: CustomDialog,
-          },
-        },
-      },
-    };
-  },
-};
+            component: CustomDialog
+          }
+        }
+      }
+    }
+  }
+}
 </script>
 ```
 
@@ -258,7 +258,7 @@ export default {
 
 | 属性      | 说明                                                              | 类型    | 可选值             | 默认值 |
 | :-------- | :---------------------------------------------------------------- | :------ | :----------------- | :----- |
-| type      | 点击按钮后，需要触发的操作类型                                    | string  | 见 mode 的六种类型 | —      |
+| type      | 点击按钮后，需要触发的操作类型                                    | string  | 见 mode 的七种类型 | —      |
 | name      | 自定义弹框时，name 必传;自定义组件都要有 name 作为该组件的 ref 值 | string  | —                  | —      |
 | detail    | 为 true 时，自定义组件的详情会传到该组件的 props 的 params 中     | boolean | —                  | false  |
 | component | 自定义组件本身                                                    | object  | —                  | —      |
@@ -278,9 +278,7 @@ export default {
     <h1>自定义弹框</h1>
     <span slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:dialogVisible', false)">取 消</el-button>
-      <el-button type="primary" @click="$emit('update:dialogVisible', false)"
-        >确 定</el-button
-      >
+      <el-button type="primary" @click="$emit('update:dialogVisible', false)">确 定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -290,17 +288,17 @@ export default {
   props: {
     dialogVisible: {
       type: Boolean,
-      required: true,
+      required: true
     },
     queryList: {
-      type: Function,
+      type: Function
     },
     params: {
       type: Object,
-      default: () => {},
-    },
-  },
-};
+      default: () => {}
+    }
+  }
+}
 </script>
 ```
 
@@ -312,28 +310,28 @@ export default {
 
 ```vue {14}
 <script>
-import CustomPage from "./CustomPage";
+import CustomPage from './CustomPage'
 export default {
   data() {
     return {
       operateLayer: {
         customPage: {
-          type: "success",
-          disabled: "single",
-          show: "table",
-          icon: "el-icon-set-up",
-          label: "自定义组件",
+          type: 'success',
+          disabled: 'single',
+          show: 'table',
+          icon: 'el-icon-set-up',
+          label: '自定义组件',
           mode: {
-            type: "CustomPage",
-            name: "customPage",
+            type: 'CustomPage',
+            name: 'customPage',
             component: CustomPage,
-            detail: true,
-          },
-        },
-      },
-    };
-  },
-};
+            detail: true
+          }
+        }
+      }
+    }
+  }
+}
 </script>
 ```
 
@@ -341,12 +339,12 @@ export default {
 
 | 属性      | 说明                                                              | 类型    | 可选值             | 默认值 |
 | :-------- | :---------------------------------------------------------------- | :------ | :----------------- | :----- |
-| type      | 点击按钮后，需要触发的操作类型                                    | string  | 见 mode 的六种类型 | —      |
+| type      | 点击按钮后，需要触发的操作类型                                    | string  | 见 mode 的七种类型 | —      |
 | name      | 自定义弹框时，name 必传;自定义组件都要有 name 作为该组件的 ref 值 | string  | —                  | —      |
 | detail    | 为 true 时，自定义组件的详情会传到该组件的 props 的 params 中     | boolean | —                  | false  |
 | component | 自定义组件本身                                                    | object  | —                  | —      |
 
-#### 自定义弹框组件的使用
+#### 自定义组件页面的使用
 
 当我们点击新增按钮后，进入到了这个自定义组件页面，完成了一系列功能后，需要再跳回到主页面，此时需用到`this.$emit("update:pageVisible", false)`,即关闭当前组件页面，回到主页面。
 
@@ -363,36 +361,36 @@ export default {
 <script>
 export default {
   data() {
-    return {};
+    return {}
   },
   props: {
     pageVisible: {
       type: Boolean,
-      required: true,
+      required: true
     },
     queryList: {
-      type: Function,
+      type: Function
     },
     params: {
       type: Object,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   mounted() {},
   methods: {
     submit() {
       // 回到首页
-      this.$emit("update:pageVisible", false);
+      this.$emit('update:pageVisible', false)
       // or
       //this.$parent.pageVisible=false;
 
       // 回到首页,重新查询数据
-      this.queryList();
+      this.queryList()
       // or
       //this.$parent.queryList();
-    },
-  },
-};
+    }
+  }
+}
 </script>
 ```
 
@@ -411,43 +409,48 @@ export default {
     return {
       operateLayer: {
         routerPage: {
-          disabled: "single",
-          show: "table",
-          label: "自定义路由",
+          disabled: 'single',
+          show: 'table',
+          label: '自定义路由',
           mode: {
-            type: "RouterPage",
+            type: 'RouterPage',
             detail: true,
             router: {
-              path: "/his/RouterPage",
+              path: '/his/RouterPage',
               query: {
-                name: "参数",
-              },
+                name: '参数'
+              }
               // name: "RouterPage",
               // params: {
               //   sek: "lakei",
               // },
-            },
-          },
-        },
-      },
-    };
-  },
-};
+            }
+          }
+        }
+      }
+    }
+  }
+}
 </script>
 ```
 
 #### 属性
 
-| 属性   | 说明                                                                                                                                         | 类型    | 可选值             | 默认值 |
-| :----- | :------------------------------------------------------------------------------------------------------------------------------------------- | :------ | :----------------- | :----- |
-| type   | 点击按钮后，需要触发的操作类型                                                                                                               | string  | 见 mode 的六种类型 | —      |
-| name   | 自定义弹框时，name 必传;自定义组件都要有 name 作为该组件的 ref 值                                                                            | string  | —                  | —      |
-| detail | 默认传递表格 row 信息；当 type 为 RouterPage 并且 detail 为 true 时，通过sessionStorage进行获取详情数据,值为 `ry-detail` | boolean | —                  | false  |
-| router | 路由跳转的一些配置                                                                                                                           | object  | —                  | —      |
+| 属性     | 说明                                                                                                                       | 类型    | 可选值             | 默认值 |
+| :------- | :------------------------------------------------------------------------------------------------------------------------- | :------ | :----------------- | :----- |
+| type     | 点击按钮后，需要触发的操作类型                                                                                             | string  | 见 mode 的七种类型 | —      |
+| name     | 自定义弹框时，name 必传;自定义组件都要有 name 作为该组件的 ref 值                                                          | string  | —                  | —      |
+| detail   | 默认传递表格 row 信息；当 type 为 RouterPage 并且 detail 为 true 时，通过 sessionStorage 进行获取详情数据,值为 `ry-detail` | string  | —                  | false  |
+| detailId | 传递 detailId：则获取 row 里面的对应的 id 传过去，可根据该 id 获取详情                                                     | boolean | —                  | id     |
+| router   | 路由跳转的一些配置                                                                                                         | object  | —                  | —      |
 
 #### 自定义路由页面的使用
 
-在自定义路由页面回到主页面的话，仅需要跳回到主页面路由即可。
+如何获取改行的信息数据？
+
+- 如果`detail`为 true，从`sessionStorage.getItem("ry-detail")` 获取接口详情！
+- 如果`detail`为 false,`detailId`为 true，直接从 query 路由传递当前行的自定义 id！
+- 如果`detail`为 false,`detailId`为 false，从`sessionStorage.getItem("ry-detail")` 获取当前行的基本信息，不调接口！
 
 ```vue
 <template>
@@ -459,15 +462,45 @@ export default {
 <script>
 export default {
   mounted() {
-    console.log(JSON.parse(sessionStorage.getItem("ry-detail"))); //当前选中行的详情信息
+    console.log(JSON.parse(this.$route.query)) //当前选中行的详情信息
+    console.log(JSON.parse(sessionStorage.getItem('ry-detail'))) //当前选中行的详情信息
   },
   methods: {
     submit() {
-      this.$router.push("/his/office");
+      this.$router.go(-1)
+    }
+  }
+}
+</script>
+```
+
+如何获取其它 row 的数据？
+
+- 以`row_`开头，后面紧跟着改行的字段名称，也就是 status，经过转换，会把 row.status 的值通过路由的参数 row_status 传递过去
+
+```js {18}
+search: {
+  size: 'mini',
+  type: 'primary',
+  label: '查看',
+  params: {},
+  show: 'table', //展示到表格操作列中
+  type: 'text',
+  method: 'get',
+  url: `${BASE_URL}/getXshcDetail`,
+  mode: {
+    type: 'RouterPage',
+    detail: true,
+    router: {
+      path: '/xscx/search/index/',
+      query: {
+        mode: 'search',
+        type: 'xscx',
+        row_status: '',
+      },
     },
   },
-};
-</script>
+},
 ```
 
 ## Export
@@ -477,7 +510,9 @@ export default {
 当使用导出功能时，会出现两种情况：
 
 - 不传参数，则全部导出
-- 传递一个数组参数，按照数组中的 `id` 进行部分导出
+- 传递参数，也就是选择的表格行数据
+
+传递参数有两种方式，就是把选择的 selection 数据以数组或字符串拼接传递过去，根据 `paramsType` 判断，默认为 `string`，如果是行内操作（`table=show`），则不能传递数组！
 
 ```vue {14}
 <script>
@@ -486,23 +521,24 @@ export default {
     return {
       operateLayer: {
         export: {
-          size: "mini",
-          type: "primary",
-          label: "导出",
+          size: 'mini',
+          type: 'primary',
+          label: '导出',
           params: { type: khlrType }, // 支持带入自定义的参数，此参数会合并到接口参数中
-          method: "post",
+          method: 'post',
           url: `${BASE_URL}/export`,
           mode: {
-            type: "Export",
-            label: "id", // 当选择表格数据时，默认取表格列表的id属性
-            paramsLabel: "exportIds", // 此时接口需要传exportIds这个字段，而不去是id字段
-            exportName: `${types[khlrType].label}.xlsx`, // 录入时，根据不同考核单位
-          },
-        },
-      },
-    };
-  },
-};
+            type: 'Export',
+            label: 'id', // 当选择表格数据时，默认取表格列表的id属性
+            paramsType: 'array', // 默认是 string
+            paramsLabel: 'exportIds', // 此时接口需要传exportIds这个字段，而不去是id字段
+            exportName: `${types[khlrType].label}.xlsx` // 录入时，根据不同考核单位
+          }
+        }
+      }
+    }
+  }
+}
 </script>
 ```
 
@@ -513,7 +549,8 @@ export default {
 - `field` 为字段名
 - `label` 为选择行数据中的取值字段
 - `hidden` 当组件复用时，可判断是否需要传递该参数
-- `type` 为可选 array 数组类型传参，会把表格中选中行数的目标字段全部加到 filed 中
+
+把多个字段以 `string拼接` 方式传递过去，
 
 ```js
 export: {
@@ -526,7 +563,6 @@ export: {
   url: `${BASE_URL}/generateAssessmentForm`,
   mode: {
     type: "export",
-    paramsType: "string",
     multiParams: [
       {
         field: "deptId",
@@ -541,6 +577,8 @@ export: {
 },
 ```
 
+把多个字段以 `array` 方式传递过去，
+
 ```js
 export: {
   size: "mini",
@@ -551,12 +589,13 @@ export: {
   url: `${BASE_URL}/export`,
   mode: {
     type: "export",
+    paramsType: 'array', // 默认是 string
     multiParams: [
       {
         field: "exportIds",
         label: "id",
-        type: "array"
-      }
+      },
+      { field: "khjdYear", label: "khjdYear" },
     ],
     exportName: `${types[khlrType].label}.xlsx`
   }
@@ -567,8 +606,39 @@ export: {
 
 | 属性        | 说明                                                 | 类型                 | 可选值             | 默认值        |
 | :---------- | :--------------------------------------------------- | :------------------- | :----------------- | :------------ |
-| type        | 点击按钮后，需要触发的操作类型                       | string               | 见 mode 的六种类型 | —             |
+| type        | 点击按钮后，需要触发的操作类型                       | string               | 见 mode 的七种类型 | —             |
 | label       | 选择行取值的别名字段                                 | string               | —                  | id            |
 | paramsLabel | 参数字段的别名                                       | string               | —                  | id            |
 | multiParams | 多个参数判断或单个参数复杂判断                       | array                | —                  | id            |
 | exportName  | 导出附件的名称；支持回调函数，参数为选择当前行的信息 | string/function(row) | —                  | 列表文件.xlsx |
+| paramsType  | 判断传入的是数组还是字符串                           | string/              | string/array       | string        |
+
+## Download
+
+用于下载本地文件场景。
+
+#### 使用示例
+
+改操作使用起来简单方便，直接使用 click 的回调函数即可！
+
+```js
+ download: {
+   size: 'mini',
+   type: 'primary',
+   label: '初步核查报告模板',
+   mode: {
+     type: 'Download',
+     click: this.downloadFile,
+   },
+ },
+```
+
+```js
+methods: {
+  /** 下载文件 */
+  downloadFile() {
+    // 在这里面可以加一些其他操作，比如确认弹框等...
+    window.open('/file/初步核查报告模板.docx');
+  },
+},
+```

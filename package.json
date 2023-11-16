@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "serve": "vuepress dev docs",
-    "build": "vuepress build docs"
+    "build": "vuepress build docs",
+    "prepare": "husky install",
+    "format": "prettier --cache --write ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "husky": "^8.0.3",
+    "prettier": "^3.1.0",
     "vue-template-compiler": "^2.7.14",
     "vuepress": "^1.9.7",
     "vuepress-plugin-zooming": "^1.1.7"

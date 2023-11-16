@@ -6,16 +6,15 @@
 
 本插件内置了一些单表单组件，如下：
 
-| 单表单组件     | 对应的组件        |
-| :------- | :----------- |
-|FormInput|el-input|
-|FormSelect|el-select|
-|FormTextarea|el-input|
-|FormDate|el-date|
-|FormDateRange|el-date|
-|FormTreeSelect|vue-treeselect|
-|FormUpdate|el-upload|
-
+| 单表单组件     | 对应的组件     |
+| :------------- | :------------- |
+| FormInput      | el-input       |
+| FormSelect     | el-select      |
+| FormTextarea   | el-input       |
+| FormDate       | el-date        |
+| FormDateRange  | el-date        |
+| FormTreeSelect | vue-treeselect |
+| FormUpdate     | el-upload      |
 
 ## 使用场景
 
@@ -29,35 +28,33 @@ export default {
   data() {
     return {
       searchLayer: {
-        labelAfter: ":",
+        labelAfter: ':',
         formWidth: 260,
-        searchName: "查询",
-        resetName: "重置",
+        searchName: '查询',
+        resetName: '重置',
         form: [
           {
-            name: "Custom",
-            component: Custom,
+            name: 'Custom',
+            component: Custom
           },
           {
-            label: "科室负责人",
-            model: "deptLeader",
-            component: "FormInput",
-            rules: [
-              { required: true, message: "请输入科室负责人", trigger: "blur" },
-            ],
+            label: '科室负责人',
+            model: 'deptLeader',
+            component: 'FormInput',
+            rules: [{ required: true, message: '请输入科室负责人', trigger: 'blur' }]
           },
           {
-            label: "预警时间",
-            type: "daterange",
-            startTimeLabel: "startTimeYJ",
-            endTimeLabel: "endTimeYJ",
-            component: "FormDateRange",
-          },
-        ],
-      },
-    };
-  },
-};
+            label: '预警时间',
+            type: 'daterange',
+            startTimeLabel: 'startTimeYJ',
+            endTimeLabel: 'endTimeYJ',
+            component: 'FormDateRange'
+          }
+        ]
+      }
+    }
+  }
+}
 </script>
 ```
 
@@ -72,6 +69,7 @@ export default {
 ### 操作层的使用示例
 
 在`js`中我们可以声明一次进行多次调用；在项目的开发中会大量使用，声明一次多次调用的情况，尽量写较少的代码，提高了代码的灵活性；
+
 ```vue
 <script>
 export default {
@@ -112,5 +110,3 @@ table th:nth-of-type(2) {
     width: 40%;
 }
 </style>
-
-

@@ -1,15 +1,9 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <el-col
-        :span="6"
-        :xs="24"
-      >
+      <el-col :span="6" :xs="24">
         <el-card class="box-card">
-          <div
-            slot="header"
-            class="clearfix"
-          >
+          <div slot="header" class="clearfix">
             <span>个人信息</span>
           </div>
           <div>
@@ -37,10 +31,7 @@
               </li>
               <li class="list-group-item">
                 <svg-icon icon-class="tree" />所属部门
-                <div
-                  v-if="user.dept"
-                  class="pull-right"
-                >
+                <div v-if="user.dept" class="pull-right">
                   {{ user.dept.deptName }} / {{ postGroup }}
                 </div>
               </li>
@@ -60,28 +51,16 @@
           </div>
         </el-card>
       </el-col>
-      <el-col
-        :span="18"
-        :xs="24"
-      >
+      <el-col :span="18" :xs="24">
         <el-card>
-          <div
-            slot="header"
-            class="clearfix"
-          >
+          <div slot="header" class="clearfix">
             <span>基本资料</span>
           </div>
           <el-tabs v-model="activeTab">
-            <el-tab-pane
-              label="基本资料"
-              name="userinfo"
-            >
+            <el-tab-pane label="基本资料" name="userinfo">
               <userInfo :user="user" />
             </el-tab-pane>
-            <el-tab-pane
-              label="修改密码"
-              name="resetPwd"
-            >
+            <el-tab-pane label="修改密码" name="resetPwd">
               <resetPwd :user="user" />
             </el-tab-pane>
           </el-tabs>
@@ -92,33 +71,33 @@
 </template>
 
 <script>
-import userAvatar from "./userAvatar";
-import userInfo from "./userInfo";
-import resetPwd from "./resetPwd";
-import { getUserProfile } from "@/api/system/user";
+import userAvatar from './userAvatar'
+import userInfo from './userInfo'
+import resetPwd from './resetPwd'
+import { getUserProfile } from '@/api/system/user'
 
 export default {
-  name: "Profile",
+  name: 'Profile',
   components: { userAvatar, userInfo, resetPwd },
   data() {
     return {
       user: {},
       roleGroup: {},
       postGroup: {},
-      activeTab: "userinfo"
-    };
+      activeTab: 'userinfo'
+    }
   },
   created() {
-    this.getUser();
+    this.getUser()
   },
   methods: {
     getUser() {
       getUserProfile().then(response => {
-        this.user = response.data;
-        this.roleGroup = response.roleGroup;
-        this.postGroup = response.postGroup;
-      });
+        this.user = response.data
+        this.roleGroup = response.roleGroup
+        this.postGroup = response.postGroup
+      })
     }
   }
-};
+}
 </script>

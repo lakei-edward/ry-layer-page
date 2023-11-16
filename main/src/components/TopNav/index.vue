@@ -1,14 +1,10 @@
 <template>
-  <el-menu
-    :default-active="activeMenu"
-    mode="horizontal"
-    @select="handleSelect"
-  >
+  <el-menu :default-active="activeMenu" mode="horizontal" @select="handleSelect">
     <template v-for="(item, index) in topMenus">
       <el-menu-item
         v-if="index < visibleNumber"
         :key="index"
-        :style="{'--theme': theme}"
+        :style="{ '--theme': theme }"
         :index="item.path"
       >
         <svg-icon :icon-class="item.meta.icon" />
@@ -17,20 +13,10 @@
     </template>
 
     <!-- 顶部菜单超出数量折叠 -->
-    <el-submenu
-      v-if="topMenus.length > visibleNumber"
-      :style="{'--theme': theme}"
-      index="more"
-    >
-      <template slot="title">
-        更多菜单
-      </template>
+    <el-submenu v-if="topMenus.length > visibleNumber" :style="{ '--theme': theme }" index="more">
+      <template slot="title"> 更多菜单 </template>
       <template v-for="(item, index) in topMenus">
-        <el-menu-item
-          v-if="index >= visibleNumber"
-          :key="index"
-          :index="item.path"
-        >
+        <el-menu-item v-if="index >= visibleNumber" :key="index" :index="item.path">
           <svg-icon :icon-class="item.meta.icon" />
           {{ item.meta.title }}
         </el-menu-item>
@@ -40,7 +26,7 @@
 </template>
 
 <script>
-import { constantRoutes } from "@/router";
+import { constantRoutes } from '@/router'
 
 export default {
   data() {
@@ -51,135 +37,134 @@ export default {
       isFrist: false,
       // 当前激活菜单的 index
       currentIndex: undefined
-    };
+    }
   },
   computed: {
     theme() {
-      return this.$store.state.settings.theme;
+      return this.$store.state.settings.theme
     },
     // 顶部显示菜单
     topMenus() {
-      let topMenus = [];
-      this.routers.map((menu) => {
+      let topMenus = []
+      this.routers.map(menu => {
         if (menu.hidden !== true) {
           // 兼容顶部栏一级菜单内部跳转
-          if (menu.path === "/") {
-            topMenus.push(menu.children[0]);
+          if (menu.path === '/') {
+            topMenus.push(menu.children[0])
           } else {
-            topMenus.push(menu);
+            topMenus.push(menu)
           }
         }
-      });
-      return topMenus;
+      })
+      return topMenus
     },
     // 所有的路由信息
     routers() {
-      return this.$store.state.permission.topbarRouters;
+      return this.$store.state.permission.topbarRouters
     },
     // 设置子路由
     childrenMenus() {
-      let childrenMenus = [];
-      this.routers.map((router) => {
+      let childrenMenus = []
+      this.routers.map(router => {
         for (let item in router.children) {
           if (router.children[item].parentPath === undefined) {
-            if(router.path === "/") {
-              router.children[item].path = `/redirect/${router.children[item].path}`;
+            if (router.path === '/') {
+              router.children[item].path = `/redirect/${router.children[item].path}`
             } else {
-              if(!this.ishttp(router.children[item].path)) {
-                router.children[item].path = `${router.path}/${router.children[item].path}`;
+              if (!this.ishttp(router.children[item].path)) {
+                router.children[item].path = `${router.path}/${router.children[item].path}`
               }
             }
-            router.children[item].parentPath = router.path;
+            router.children[item].parentPath = router.path
           }
-          childrenMenus.push(router.children[item]);
+          childrenMenus.push(router.children[item])
         }
-      });
-      return constantRoutes.concat(childrenMenus);
+      })
+      return constantRoutes.concat(childrenMenus)
     },
     // 默认激活的菜单
     activeMenu() {
-      const path = this.$route.path;
-      let activePath = this.defaultRouter();
-      if (path.lastIndexOf("/") > 0) {
-        const tmpPath = path.substring(1, path.length);
-        activePath = `/${tmpPath.substring(0, tmpPath.indexOf("/"))}`;
-      } else if ("/index" == path || "" == path) {
+      const path = this.$route.path
+      let activePath = this.defaultRouter()
+      if (path.lastIndexOf('/') > 0) {
+        const tmpPath = path.substring(1, path.length)
+        activePath = `/${tmpPath.substring(0, tmpPath.indexOf('/'))}`
+      } else if ('/index' == path || '' == path) {
         if (!this.isFrist) {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.isFrist = true;
+          this.isFrist = true
         } else {
-          activePath = "index";
+          activePath = 'index'
         }
       }
-      let routes = this.activeRoutes(activePath);
+      let routes = this.activeRoutes(activePath)
       if (routes.length === 0) {
-        activePath = this.currentIndex || this.defaultRouter();
-        this.activeRoutes(activePath);
+        activePath = this.currentIndex || this.defaultRouter()
+        this.activeRoutes(activePath)
       }
-      return activePath;
+      return activePath
     }
   },
   beforeMount() {
-    window.addEventListener('resize', this.setVisibleNumber);
+    window.addEventListener('resize', this.setVisibleNumber)
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.setVisibleNumber);
+    window.removeEventListener('resize', this.setVisibleNumber)
   },
   mounted() {
-    this.setVisibleNumber();
+    this.setVisibleNumber()
   },
   methods: {
     // 根据宽度计算设置显示栏数
     setVisibleNumber() {
-      const width = document.body.getBoundingClientRect().width / 3;
-      this.visibleNumber = parseInt(width / 85);
+      const width = document.body.getBoundingClientRect().width / 3
+      this.visibleNumber = parseInt(width / 85)
     },
     // 默认激活的路由
     defaultRouter() {
-      let router;
-      Object.keys(this.routers).some((key) => {
+      let router
+      Object.keys(this.routers).some(key => {
         if (!this.routers[key].hidden) {
-          router = this.routers[key].path;
-          return true;
+          router = this.routers[key].path
+          return true
         }
-      });
-      return router;
+      })
+      return router
     },
     // 菜单选择事件
     handleSelect(key, keyPath) {
-      this.currentIndex = key;
+      this.currentIndex = key
       if (this.ishttp(key)) {
         // http(s):// 路径新窗口打开
-        window.open(key, "_blank");
-      } else if (key.indexOf("/redirect") !== -1) {
-
+        window.open(key, '_blank')
+      } else if (key.indexOf('/redirect') !== -1) {
         // /redirect 路径内部打开
-        this.$router.push({ path: key.replace("/redirect", "") });
+        this.$router.push({ path: key.replace('/redirect', '') })
       } else {
         // 显示左侧联动菜单
-        this.activeRoutes(key);
+        this.activeRoutes(key)
       }
     },
     // 当前激活的路由
     activeRoutes(key) {
-      let routes = [];
+      let routes = []
       if (this.childrenMenus && this.childrenMenus.length > 0) {
-        this.childrenMenus.map((item) => {
-          if (key == item.parentPath || key == "index" && "" == item.path) {
-            routes.push(item);
+        this.childrenMenus.map(item => {
+          if (key == item.parentPath || (key == 'index' && '' == item.path)) {
+            routes.push(item)
           }
-        });
+        })
       }
-      if(routes.length > 0) {
-        this.$store.commit("SET_SIDEBAR_ROUTERS", routes);
+      if (routes.length > 0) {
+        this.$store.commit('SET_SIDEBAR_ROUTERS', routes)
       }
-      return routes;
+      return routes
     },
     ishttp(url) {
-      return url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1;
+      return url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
@@ -192,7 +177,8 @@ export default {
   margin: 0 10px !important;
 }
 
-.topmenu-container.el-menu--horizontal > .el-menu-item.is-active, .el-menu--horizontal > .el-submenu.is-active .el-submenu__title {
+.topmenu-container.el-menu--horizontal > .el-menu-item.is-active,
+.el-menu--horizontal > .el-submenu.is-active .el-submenu__title {
   border-bottom: 2px solid #{'var(--theme)'} !important;
   color: #303133;
 }
