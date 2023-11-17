@@ -9,7 +9,7 @@
   <div>
     <el-form-item label="状态" prop="status">
       <el-select v-model="queryParams.status" placeholder="菜单状态" clearable size="small">
-               <el-option
+        <el-option
           v-for="dict in visibleOptions"
           :key="dict.dictValue"
           :label="dict.dictLabel"

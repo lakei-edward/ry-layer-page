@@ -17,7 +17,7 @@ export default {
           size: 'mini',
           label: '新增',
           params: {},
-               method: 'post',
+          method: 'post',
           url: '/his/office',
           hasPermi: `${route}:add`,
           mode: {

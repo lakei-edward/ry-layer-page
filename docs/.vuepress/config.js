@@ -27,7 +27,7 @@ module.exports = {
         {
           title: '核心功能',
           collapsable: false,
-          children: ['searchLayer', 'operateLayer', 'displayLayer', 'modeType']
+          children: ['searchLayer', 'operateLayer', 'displayLayer', 'modeType', 'othgerUsage']
         },
         {
           title: '单表单组件',
