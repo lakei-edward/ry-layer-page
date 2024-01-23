@@ -102,26 +102,175 @@ export default {
 对于按钮操作方式的具体配置`mode` 我们在下面进行详细的说明。
 :::
 
+### 操作项隐藏
+
+支持回调函数，返回Boolean值类型，只支持在行内隐藏。在上方一般是控制 `disabled`
+
+```vue
+<script>
+import Custom from './Custom'
+export default {
+  data() {
+     // 搜索层
+    const sear={
+      size: 'mini',
+      type: 'text',
+      label: '修改',
+      show: 'table',
+      params: {},
+      hidden(row) {
+        return row.status !== '1';
+      },
+      method: 'put',
+      url: `${BASE_URL}/group/update`,
+      mode: {
+       ...
+      }
+    },
+    return {
+    }
+  }
+}
+</script>
+```
+
+### beforeSubmit 前置提交钩子
+
+- 前置钩子用于前置判断或更改参数
+- 可返回一个promise的Boolean值，用于中止提交操作
+
+```vue
+<script>
+import Custom from './Custom'
+export default {
+  data() {
+      // 搜索层
+    const sear={
+      size: 'mini',
+      type: 'text',
+      label: '修改',
+      show: 'table',
+      params: {},
+      method: 'put',
+      url: `${BASE_URL}/group/update`,
+      beforeSubmit: this.handleSubmitUpdate / addCallback,
+      mode: {
+        type: 'Dialog',
+        top: '25vh',
+        labelWidth: '150px',
+        closeOnClickModal: false,
+        width: '1000px',
+        row: true,
+        form
+      }
+    },
+    return {
+    }
+  }
+  methods: {
+    /** 可直接修改参数信息 */
+    addCallback(params) {
+      params.dpModelBusinessProjectDTOList = params.dpModelBusinessProjectDTOList.map((r) => {
+        return {
+          projectId: r
+        };
+      });
+    },
+    /** 返回false就中止调取接口，否则调用接口数据 */
+    handleSubmitUpdate(val) {
+      return new Promise((resolve) => {
+        deletecheck({ groupId: val.params.groupId }).then((res) => {
+          const flag = !!res.data.content;
+          if (!flag) {
+            this.$message({
+              showClose: true,
+              message: `请先删除相应的库表资源再进行修改操作`,
+              type: 'warning'
+            });
+          }
+          resolve(flag);
+        });
+      });
+    },
+  },
+}
+</script>
+```
+
+### beforeRouter 路由跳转前置钩子
+
+返回一个Boolean值，判断能不能跳转
+
+```vue
+<script>
+import Custom from './Custom'
+export default {
+  data() {
+      // 搜索层
+    const preview = {
+      size: 'mini',
+      type: 'text',
+      label: '预览',
+      show: 'table',
+      params: {},
+      method: 'put',
+      url: `${BASE_URL}/group/update`,
+      mode: {
+        type: 'RouterPage',
+        detail: true,
+        beforeRouter: this.handleJump,
+        router: {
+          target: '_blank',
+          path: '/genneralView',
+          query: {
+            row_id: '',
+            preview: true
+          }
+        }
+      }
+    },
+    return {
+    }
+  }
+  methods: {
+    /** 跳转前的判断 */
+    handleJump(item) {
+      const nums = item[0].associationNum;
+      if (!nums) {
+        this.$message({
+          message: '该模型下没有任务...',
+          type: 'warning'
+        });
+      }
+      return nums;
+    },
+  },
+}
+</script>
+```
+
 ### 属性
 
-| 属性         | 说明                                                                                                                           | 类型                  | 可选值                           | 默认值 |
-| :----------- | :----------------------------------------------------------------------------------------------------------------------------- | :-------------------- | :------------------------------- | :----- |
-| show         | 是否显示,以及按钮的位置，默认在表格上，可配置在表格内；                                                                        | string                | table                            | —      |
-| size         | 尺寸                                                                                                                           | string                | —                                | —      |
-| type         | 类型                                                                                                                           | string                | success / info / warning / error | —      |
-| icon         | 图标类名                                                                                                                       | string                | —                                | —      |
-| plain        | 是否朴素按钮                                                                                                                   | boolean               | —                                | false  |
-| round        | 是否圆角按钮                                                                                                                   | boolean               | —                                | false  |
-| circle       | 是否圆形按钮                                                                                                                   | boolean               | —                                | false  |
-| disabled     | 单选/多选/自定义                                                                                                               | string /function(row) | single/multipe                   | —      |
-| disabledType | 当disabled为函数时，用该属性来判断是单选还是多选                                                                               | string                | single/multipe                   | single |
-| label        | 标题                                                                                                                           | string                | —                                | —      |
-| hasPermi     | 权限                                                                                                                           | string                | —                                | —      |
-| url          | 操作按钮最后需要调的接口                                                                                                       | string                | —                                | —      |
-| method       | 接口类型                                                                                                                       | string                | —                                | —      |
-| params       | 接口的参数                                                                                                                     | object                | —                                | —      |
-| multiPath    | 查看详情时，path传参多个字段，不仅仅传id了，multiPath: `["id", "tjzt"]`多个参数，并且这些参数要在row中或获取详情的对象中出现！ | array                 | —                                | —      |
-| mode         | 按钮的操作方式                                                                                                                 | object                | —                                | —      |
+| 属性         | 说明                                                                                                                           | 类型                    | 可选值                           | 默认值 |
+| :----------- | :----------------------------------------------------------------------------------------------------------------------------- | :---------------------- | :------------------------------- | :----- |
+| show         | 是否显示,以及按钮的位置，默认在表格上，可配置在表格内；                                                                        | string                  | table                            | —      |
+| size         | 尺寸                                                                                                                           | string                  | —                                | —      |
+| type         | 类型                                                                                                                           | string                  | success / info / warning / error | —      |
+| icon         | 图标类名                                                                                                                       | string                  | —                                | —      |
+| plain        | 是否朴素按钮                                                                                                                   | boolean                 | —                                | false  |
+| round        | 是否圆角按钮                                                                                                                   | boolean                 | —                                | false  |
+| circle       | 是否圆形按钮                                                                                                                   | boolean                 | —                                | false  |
+| disabled     | 单选/多选/自定义                                                                                                               | string /function(row)   | single/multipe                   | —      |
+| disabledType | 当disabled为函数时，用该属性来判断是单选还是多选                                                                               | string                  | single/multipe                   | single |
+| label        | 标题                                                                                                                           | string                  | —                                | —      |
+| hasPermi     | 权限                                                                                                                           | string                  | —                                | —      |
+| url          | 操作按钮最后需要调的接口                                                                                                       | string                  | —                                | —      |
+| method       | 接口类型                                                                                                                       | string                  | —                                | —      |
+| params       | 接口的参数                                                                                                                     | object                  | —                                | —      |
+| hidden       | 操作项在行内展示时隐藏                                                                                                         | object                  | —                                | —      |
+| multiPath    | 查看详情时，path传参多个字段，不仅仅传id了，multiPath: `["id", "tjzt"]`多个参数，并且这些参数要在row中或获取详情的对象中出现！ | function(row) / Boolean | —                                | —      |
+| beforeSubmit | 提交前置钩子用于前置判断或更改参数                                                                                             | function(row)           | —                                | —      |
+| mode         | 按钮的操作方式                                                                                                                 | object                  | —                                | —      |
 
 ## 操作方式
 

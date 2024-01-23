@@ -91,25 +91,58 @@ export default {
 </script>
 ```
 
+### beforeSearch 前置搜索钩子
+
+用于搜索前的参数修改
+
+```vue
+<script>
+import Custom from './Custom'
+export default {
+  data() {
+    return {
+      // 搜索层
+      searchLayer: {
+        labelWidth: '120px',
+        size: 'small',
+        operateSize: 'mini',
+        searchName: '查询',
+        resetName: '重置',
+        beforeSearch: this.searchCallback,
+        form
+      }
+    }
+  }
+  methods: {
+    //在自定义查询事件中，将params的值添加一个属性
+    searchCallback(params) {
+      params.wtxz = params.wtxz && params.wtxz.join(',');
+    },
+  },
+}
+</script>
+```
+
 ### 属性
 
-| 属性                 | 说明                                                                                    | 类型    | 可选值                | 默认值 |
-| :------------------- | :-------------------------------------------------------------------------------------- | :------ | :-------------------- | :----- |
-| searchName           | 查询按钮别称                                                                            | string  | —                     | 搜索   |
-| resetName            | 重置按钮别称                                                                            | string  | —                     | 重置   |
-| formWidth            | 用于控制该表单内组件的宽度                                                              | string  | —                     | —      |
-| size                 | 用于控制该表单内组件的尺寸                                                              | string  | medium / small / mini | —      |
-| labelAfter           | 表单项的分割形式                                                                        | string  | —                     | ：     |
-| labelWidth           | 表单域标签的宽度，例如 '50px'。作为 Form 直接子元素的 form-item 会继承该值。支持 auto。 | string  | —                     | —      |
-| labelPosition        | 表单域标签的位置，如果值为 left 或者 right 时，则需要设置 label-width                   | string  | right/left/top        | right  |
-| labelWidth           | 表单域标签的宽度，例如 '50px'。作为 Form 直接子元素的 form-item 会继承该值。支持 auto。 | string  | —                     | —      |
-| inlineMessage        | 是否以行内形式展示校验信息                                                              | boolean | —                     | false  |
-| disabled             | 是否禁用该表单内的所有组件。若设置为 true，则表单内组件上的 disabled 属性不再生效       | boolean | —                     | false  |
-| hideRequiredAsterisk | 是否隐藏必填字段的标签旁边的红色星号                                                    | boolean | —                     | false  |
-| statusIcon           | 是否在输入框中显示校验结果反馈图标                                                      | boolean | —                     | false  |
-| validateOnRuleChange | 是否在 rules 属性改变后立即触发一次验证                                                 | boolean | —                     | true   |
-| params               | params 会合并到查询接口中                                                               | object  | —                     | —      |
-| form                 | 移步阅读 单表单组件章节                                                                 | —       | —                     | —      |
+| 属性                 | 说明                                                                                    | 类型             | 可选值                | 默认值 |
+| :------------------- | :-------------------------------------------------------------------------------------- | :--------------- | :-------------------- | :----- |
+| searchName           | 查询按钮别称                                                                            | string           | —                     | 搜索   |
+| resetName            | 重置按钮别称                                                                            | string           | —                     | 重置   |
+| formWidth            | 用于控制该表单内组件的宽度                                                              | string           | —                     | —      |
+| size                 | 用于控制该表单内组件的尺寸                                                              | string           | medium / small / mini | —      |
+| labelAfter           | 表单项的分割形式                                                                        | string           | —                     | ：     |
+| labelWidth           | 表单域标签的宽度，例如 '50px'。作为 Form 直接子元素的 form-item 会继承该值。支持 auto。 | string           | —                     | —      |
+| labelPosition        | 表单域标签的位置，如果值为 left 或者 right 时，则需要设置 label-width                   | string           | right/left/top        | right  |
+| labelWidth           | 表单域标签的宽度，例如 '50px'。作为 Form 直接子元素的 form-item 会继承该值。支持 auto。 | string           | —                     | —      |
+| inlineMessage        | 是否以行内形式展示校验信息                                                              | boolean          | —                     | false  |
+| disabled             | 是否禁用该表单内的所有组件。若设置为 true，则表单内组件上的 disabled 属性不再生效       | boolean          | —                     | false  |
+| hideRequiredAsterisk | 是否隐藏必填字段的标签旁边的红色星号                                                    | boolean          | —                     | false  |
+| statusIcon           | 是否在输入框中显示校验结果反馈图标                                                      | boolean          | —                     | false  |
+| validateOnRuleChange | 是否在 rules 属性改变后立即触发一次验证                                                 | boolean          | —                     | true   |
+| params               | params 会合并到查询接口中                                                               | object           | —                     | —      |
+| beforeSearch         | 用于搜索前的参数修改                                                                    | function(params) | —                     | —      |
+| form                 | 移步阅读 单表单组件章节                                                                 | —                | —                     | —      |
 
 <style>
 table th:nth-of-type(1) {

@@ -138,3 +138,39 @@ Vue.use(ryLayerPage, {
 #### 在分层页面中使用的说明
 
 如果在使用该插件时，在任何一个分层页面当中，有一处地方要使用字典的情况，此时就必须在`main.js`中选装字典项。因为该插件中对字典数据的处理都是针对`$options.dicts`中的字典名称进行获取数据再传递到子孙组件的。
+
+## 字典使用接口返回的数据
+
+即使dicts中没有添加字典，但还是要声明，组件内要使用
+
+```js
+dicts: [],
+  {
+    label: '关联任务',
+    model: 'dpModelBusinessProjectDTOList',
+    component: 'FormSelect',
+    dict: this.getAllTask(),
+    multiple: true,
+    width: 360
+  }
+```
+
+当字典返回一个接口数据时，要返回一个promise
+
+```js
+/** 获取所有任务 */
+async getAllTask() {
+  let { data } = await selectProjectbybusinessId();
+  return data.content.map((r) => {
+    return {
+      dictLabel: r.projectDTOList[0].projectName,
+      dictValue: r.projectDTOList[0].projectId
+    };
+  });
+},
+// 字典加载完成的回调
+onDictReady(dict) {
+  // 初始化字典项
+  this.$refs.layerpage.initDicts(dict);
+},
+```

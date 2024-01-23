@@ -200,6 +200,83 @@ export default {
 </script>
 ```
 
+### 动态返回属性
+
+```vue{23}
+<template>
+  <ry-layer-page
+    :search-layer="searchLayer"
+    :operate-layer="operateLayer"
+    :display-layer="displayLayer"
+  />
+</template>
+<script>
+export default {
+  data() {
+    const BASE_URL = '/his/office'
+    return {
+      // 展示层
+      displayLayer: {
+        url: `${BASE_URL}/list`,
+        data: [
+          {
+            /* 发布状态 0：保存 1：发布 2:下架 */
+            prop: 'status',
+            label: '模型状态',
+            component: {
+              element: 'Tag',
+              attr(row) {
+                const types = ['info', 'success', 'danger'];
+                return {
+                  type: types[row.status]
+                };
+              }
+            },
+            callback: (item) => {
+              const code = {
+                0: '已保存',
+                1: '已上架',
+                2: '已下架'
+              };
+              return code[item.status];
+            }
+          },
+        ]
+      }
+    }
+  }
+}
+</script>
+```
+
+## 手动刷新列表数据
+
+```js
+this.$refs.layerpage.queryList()
+```
+
+示例
+
+```js{10}
+handlePut(row, status) {
+  this.$confirm('是否确认上架?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    row.status = status;
+    modelUpdate(row).then((res) => {
+      // 重新获取list数据
+      this.$refs.layerpage.queryList();
+      this.$message({
+        type: 'success',
+        message: `${status === '1' ? '上架' : '下架'}成功!`
+      });
+    });
+  });
+},
+```
+
 ### 表格属性
 
 | 属性                | 说明                                                                                          | 类型                                                  | 可选值                | 默认值 |
@@ -216,6 +293,7 @@ export default {
 | height              | Table 的高度，默认为自动高度。                                                                | string/number                                         | —                     | —      |
 | headerCellStyle     | 表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style。 | Function({row, column, rowIndex, columnIndex})/Object | —                     | —      |
 | cellStyle           | 单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有单元格设置一样的 Style。         | Function({row, column, rowIndex, columnIndex})/Object | —                     | —      |
+| index               | 是否有索引                                                                                    | string                                                | —                     | —      |
 | data                | 表格数据的具体字段信息，在下面进行详细配置                                                    | array                                                 | —                     | —      |
 
 ### 表格列属性

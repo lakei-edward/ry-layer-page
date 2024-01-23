@@ -1,5 +1,21 @@
 # 日志信息
 
+## 2023.12
+
+1. feat: 表格内的内置组件增加函数传参getTableAttr,例如tag的type类型，可动态改变
+1. feat: 路由跳转页面新增新窗口打开功能target: true,
+1. feat: 查看详情新增get的query-paramsType类型传参，之前只支持path传参，用法为二重数组[['id', 'groupId']]，前面为字段名，后面为row里面属性名
+1. tip: 字典promise用法必须要加$options.dicts，当字典返回一个接口数据时，要返回一个promise
+1. tip: 重新刷新列表数据this.$refs.layerpage.queryList()
+1. feat: 增加搜索前的钩子函数，beforeSearch，用于搜索前的参数修改
+1. feat: 增加详情的回显设置钩子，afterDetail，获取详情之后，还没有渲染到页面时，自定义改变属性值
+1. feat: 新增路由跳转前的钩子函数：beforeRouter,返回一个Boolean值，判断能不能跳转
+1. feat: 弹框模式下，获取详情的方式增加直接从row里面取，目前只支持详情取，row：true，detail：true
+1. feat: 表格内操作项设置hidden，支持回调函数，返回Boolean值类型
+1. feat: 表格新增序号，displayLayer.index有值的话显示
+1. fix: 表格内的CustomOperate，无法获取row，以增加第三个参数获取row
+1. feat: 提交前增加beforeSubmit前置钩子用于前置判断或更改参数，可返回一个promise的Boolean值，用于中止提交操作
+
 ## 2023.11
 
 1. feat：新增路由传参可以带入row信息，自定义带入表格的数据，以row开头的参数

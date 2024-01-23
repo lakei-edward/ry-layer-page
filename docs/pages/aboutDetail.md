@@ -40,9 +40,53 @@ export default {
 </script>
 ```
 
-## 后台
+## 传参方式
 
-- 采用路径拼接，通过@PathVariable获取传参
+### path 路径拼接
+
+默认取当前行的id拼接，如果需要指定字段名使用`label`属性
+
+### query 传参
+
+用法为二重数组`[['id', 'groupId']]`，前面为字段名，后面为row里面属性名
+
+```vue
+<script>
+import Custom from './Custom'
+export default {
+  data() {
+      // 搜索层
+    const search = {
+      size: 'mini',
+      type: 'text',
+      label: '查看',
+      show: 'table',
+      params: {},
+      method: 'put',
+      url: `${BASE_URL}/group/update`,
+      mode: {
+        type: 'Dialog',
+        top: '25vh',
+        labelWidth: '150px',
+        closeOnClickModal: false,
+        paramsType: [['id', 'id']],
+        form
+      }
+    },
+    return {
+    }
+  }
+  methods: {
+    /** 打开有关详情弹框的回调，处理数据 */
+    detailCallback(item) {
+      item.params.dpModelBusinessProjectDTOList = item.params.dpModelBusinessProjectDTOList.map((r) => {
+        return r.projectId;
+      });
+    },
+  },
+}
+</script>
+```
 
 ## 查看详情弹框的两种展现形式
 
@@ -90,6 +134,50 @@ export default {
       }
     }
   }
+}
+</script>
+```
+
+## afterDetail 详情后置钩子
+
+用于获取详情后修改字段数据，或者增加新的字段
+
+```vue
+<script>
+import Custom from './Custom'
+export default {
+  data() {
+      // 搜索层
+    const preview = {
+      size: 'mini',
+      type: 'text',
+      label: '预览',
+      show: 'table',
+      params: {},
+      method: 'put',
+      url: `${BASE_URL}/group/update`,
+      mode: {
+        type: 'Dialog',
+        top: '25vh',
+        labelWidth: '150px',
+        closeOnClickModal: false,
+        width: '700px',
+        detail: true,
+        afterDetail: this.detailCallback,
+        form: relevanceForm
+      }
+    },
+    return {
+    }
+  }
+  methods: {
+    /** 打开有关详情弹框的回调，处理数据 */
+    detailCallback(item) {
+      item.params.dpModelBusinessProjectDTOList = item.params.dpModelBusinessProjectDTOList.map((r) => {
+        return r.projectId;
+      });
+    },
+  },
 }
 </script>
 ```
